@@ -198,7 +198,7 @@ class HybridIKSolver:
 
 ### 14.3.1 场景表示
 
-MoveIt2 使用 Planning Scene 来表示环境：
+MoveIt2 使用 Planning Scene 来表示环境，这是一个包含机器人状态和环境信息的完整数据结构。Planning Scene 采用分层表示方法，从粗略到精细逐级描述环境，优化碰撞检测效率：
 
 ```
 Planning Scene 结构:
@@ -215,28 +215,51 @@ Planning Scene 结构:
 
 ### 14.3.2 碰撞检测算法
 
+碰撞检测是运动规划的核心组件，直接影响规划的安全性和效率。MoveIt2 支持多种碰撞检测库，每种都有其特点和适用场景。
+
 **FCL (Flexible Collision Library)**
 - 基于包围盒层次结构（BVH）
 - 支持连续碰撞检测（CCD）
+- 高效的几何形状间距离计算
+- 支持多种几何表示（网格、基本形状、八叉树）
 
 碰撞检测流程：
-1. 宽相位（Broad Phase）：AABB 包围盒快速剔除
-2. 窄相位（Narrow Phase）：精确几何检测
+1. **宽相位（Broad Phase）**
+   - AABB 包围盒快速剔除
+   - 空间分割数据结构（八叉树、kd-tree）
+   - Sweep and Prune 算法
+   - 减少需要精确检测的物体对
+
+2. **窄相位（Narrow Phase）**
+   - GJK（Gilbert-Johnson-Keerthi）算法用于凸体
+   - SAT（Separating Axis Theorem）分离轴定理
+   - MPR（Minkowski Portal Refinement）算法
+   - 网格间的三角形相交测试
 
 ```
 碰撞检测时间复杂度:
 宽相位: O(n log n) 使用空间分割
 窄相位: O(m) 其中 m 为潜在碰撞对数量
+GJK 算法: O(k) 其中 k 为迭代次数（通常 < 10）
+网格碰撞: O(t²) 最坏情况，t 为三角形数量
 ```
 
 **Bullet Physics**
-- 物理仿真引擎的碰撞检测
-- 支持凸包优化
-- 更好的 mesh-mesh 碰撞
+- 物理仿真引擎的碰撞检测模块
+- 支持凸包优化和凸分解
+- 更好的 mesh-mesh 碰撞处理
+- 支持软体碰撞和变形体
+- GPU 加速支持（Bullet3）
+
+选择建议：
+- 简单几何形状：使用 FCL
+- 复杂网格模型：使用 Bullet
+- 需要物理仿真：使用 Bullet
+- 实时性要求高：使用 FCL 或 GPU 加速
 
 ### 14.3.3 距离计算与安全边界
 
-安全距离计算对于碰撞避免至关重要：
+安全距离计算对于碰撞避免至关重要。除了二值碰撞检测，距离信息可以用于构建排斥场、优化轨迹以及实现更安全的运动。MoveIt2 提供了多层次的距离计算机制：
 
 $$d_{safe} = \min_{i,j} (d(L_i, O_j) - margin_{ij})$$
 
@@ -272,7 +295,7 @@ class SafetyDistanceMonitor:
 
 ### 14.3.4 Octomap 集成
 
-Octomap 提供了高效的 3D 环境表示：
+Octomap 提供了高效的 3D 环境表示，特别适合处理大规模、动态环境。它使用概率八叉树结构，能够有效地融合多个传感器数据并处理不确定性：
 
 ```
 Octomap 参数优化:
@@ -283,8 +306,34 @@ Octomap 参数优化:
 └── Clamping Thresholds: [0.12, 0.97]
 ```
 
-更新方程：
+更新方程（贝叶斯更新）：
 $$P(n|z_{1:t}) = \left[1 + \frac{1-P(n|z_t)}{P(n|z_t)} \cdot \frac{1-P(n|z_{1:t-1})}{P(n|z_{1:t-1})} \cdot \frac{P(n)}{1-P(n)}\right]^{-1}$$
+
+其中 $P(n|z_t)$ 为传感器模型，$P(n)$ 为先验概率。
+
+**Octomap 优化策略：**
+
+1. **动态分辨率调整**
+```python
+def adaptive_resolution(distance_to_robot, base_resolution=0.05):
+    # 近处高分辨率，远处低分辨率
+    if distance_to_robot < 1.0:
+        return base_resolution * 0.5  # 0.025m
+    elif distance_to_robot < 3.0:
+        return base_resolution  # 0.05m
+    else:
+        return base_resolution * 2  # 0.1m
+```
+
+2. **增量式更新**
+   - 只更新视野内的节点
+   - 使用 frustum culling 减少计算
+   - 并行化射线追踪
+
+3. **内存管理**
+   - 剪枝（pruning）合并相同状态节点
+   - 压缩存储未被占据的空间
+   - 使用滚动窗口限制地图大小
 
 ## 14.4 抓取规划
 
@@ -332,6 +381,14 @@ class GraspGenerator:
 $$\epsilon = \min_{||w||=1} \max_i |w^T \cdot g_i|$$
 
 其中 $g_i$ 为接触点的单位扳手（wrench），$w$ 为外部扰动。
+
+扳手空间表示：
+$$G = [g_1, g_2, ..., g_n] \in \mathbb{R}^{6 \times n}$$
+
+其中每个扳手：
+$$g_i = \begin{bmatrix} f_i \\ p_i \times f_i + \tau_i \end{bmatrix}$$
+
+$f_i$ 为接触力，$p_i$ 为接触点位置，$\tau_i$ 为摩擦力矩。
 
 **可操作性椭球（Manipulability Ellipsoid）**
 
