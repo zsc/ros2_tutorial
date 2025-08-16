@@ -19,6 +19,7 @@ verteran programmer and AI scientists
    - 踩坑与解决方案
 4. **高级话题** (Advanced Topics)：
    - 前沿研究方向
+   - Paper reading guide (2-3 key papers)
    - 开源项目推荐
    - 性能极限优化技巧
 5. **本章小结**：总结关键概念和公式
