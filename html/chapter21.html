@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 21 章：大语言模型与具身智能</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="21">第 21 章：大语言模型与具身智能</h1>
+<p>大语言模型（LLM）的崛起为机器人领域带来了前所未有的变革。通过将 GPT-4、PaLM、LLaMA 等模型与 ROS2 系统深度集成，机器人获得了理解自然语言指令、进行常识推理、生成执行策略的能力。本章将深入探讨如何在 ROS2 中构建 LLM 驱动的智能机器人系统，实现从语言理解到物理执行的完整闭环。</p>
+<h2 id="211-llm">21.1 LLM 任务规划节点</h2>
+<h3 id="2111">21.1.1 架构设计</h3>
+<p>LLM 任务规划器作为机器人系统的"大脑"，负责将高层次的自然语言指令转换为可执行的机器人动作序列。在 ROS2 中，我们通过专门的规划节点来封装 LLM 功能：</p>
+<div class="codehilite"><pre><span></span><code>┌─────────────────────────────────────────────────┐
+│                用户语音/文本输入                   │
+└────────────────────┬────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────┐
+│            LLM Task Planner Node                │
+│  ┌───────────────────────────────────────────┐  │
+│  │         Prompt Engineering Module          │  │
+│  │  - 环境状态编码                           │  │
+│  │  - 任务历史管理                           │  │
+│  │  - 约束条件注入                           │  │
+│  └───────────────────┬───────────────────────┘  │
+│                      │                           │
+│  ┌───────────────────▼───────────────────────┐  │
+│  │           LLM Inference Engine             │  │
+│  │  - API 调用管理                            │  │
+│  │  - 流式响应处理                           │  │
+│  │  - 缓存与优化                             │  │
+│  └───────────────────┬───────────────────────┘  │
+│                      │                           │
+│  ┌───────────────────▼───────────────────────┐  │
+│  │         Plan Validation Module             │  │
+│  │  - 语法检查                               │  │
+│  │  - 可行性验证                             │  │
+│  │  - 安全性审核                             │  │
+│  └───────────────────┬───────────────────────┘  │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌─────────────────────────────────────────────────┐
+│              Action Execution Layer              │
+│   (Nav2 / MoveIt2 / ros2_control)               │
+└─────────────────────────────────────────────────┘
+</code></pre></div>
+
+<h3 id="2112-prompt">21.1.2 Prompt 工程策略</h3>
+<p>有效的 Prompt 设计是 LLM 任务规划的核心。我们采用结构化的 Prompt 模板，包含以下关键要素：</p>
+<ol>
+<li><strong>系统角色定义</strong>：明确 LLM 作为机器人控制器的职责</li>
+<li><strong>环境上下文</strong>：当前传感器状态、可用执行器、环境地图</li>
+<li><strong>动作原语库</strong>：机器人可执行的基本动作集合</li>
+<li><strong>约束条件</strong>：安全限制、物理约束、任务优先级</li>
+<li><strong>输出格式规范</strong>：确保生成的计划可被解析执行</li>
+</ol>
+<p>典型的 Prompt 结构：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">System</span><span class="o">:</span><span class="w"> </span><span class="n">You</span><span class="w"> </span><span class="n">are</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">robot</span><span class="w"> </span><span class="n">controller</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">mobile</span><span class="w"> </span><span class="n">manipulator</span><span class="o">.</span><span class="w"> </span><span class="n">Your</span><span class="w"> </span><span class="n">available</span><span class="w"> </span><span class="n">actions</span><span class="w"> </span><span class="n">are</span><span class="o">:</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">navigate_to</span><span class="o">(</span><span class="n">location</span><span class="o">):</span><span class="w"> </span><span class="n">Move</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">location</span>
+<span class="o">-</span><span class="w"> </span><span class="n">pick</span><span class="o">(</span><span class="n">object</span><span class="o">):</span><span class="w"> </span><span class="n">Grasp</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">specified</span><span class="w"> </span><span class="n">object</span><span class="w">  </span>
+<span class="o">-</span><span class="w"> </span><span class="n">place</span><span class="o">(</span><span class="n">object</span><span class="o">,</span><span class="w"> </span><span class="n">location</span><span class="o">):</span><span class="w"> </span><span class="n">Place</span><span class="w"> </span><span class="n">object</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">location</span>
+<span class="o">-</span><span class="w"> </span><span class="n">scan</span><span class="o">():</span><span class="w"> </span><span class="n">Perform</span><span class="w"> </span><span class="mi">360</span><span class="o">-</span><span class="n">degree</span><span class="w"> </span><span class="n">environment</span><span class="w"> </span><span class="n">scan</span>
+
+<span class="n">Current</span><span class="w"> </span><span class="n">state</span><span class="o">:</span>
+
+<span class="o">-</span><span class="w"> </span><span class="n">Robot</span><span class="w"> </span><span class="n">position</span><span class="o">:</span><span class="w"> </span><span class="o">(</span><span class="n">x</span><span class="o">=</span><span class="mf">2.5</span><span class="o">,</span><span class="w"> </span><span class="n">y</span><span class="o">=</span><span class="mf">1.0</span><span class="o">,</span><span class="w"> </span><span class="n">theta</span><span class="o">=</span><span class="mf">0.0</span><span class="o">)</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Gripper</span><span class="o">:</span><span class="w"> </span><span class="n">empty</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Detected</span><span class="w"> </span><span class="n">objects</span><span class="o">:</span><span class="w"> </span><span class="o">[</span><span class="n">red_cube</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">table_1</span><span class="o">,</span><span class="w"> </span><span class="n">blue_sphere</span><span class="w"> </span><span class="n">at</span><span class="w"> </span><span class="n">floor</span><span class="o">]</span>
+<span class="o">-</span><span class="w"> </span><span class="n">Battery</span><span class="o">:</span><span class="w"> </span><span class="mi">85</span><span class="o">%</span>
+
+<span class="n">Task</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="n">user_instruction</span><span class="o">}</span>
+
+<span class="n">Generate</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">step</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">step</span><span class="w"> </span><span class="n">plan</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="n">JSON</span><span class="w"> </span><span class="n">format</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">safety</span><span class="w"> </span><span class="n">checks</span><span class="o">.</span>
+</code></pre></div>
+
+<h3 id="2113">21.1.3 上下文管理与记忆系统</h3>
+<p>为了处理复杂的多轮对话和长期任务，我们实现了分层记忆系统：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LLMContextManager</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_short_term</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">max_long_term</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_term_memory</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="n">max_short_term</span><span class="p">)</span>  <span class="c1"># 最近交互</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">long_term_memory</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># 重要事件与学习经验</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">episodic_memory</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 任务执行历史</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semantic_memory</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 概念与知识图谱</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_interaction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">plan</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;记录完整的交互循环&quot;&quot;&quot;</span>
+        <span class="n">interaction</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">(),</span>
+            <span class="s1">&#39;instruction&#39;</span><span class="p">:</span> <span class="n">instruction</span><span class="p">,</span>
+            <span class="s1">&#39;plan&#39;</span><span class="p">:</span> <span class="n">plan</span><span class="p">,</span>
+            <span class="s1">&#39;execution_result&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+            <span class="s1">&#39;context_embedding&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_embedding</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">short_term_memory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interaction</span><span class="p">)</span>
+
+        <span class="c1"># 评估是否转入长期记忆</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_important</span><span class="p">(</span><span class="n">interaction</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">long_term_memory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">interaction</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">retrieve_relevant_context</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;基于相似度检索相关历史&quot;&quot;&quot;</span>
+        <span class="n">query_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_compute_embedding</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+        <span class="c1"># 结合短期和长期记忆进行检索</span>
+        <span class="n">all_memories</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">short_term_memory</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">long_term_memory</span>
+        <span class="n">similarities</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">query_embedding</span><span class="p">,</span> <span class="n">m</span><span class="p">[</span><span class="s1">&#39;context_embedding&#39;</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">all_memories</span>
+        <span class="p">]</span>
+
+        <span class="n">top_k_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">similarities</span><span class="p">)[</span><span class="o">-</span><span class="n">k</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">all_memories</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">top_k_indices</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="2114-ros2">21.1.4 与 ROS2 行为树集成</h3>
+<p>将 LLM 生成的高层计划转换为可执行的行为树是关键步骤：</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- LLM 生成的任务转换为行为树 --&gt;</span>
+<span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence&gt;</span>
+<span class="w">      </span><span class="cm">&lt;!-- LLM 规划验证 --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;ValidateLLMPlan&quot;</span><span class="w"> </span><span class="na">plan=</span><span class="s">&quot;{llm_plan}&quot;</span><span class="nt">/&gt;</span>
+
+<span class="w">      </span><span class="cm">&lt;!-- 动态生成的子任务 --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Fallback&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Sequence&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;NavigateToTable&quot;</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{table_position}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;IdentifyObject&quot;</span><span class="w"> </span><span class="na">target=</span><span class="s">&quot;{object_name}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;GraspObject&quot;</span><span class="w"> </span><span class="na">approach=</span><span class="s">&quot;{grasp_strategy}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Sequence&gt;</span>
+
+<span class="w">        </span><span class="cm">&lt;!-- 失败恢复：请求 LLM 重新规划 --&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;RequestLLMReplan&quot;</span><span class="w"> </span>
+<span class="w">                </span><span class="na">context=</span><span class="s">&quot;{failure_reason}&quot;</span>
+<span class="w">                </span><span class="na">max_attempts=</span><span class="s">&quot;3&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Fallback&gt;</span>
+
+<span class="w">      </span><span class="cm">&lt;!-- 执行确认 --&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Action</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;ReportToLLM&quot;</span><span class="w"> </span><span class="na">status=</span><span class="s">&quot;{execution_status}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/BehaviorTree&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+
+<h2 id="212-vlm">21.2 视觉-语言模型（VLM）集成</h2>
+<h3 id="2121">21.2.1 多模态感知架构</h3>
+<p>视觉-语言模型使机器人能够理解视觉场景并用自然语言描述，实现"看图说话"和"听话看图"的能力：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">VLMPerceptionNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;vlm_perception_node&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 订阅多模态输入</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">image_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">Image</span><span class="p">,</span> <span class="s1">&#39;/camera/image_raw&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pointcloud_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">PointCloud2</span><span class="p">,</span> <span class="s1">&#39;/velodyne/points&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pointcloud_callback</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># VLM 服务</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vlm_service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_service</span><span class="p">(</span>
+            <span class="n">VLMQuery</span><span class="p">,</span> <span class="s1">&#39;vlm_query&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_vlm_query</span><span class="p">)</span>
+
+        <span class="c1"># 场景描述发布</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_desc_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span>
+            <span class="n">String</span><span class="p">,</span> <span class="s1">&#39;/scene_description&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># 初始化 VLM 模型（如 CLIP, BLIP-2, LLaVA）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vlm_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_vlm_model</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">image_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">:</span> <span class="n">Image</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;处理图像输入并生成场景描述&quot;&quot;&quot;</span>
+        <span class="c1"># 图像预处理</span>
+        <span class="n">cv_image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bridge</span><span class="o">.</span><span class="n">imgmsg_to_cv2</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="s2">&quot;rgb8&quot;</span><span class="p">)</span>
+
+        <span class="c1"># VLM 推理</span>
+        <span class="n">scene_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_model</span><span class="o">.</span><span class="n">encode_image</span><span class="p">(</span><span class="n">cv_image</span><span class="p">)</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_model</span><span class="o">.</span><span class="n">generate_description</span><span class="p">(</span><span class="n">scene_features</span><span class="p">)</span>
+
+        <span class="c1"># 发布场景描述</span>
+        <span class="n">desc_msg</span> <span class="o">=</span> <span class="n">String</span><span class="p">()</span>
+        <span class="n">desc_msg</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">description</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_desc_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">desc_msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_vlm_query</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;处理视觉问答请求&quot;&quot;&quot;</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bridge</span><span class="o">.</span><span class="n">imgmsg_to_cv2</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;rgb8&quot;</span><span class="p">)</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">question</span>
+
+        <span class="c1"># 多模态推理</span>
+        <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_model</span><span class="o">.</span><span class="n">answer_question</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">question</span><span class="p">)</span>
+
+        <span class="n">response</span><span class="o">.</span><span class="n">answer</span> <span class="o">=</span> <span class="n">answer</span>
+        <span class="n">response</span><span class="o">.</span><span class="n">confidence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_model</span><span class="o">.</span><span class="n">get_confidence</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>
+
+<h3 id="2122">21.2.2 场景理解与物体关系推理</h3>
+<p>VLM 不仅识别物体，还理解它们之间的空间关系和语义联系：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SceneGraphGenerator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vlm_model</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vlm</span> <span class="o">=</span> <span class="n">vlm_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">build_scene_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">depth_map</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;构建场景图谱&quot;&quot;&quot;</span>
+        <span class="c1"># 1. 物体检测与分割</span>
+        <span class="n">objects</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_objects</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="c1"># 2. 空间关系提取</span>
+        <span class="k">for</span> <span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">combinations</span><span class="p">(</span><span class="n">objects</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="n">relation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm</span><span class="o">.</span><span class="n">infer_relation</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">obj1</span><span class="p">,</span> <span class="n">obj2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">relation</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;</span> <span class="mf">0.7</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scene_graph</span><span class="o">.</span><span class="n">add_edge</span><span class="p">(</span>
+                    <span class="n">obj1</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">obj2</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                    <span class="n">relation</span><span class="o">=</span><span class="n">relation</span><span class="o">.</span><span class="n">type</span><span class="p">,</span>
+                    <span class="n">confidence</span><span class="o">=</span><span class="n">relation</span><span class="o">.</span><span class="n">confidence</span>
+                <span class="p">)</span>
+
+        <span class="c1"># 3. 属性标注</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
+            <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm</span><span class="o">.</span><span class="n">extract_attributes</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">bbox</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scene_graph</span><span class="o">.</span><span class="n">nodes</span><span class="p">[</span><span class="n">obj</span><span class="o">.</span><span class="n">id</span><span class="p">]</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
+
+        <span class="c1"># 4. 场景标题生成</span>
+        <span class="n">scene_caption</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm</span><span class="o">.</span><span class="n">generate_caption</span><span class="p">(</span>
+            <span class="n">image</span><span class="p">,</span> 
+            <span class="n">context</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scene_graph</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">scene_graph</span><span class="p">,</span> <span class="n">scene_caption</span>
+</code></pre></div>
+
+<h3 id="2123-grounding">21.2.3 视觉 Grounding 与指称理解</h3>
+<p>将自然语言描述定位到图像中的具体区域：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">VisualGrounding</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grounding_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;grounding_dino&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sam_model</span> <span class="o">=</span> <span class="n">load_model</span><span class="p">(</span><span class="s1">&#39;segment_anything&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ground_referring_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">expression</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        定位指称表达式对应的图像区域</span>
+<span class="sd">        如：&quot;红色杯子右边的蓝色笔&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 1. 提取关键实体</span>
+        <span class="n">entities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_entities</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+
+        <span class="c1"># 2. 目标检测</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">grounding_model</span><span class="o">.</span><span class="n">detect</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">entities</span><span class="p">)</span>
+
+        <span class="c1"># 3. 关系推理</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resolve_spatial_relations</span><span class="p">(</span><span class="n">detections</span><span class="p">,</span> <span class="n">expression</span><span class="p">)</span>
+
+        <span class="c1"># 4. 精确分割</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sam_model</span><span class="o">.</span><span class="n">segment</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">target</span><span class="o">.</span><span class="n">bbox</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;bbox&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">bbox</span><span class="p">,</span>
+            <span class="s1">&#39;mask&#39;</span><span class="p">:</span> <span class="n">mask</span><span class="p">,</span>
+            <span class="s1">&#39;confidence&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">confidence</span><span class="p">,</span>
+            <span class="s1">&#39;attributes&#39;</span><span class="p">:</span> <span class="n">target</span><span class="o">.</span><span class="n">attributes</span>
+        <span class="p">}</span>
+
+<span class="c1">## 21.3 自然语言导航（VLN）</span>
+
+<span class="c1">### 21.3.1 语言指令到路径规划</span>
+
+<span class="n">自然语言导航</span><span class="err">（</span><span class="n">Vision</span><span class="o">-</span><span class="ow">and</span><span class="o">-</span><span class="n">Language</span> <span class="n">Navigation</span><span class="err">）</span><span class="n">使机器人能够理解和执行复杂的导航指令</span><span class="err">，</span><span class="n">如</span><span class="s2">&quot;走到厨房，绕过餐桌，在冰箱前停下&quot;</span><span class="err">：</span>
+
+<span class="err">```</span><span class="n">python</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">VLNNavigator</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;vln_navigator&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 语言编码器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">language_encoder</span> <span class="o">=</span> <span class="n">BertModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;bert-base-chinese&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 视觉编码器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vision_encoder</span> <span class="o">=</span> <span class="n">ResNetEncoder</span><span class="p">()</span>
+
+        <span class="c1"># 跨模态融合网络</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cross_modal_attention</span> <span class="o">=</span> <span class="n">CrossModalTransformer</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="o">=</span><span class="mi">768</span><span class="p">,</span>
+            <span class="n">n_heads</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+            <span class="n">n_layers</span><span class="o">=</span><span class="mi">6</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 动作预测头</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_predictor</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="mi">512</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">512</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>  <span class="c1"># 前进/后退/左转/右转/停止/扫描</span>
+        <span class="p">)</span>
+
+        <span class="c1"># ROS2 接口</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nav_goal_pub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span>
+            <span class="n">NavigateToPose</span><span class="p">,</span> <span class="s1">&#39;/navigate_to_pose&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">instruction_sub</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_subscription</span><span class="p">(</span>
+            <span class="n">String</span><span class="p">,</span> <span class="s1">&#39;/navigation_instruction&#39;</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_instruction</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;处理导航指令&quot;&quot;&quot;</span>
+        <span class="n">instruction</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">data</span>
+
+        <span class="c1"># 1. 指令解析与分解</span>
+        <span class="n">sub_goals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decompose_instruction</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="c1"># 2. 执行导航序列</span>
+        <span class="k">for</span> <span class="n">sub_goal</span> <span class="ow">in</span> <span class="n">sub_goals</span><span class="p">:</span>
+            <span class="c1"># 获取当前观测</span>
+            <span class="n">current_view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_observation</span><span class="p">()</span>
+
+            <span class="c1"># 预测下一步动作</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_action</span><span class="p">(</span><span class="n">sub_goal</span><span class="p">,</span> <span class="n">current_view</span><span class="p">)</span>
+
+            <span class="c1"># 执行动作</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute_navigation_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+            <span class="c1"># 检查是否到达子目标</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_subgoal_reached</span><span class="p">(</span><span class="n">sub_goal</span><span class="p">,</span> <span class="n">current_view</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reached subgoal: </span><span class="si">{</span><span class="n">sub_goal</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">decompose_instruction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;将复杂指令分解为子目标&quot;&quot;&quot;</span>
+        <span class="c1"># 使用 LLM 或规则分解</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        将以下导航指令分解为简单的子步骤：</span>
+<span class="s2">        指令：</span><span class="si">{</span><span class="n">instruction</span><span class="si">}</span>
+
+<span class="s2">        输出格式：</span>
+
+<span class="s2">        1. 第一步动作</span>
+<span class="s2">        2. 第二步动作</span>
+<span class="s2">        ...</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="n">sub_goals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm_decompose</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">sub_goals</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">observation</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;基于指令和观测预测动作&quot;&quot;&quot;</span>
+        <span class="c1"># 编码语言指令</span>
+        <span class="n">inst_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tokenizer</span><span class="p">(</span><span class="n">instruction</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s1">&#39;pt&#39;</span><span class="p">)</span>
+        <span class="n">inst_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">language_encoder</span><span class="p">(</span><span class="o">**</span><span class="n">inst_tokens</span><span class="p">)</span><span class="o">.</span><span class="n">last_hidden_state</span>
+
+        <span class="c1"># 编码视觉观测</span>
+        <span class="n">vis_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vision_encoder</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+
+        <span class="c1"># 跨模态注意力</span>
+        <span class="n">fused_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cross_modal_attention</span><span class="p">(</span>
+            <span class="n">inst_features</span><span class="p">,</span> <span class="n">vis_features</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 预测动作</span>
+        <span class="n">action_logits</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_predictor</span><span class="p">(</span><span class="n">fused_features</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">action_logits</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">action</span>
+</code></pre></div>
+
+<h3 id="2132">21.3.2 空间语言理解</h3>
+<p>理解空间关系词汇并映射到机器人坐标系：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SpatialLanguageGrounder</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spatial_relations</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;前面&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="s1">&#39;后面&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span>
+            <span class="s1">&#39;左边&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span>
+            <span class="s1">&#39;右边&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">),</span>
+            <span class="s1">&#39;旁边&#39;</span><span class="p">:</span> <span class="s1">&#39;proximity&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;之间&#39;</span><span class="p">:</span> <span class="s1">&#39;between&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;附近&#39;</span><span class="p">:</span> <span class="s1">&#39;near&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;远离&#39;</span><span class="p">:</span> <span class="s1">&#39;far_from&#39;</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">ground_spatial_expression</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expression</span><span class="p">,</span> <span class="n">scene_objects</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        将空间表达接地到具体位置</span>
+<span class="sd">        例如：&quot;桌子和椅子之间的位置&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 解析空间关系</span>
+        <span class="n">relation</span><span class="p">,</span> <span class="n">anchors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parse_spatial_relation</span><span class="p">(</span><span class="n">expression</span><span class="p">)</span>
+
+        <span class="c1"># 找到锚点物体</span>
+        <span class="n">anchor_objects</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">anchor</span> <span class="ow">in</span> <span class="n">anchors</span><span class="p">:</span>
+            <span class="n">obj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_object_by_description</span><span class="p">(</span><span class="n">anchor</span><span class="p">,</span> <span class="n">scene_objects</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">obj</span><span class="p">:</span>
+                <span class="n">anchor_objects</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+
+        <span class="c1"># 计算目标位置</span>
+        <span class="k">if</span> <span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;between&#39;</span><span class="p">:</span>
+            <span class="n">target_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_between_position</span><span class="p">(</span><span class="n">anchor_objects</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">relation</span> <span class="o">==</span> <span class="s1">&#39;near&#39;</span><span class="p">:</span>
+            <span class="n">target_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_near_position</span><span class="p">(</span><span class="n">anchor_objects</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 相对方向</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">spatial_relations</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>
+            <span class="n">target_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_relative_position</span><span class="p">(</span>
+                <span class="n">anchor_objects</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">direction</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">target_pos</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_between_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">objects</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;计算两个物体之间的位置&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">objects</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">pos1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">objects</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+        <span class="n">pos2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">objects</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">objects</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">])</span>
+
+        <span class="c1"># 中点位置</span>
+        <span class="n">midpoint</span> <span class="o">=</span> <span class="p">(</span><span class="n">pos1</span> <span class="o">+</span> <span class="n">pos2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+        <span class="c1"># 考虑碰撞，稍作偏移</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_collision_free_offset</span><span class="p">(</span><span class="n">midpoint</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">midpoint</span> <span class="o">+</span> <span class="n">offset</span>
+</code></pre></div>
+
+<h3 id="2133">21.3.3 歧义消解与主动询问</h3>
+<p>处理指令中的歧义并通过对话澄清：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AmbiguityResolver</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dialogue_manager</span> <span class="o">=</span> <span class="n">DialogueManager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_tracker</span> <span class="o">=</span> <span class="n">ContextTracker</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">resolve_ambiguous_reference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">scene</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;解决指称歧义&quot;&quot;&quot;</span>
+        <span class="c1"># 提取指称词</span>
+        <span class="n">references</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_references</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="n">ambiguous_refs</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ref</span> <span class="ow">in</span> <span class="n">references</span><span class="p">:</span>
+            <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_candidates</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">scene</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># 未找到匹配</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;我没有看到</span><span class="si">{</span><span class="n">ref</span><span class="si">}</span><span class="s2">，您能详细描述一下吗？&quot;</span>
+                <span class="n">clarification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_for_clarification</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+                <span class="c1"># 重新搜索</span>
+                <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_candidates</span><span class="p">(</span><span class="n">clarification</span><span class="p">,</span> <span class="n">scene</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># 多个候选</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_disambiguation_question</span><span class="p">(</span>
+                    <span class="n">ref</span><span class="p">,</span> <span class="n">candidates</span>
+                <span class="p">)</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ask_for_clarification</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+                <span class="n">candidates</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_by_answer</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">answer</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">context_tracker</span><span class="o">.</span><span class="n">add_resolution</span><span class="p">(</span><span class="n">ref</span><span class="p">,</span> <span class="n">candidates</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">context_tracker</span><span class="o">.</span><span class="n">get_resolved_instruction</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_disambiguation_question</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">candidates</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;生成消歧问题&quot;&quot;&quot;</span>
+        <span class="c1"># 找出区分特征</span>
+        <span class="n">distinguishing_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_distinguishing_features</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s1">&#39;color&#39;</span> <span class="ow">in</span> <span class="n">distinguishing_features</span><span class="p">:</span>
+            <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">color</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;您指的是哪个颜色的</span><span class="si">{</span><span class="n">reference</span><span class="si">}</span><span class="s2">？可选：</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">elif</span> <span class="s1">&#39;location&#39;</span> <span class="ow">in</span> <span class="n">distinguishing_features</span><span class="p">:</span>
+            <span class="n">locations</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">describe_location</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">]</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;您指的是哪个</span><span class="si">{</span><span class="n">reference</span><span class="si">}</span><span class="s2">？</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">locations</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 使用索引</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;我看到</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span><span class="si">}</span><span class="s2">个</span><span class="si">{</span><span class="n">reference</span><span class="si">}</span><span class="s2">，您指的是第几个？&quot;</span>
+</code></pre></div>
+
+<h2 id="214-code-as-policies">21.4 Code as Policies 实现</h2>
+<h3 id="2141">21.4.1 代码生成框架</h3>
+<p>Code as Policies 方法让 LLM 直接生成可执行的机器人控制代码：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CodeAsPolicies</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">llm</span> <span class="o">=</span> <span class="n">GPT4Interface</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">code_validator</span> <span class="o">=</span> <span class="n">CodeValidator</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sandbox_executor</span> <span class="o">=</span> <span class="n">SandboxExecutor</span><span class="p">()</span>
+
+        <span class="c1"># 定义机器人 API</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot_api</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        # 可用的机器人控制函数</span>
+<span class="s2">        def move_to(x: float, y: float, theta: float = 0.0):</span>
+<span class="s2">            &#39;&#39;&#39;移动到指定位置&#39;&#39;&#39;</span>
+
+<span class="s2">        def pick_object(obj_name: str, grasp_type: str = &#39;top&#39;):</span>
+<span class="s2">            &#39;&#39;&#39;抓取指定物体&#39;&#39;&#39;</span>
+
+<span class="s2">        def place_object(location: str):</span>
+<span class="s2">            &#39;&#39;&#39;放置物体到指定位置&#39;&#39;&#39;</span>
+
+<span class="s2">        def get_object_position(obj_name: str) -&gt; Tuple[float, float, float]:</span>
+<span class="s2">            &#39;&#39;&#39;获取物体位置&#39;&#39;&#39;</span>
+
+<span class="s2">        def detect_objects() -&gt; List[str]:</span>
+<span class="s2">            &#39;&#39;&#39;检测当前可见物体&#39;&#39;&#39;</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task_description</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">scene_context</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;生成任务执行策略代码&quot;&quot;&quot;</span>
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        任务：</span><span class="si">{</span><span class="n">task_description</span><span class="si">}</span>
+
+<span class="s2">        场景信息：</span>
+<span class="s2">        </span><span class="si">{</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">scene_context</span><span class="p">,</span><span class="w"> </span><span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="si">}</span>
+
+<span class="s2">        使用以下 API 生成 Python 代码完成任务：</span>
+<span class="s2">        </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">robot_api</span><span class="si">}</span>
+
+<span class="s2">        要求：</span>
+
+<span class="s2">        1. 添加必要的错误处理</span>
+<span class="s2">        2. 在关键步骤添加日志</span>
+<span class="s2">        3. 考虑执行失败的恢复策略</span>
+
+<span class="s2">        生成的代码：</span>
+
+<span class="s2">```python</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+<span class="c1"># LLM 生成代码</span>
+<span class="n">generated_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+<span class="c1"># 代码验证</span>
+<span class="n">validation_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">code_validator</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span><span class="n">generated_code</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="ow">not</span> <span class="n">validation_result</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+    <span class="c1"># 基于错误信息重新生成</span>
+    <span class="n">retry_prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    上次生成的代码有以下问题：</span>
+<span class="s2">    </span><span class="si">{</span><span class="n">validation_result</span><span class="o">.</span><span class="n">errors</span><span class="si">}</span>
+
+<span class="s2">    请修正并重新生成：</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+    <span class="n">generated_code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">retry_prompt</span><span class="p">)</span>
+
+<span class="k">return</span> <span class="n">generated_code</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">30.0</span><span class="p">):</span>
+<span class="sd">&quot;&quot;&quot;在沙盒环境中执行生成的代码&quot;&quot;&quot;</span>
+<span class="c1"># 注入运行时环境</span>
+<span class="n">runtime_env</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;move_to&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot_move_to</span><span class="p">,</span>
+    <span class="s1">&#39;pick_object&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot_pick</span><span class="p">,</span>
+    <span class="s1">&#39;place_object&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot_place</span><span class="p">,</span>
+    <span class="s1">&#39;get_object_position&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_pos</span><span class="p">,</span>
+    <span class="s1">&#39;detect_objects&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_objects</span><span class="p">,</span>
+    <span class="s1">&#39;np&#39;</span><span class="p">:</span> <span class="n">np</span><span class="p">,</span>
+    <span class="s1">&#39;math&#39;</span><span class="p">:</span> <span class="n">math</span>
+<span class="p">}</span>
+
+<span class="c1"># 沙盒执行</span>
+<span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sandbox_executor</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+    <span class="n">code</span><span class="p">,</span>
+    <span class="nb">globals</span><span class="o">=</span><span class="n">runtime_env</span><span class="p">,</span>
+    <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span>
+<span class="p">)</span>
+
+<span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+
+<h3 id="2142">21.4.2 安全执行与验证</h3>
+<p>确保生成的代码安全可靠：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SafetyValidator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">forbidden_modules</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;os&#39;</span><span class="p">,</span> <span class="s1">&#39;subprocess&#39;</span><span class="p">,</span> <span class="s1">&#39;eval&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">,</span> <span class="s1">&#39;__import__&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">workspace_limits</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+            <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="mf">5.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">),</span>
+            <span class="s1">&#39;z&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity_limits</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;linear&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>  <span class="c1"># m/s</span>
+            <span class="s1">&#39;angular&#39;</span><span class="p">:</span> <span class="mf">1.0</span>  <span class="c1"># rad/s</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ValidationResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;静态代码分析&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">ValidationResult</span><span class="p">()</span>
+
+        <span class="c1"># AST 分析</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">tree</span> <span class="o">=</span> <span class="n">ast</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">SyntaxError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;语法错误: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="c1"># 检查危险操作</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">ast</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">tree</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Import</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">alias</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">names</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">alias</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">forbidden_modules</span><span class="p">:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;禁止导入模块: </span><span class="si">{</span><span class="n">alias</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Call</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="p">,</span> <span class="n">ast</span><span class="o">.</span><span class="n">Name</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;eval&#39;</span><span class="p">,</span> <span class="s1">&#39;exec&#39;</span><span class="p">]:</span>
+                        <span class="n">result</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;禁止使用函数: </span><span class="si">{</span><span class="n">node</span><span class="o">.</span><span class="n">func</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 模拟执行验证</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">is_valid</span><span class="p">:</span>
+            <span class="n">sim_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulate_execution</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">sim_result</span><span class="o">.</span><span class="n">is_safe</span><span class="p">:</span>
+                <span class="n">result</span><span class="o">.</span><span class="n">add_error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;模拟执行失败: </span><span class="si">{</span><span class="n">sim_result</span><span class="o">.</span><span class="n">reason</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_runtime_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">params</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;运行时动作验证&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;move_to&#39;</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+
+            <span class="c1"># 检查工作空间限制</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace_limits</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace_limits</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">workspace_limits</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">workspace_limits</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># 检查速度限制</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;velocity&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity_limits</span><span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">]:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">elif</span> <span class="n">action_type</span> <span class="o">==</span> <span class="s1">&#39;pick_object&#39;</span><span class="p">:</span>
+            <span class="c1"># 检查抓取力度</span>
+            <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;force&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">50.0</span><span class="p">:</span>  <span class="c1"># N</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+</code></pre></div>
+
+<h3 id="2143">21.4.3 实时代码生成与修正</h3>
+<p>支持基于执行反馈的动态代码调整：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AdaptiveCodeGenerator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execution_history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learned_patterns</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_with_feedback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">max_attempts</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;带反馈循环的代码生成&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_attempts</span><span class="p">):</span>
+            <span class="c1"># 生成初始代码</span>
+            <span class="k">if</span> <span class="n">attempt</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_initial_code</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 基于失败原因重新生成</span>
+                <span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">regenerate_code</span><span class="p">(</span>
+                    <span class="n">task</span><span class="p">,</span> 
+                    <span class="bp">self</span><span class="o">.</span><span class="n">execution_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+
+            <span class="c1"># 执行代码</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_with_monitoring</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">execution_history</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+                <span class="s1">&#39;result&#39;</span><span class="p">:</span> <span class="n">result</span><span class="p">,</span>
+                <span class="s1">&#39;task&#39;</span><span class="p">:</span> <span class="n">task</span>
+            <span class="p">})</span>
+
+            <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">:</span>
+                <span class="c1"># 成功，学习模式</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">learn_from_success</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">code</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">code</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 失败，分析原因</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analyze_failure</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to complete task after </span><span class="si">{</span><span class="n">max_attempts</span><span class="si">}</span><span class="s2"> attempts&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">regenerate_code</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">last_execution</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;基于执行反馈重新生成代码&quot;&quot;&quot;</span>
+        <span class="n">error_analysis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_error</span><span class="p">(</span><span class="n">last_execution</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">error</span><span class="p">)</span>
+
+        <span class="n">prompt</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">        任务：</span><span class="si">{</span><span class="n">task</span><span class="si">}</span>
+
+<span class="s2">        上次执行失败：</span>
+<span class="s2">        代码：</span><span class="si">{</span><span class="n">last_execution</span><span class="p">[</span><span class="s1">&#39;code&#39;</span><span class="p">]</span><span class="si">}</span>
+<span class="s2">        错误：</span><span class="si">{</span><span class="n">last_execution</span><span class="p">[</span><span class="s1">&#39;result&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">error</span><span class="si">}</span>
+
+<span class="s2">        错误分析：</span><span class="si">{</span><span class="n">error_analysis</span><span class="si">}</span>
+
+<span class="s2">        请生成修正后的代码，避免相同错误：</span>
+<span class="s2">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">llm</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">learn_from_success</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">code</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;从成功执行中学习模式&quot;&quot;&quot;</span>
+        <span class="c1"># 提取代码模式</span>
+        <span class="n">pattern</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_pattern</span><span class="p">(</span><span class="n">code</span><span class="p">)</span>
+
+        <span class="c1"># 关联任务类型</span>
+        <span class="n">task_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">classify_task</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">task_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">learned_patterns</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">learned_patterns</span><span class="p">[</span><span class="n">task_type</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">learned_patterns</span><span class="p">[</span><span class="n">task_type</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;pattern&#39;</span><span class="p">:</span> <span class="n">pattern</span><span class="p">,</span>
+            <span class="s1">&#39;code&#39;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span>
+            <span class="s1">&#39;success_rate&#39;</span><span class="p">:</span> <span class="mf">1.0</span>
+        <span class="p">})</span>
+</code></pre></div>
+
+<h2 id="215-google-palm-e">21.5 产业案例研究：Google PaLM-E 具身机器人</h2>
+<h3 id="2151">21.5.1 系统架构</h3>
+<p>Google 的 PaLM-E（Pathways Language Model Embodied）是一个 5620 亿参数的多模态模型，专门为机器人控制设计：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">┌────────────────────────────────────────────────┐</span>
+<span class="err">│</span><span class="w">                  </span><span class="n">PaLM</span><span class="o">-</span><span class="n">E</span><span class="w"> </span><span class="n">Architecture</span><span class="w">           </span><span class="err">│</span>
+<span class="err">├────────────────────────────────────────────────┤</span>
+<span class="err">│</span><span class="w">                                                </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">┌──────────────────────────────────────────┐</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">         </span><span class="n">Vision</span><span class="w"> </span><span class="n">Encoder</span><span class="w"> </span><span class="p">(</span><span class="n">ViT</span><span class="o">-</span><span class="mi">22</span><span class="n">B</span><span class="p">)</span><span class="w">         </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="mi">4</span><span class="n">K</span><span class="w"> </span><span class="n">resolution</span><span class="w"> </span><span class="n">support</span><span class="w">                </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Multi</span><span class="o">-</span><span class="n">view</span><span class="w"> </span><span class="n">fusion</span><span class="w">                    </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Temporal</span><span class="w"> </span><span class="n">encoding</span><span class="w">                    </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">└─────────────────┬────────────────────────┘</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                    </span><span class="err">│</span><span class="w">                           </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">┌─────────────────▼────────────────────────┐</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">      </span><span class="n">Language</span><span class="w"> </span><span class="n">Model</span><span class="w"> </span><span class="p">(</span><span class="n">PaLM</span><span class="o">-</span><span class="mi">540</span><span class="n">B</span><span class="p">)</span><span class="w">          </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Instruction</span><span class="w"> </span><span class="n">following</span><span class="w">                </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Chain</span><span class="o">-</span><span class="n">of</span><span class="o">-</span><span class="n">thought</span><span class="w"> </span><span class="n">reasoning</span><span class="w">           </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Multi</span><span class="o">-</span><span class="n">task</span><span class="w"> </span><span class="n">learning</span><span class="w">                  </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">└─────────────────┬────────────────────────┘</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                    </span><span class="err">│</span><span class="w">                           </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">┌─────────────────▼────────────────────────┐</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">       </span><span class="n">Robot</span><span class="w"> </span><span class="n">Control</span><span class="w"> </span><span class="n">Decoder</span><span class="w">              </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Action</span><span class="w"> </span><span class="n">tokenization</span><span class="w">                  </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Continuous</span><span class="w"> </span><span class="n">control</span><span class="w">                   </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="n">Safety</span><span class="w"> </span><span class="n">constraints</span><span class="w">                   </span><span class="err">│</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">  </span><span class="err">└──────────────────────────────────────────┘</span><span class="w"> </span><span class="err">│</span>
+<span class="err">│</span><span class="w">                                                </span><span class="err">│</span>
+<span class="err">└────────────────────────────────────────────────┘</span>
+</code></pre></div>
+
+<h3 id="2152">21.5.2 关键创新点</h3>
+<ol>
+<li><strong>多模态 Token 化</strong>：统一图像、文本、传感器数据的表示</li>
+<li><strong>任务通用性</strong>：单一模型处理导航、操作、问答等多种任务</li>
+<li><strong>零样本泛化</strong>：在新环境中无需微调即可工作</li>
+<li><strong>长程规划</strong>：支持复杂多步骤任务的规划与执行</li>
+</ol>
+<h3 id="2153">21.5.3 实际部署经验</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PaLMERobotController</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">PaLMEModel</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s1">&#39;palm-e-562b&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot_interface</span> <span class="o">=</span> <span class="n">RobotInterface</span><span class="p">()</span>
+
+        <span class="c1"># 性能优化配置</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;inference_batch_size&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s1">&#39;max_sequence_length&#39;</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span>
+            <span class="s1">&#39;vision_resolution&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span><span class="p">),</span>
+            <span class="s1">&#39;control_frequency&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>  <span class="c1"># Hz</span>
+            <span class="s1">&#39;planning_horizon&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>   <span class="c1"># steps</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_multimodal_input</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">sensor_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;处理多模态输入&quot;&quot;&quot;</span>
+        <span class="c1"># 图像编码</span>
+        <span class="n">vision_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">encode_images</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+        <span class="c1"># 传感器数据编码</span>
+        <span class="n">sensor_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_sensors</span><span class="p">(</span><span class="n">sensor_data</span><span class="p">)</span>
+
+        <span class="c1"># 指令编码</span>
+        <span class="n">text_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">tokenize</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="c1"># 多模态融合</span>
+        <span class="n">input_sequence</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span>
+            <span class="n">text_tokens</span><span class="p">,</span>
+            <span class="n">vision_tokens</span><span class="p">,</span>
+            <span class="n">sensor_tokens</span>
+        <span class="p">],</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">input_sequence</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_robot_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">scene</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;生成机器人执行计划&quot;&quot;&quot;</span>
+        <span class="c1"># 多模态输入处理</span>
+        <span class="n">input_seq</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_multimodal_input</span><span class="p">(</span>
+            <span class="n">instruction</span><span class="p">,</span>
+            <span class="n">scene</span><span class="p">[</span><span class="s1">&#39;images&#39;</span><span class="p">],</span>
+            <span class="n">scene</span><span class="p">[</span><span class="s1">&#39;sensors&#39;</span><span class="p">]</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 模型推理</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+            <span class="n">output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+                <span class="n">input_seq</span><span class="p">,</span>
+                <span class="n">max_length</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="p">[</span><span class="s1">&#39;max_sequence_length&#39;</span><span class="p">],</span>
+                <span class="n">temperature</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span>
+                <span class="n">top_p</span><span class="o">=</span><span class="mf">0.9</span>
+            <span class="p">)</span>
+
+        <span class="c1"># 解码动作序列</span>
+        <span class="n">action_sequence</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">decode_actions</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">action_sequence</span>
+</code></pre></div>
+
+<h3 id="2154">21.5.4 性能指标</h3>
+<ul>
+<li><strong>任务成功率</strong>：移动操作任务 87%，复杂装配任务 73%</li>
+<li><strong>推理延迟</strong>：平均 120ms/决策（使用 TPU v4）</li>
+<li><strong>泛化能力</strong>：在未见过的厨房环境中成功率 &gt;80%</li>
+<li><strong>错误恢复</strong>：自主错误检测和恢复率 65%</li>
+</ul>
+<h2 id="216-rt-2">21.6 高级话题：RT-2 与多模态大模型</h2>
+<h3 id="2161-rt-2">21.6.1 RT-2 架构创新</h3>
+<p>Robotics Transformer 2 (RT-2) 将视觉-语言模型直接用于机器人控制：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RT2Model</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    RT-2: Vision-Language-Action Model</span>
+<span class="sd">    将 VLM 的输出空间扩展到包含机器人动作</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 基础 VLM (PaLI-X 或 PaLM-E)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span> <span class="o">=</span> <span class="n">load_pretrained_vlm</span><span class="p">(</span><span class="s1">&#39;pali-x-55b&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 动作 tokenizer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_tokenizer</span> <span class="o">=</span> <span class="n">ActionTokenizer</span><span class="p">(</span>
+            <span class="n">num_bins</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span>  <span class="c1"># 离散化精度</span>
+            <span class="n">action_dim</span><span class="o">=</span><span class="mi">7</span>   <span class="c1"># 机器人自由度</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 扩展词表以包含动作 token</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extended_vocab</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span><span class="o">.</span><span class="n">vocab</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_tokenizer</span><span class="o">.</span><span class="n">vocab</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">images</span><span class="p">,</span> <span class="n">instruction</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        输入：图像序列 + 语言指令</span>
+<span class="sd">        输出：机器人动作序列</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 视觉编码</span>
+        <span class="n">visual_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span><span class="o">.</span><span class="n">encode_images</span><span class="p">(</span><span class="n">images</span><span class="p">)</span>
+
+        <span class="c1"># 语言编码</span>
+        <span class="n">text_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span><span class="o">.</span><span class="n">encode_text</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="c1"># 跨模态注意力</span>
+        <span class="n">fused_features</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span><span class="o">.</span><span class="n">cross_attention</span><span class="p">(</span>
+            <span class="n">visual_features</span><span class="p">,</span> <span class="n">text_features</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 生成动作 token</span>
+        <span class="n">action_tokens</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vlm_backbone</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span>
+            <span class="n">fused_features</span><span class="p">,</span>
+            <span class="n">max_new_tokens</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>  <span class="c1"># 最多10个动作</span>
+            <span class="n">vocab</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extended_vocab</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 解码为连续动作</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_tokenizer</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">action_tokens</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">actions</span>
+</code></pre></div>
+
+<h3 id="2162">21.6.2 训练策略</h3>
+<p>RT-2 采用多阶段训练策略：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RT2Training</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stages</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s1">&#39;vision_language_pretraining&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;robot_data_finetuning&#39;</span><span class="p">,</span> 
+            <span class="s1">&#39;co_finetuning&#39;</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stage1_vl_pretraining</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;第一阶段：视觉-语言预训练&quot;&quot;&quot;</span>
+        <span class="c1"># 使用大规模互联网数据</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">dataset</span><span class="p">:</span>
+            <span class="n">images</span><span class="p">,</span> <span class="n">captions</span> <span class="o">=</span> <span class="n">batch</span>
+
+            <span class="c1"># 标准 VLM 训练目标</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">compute_captioning_loss</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">captions</span><span class="p">)</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+            <span class="c1"># 梯度累积</span>
+            <span class="k">if</span> <span class="n">step</span> <span class="o">%</span> <span class="n">accumulation_steps</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+                <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stage2_robot_finetuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">robot_dataset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;第二阶段：机器人数据微调&quot;&quot;&quot;</span>
+        <span class="c1"># 冻结部分层</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">freeze_backbone_layers</span><span class="p">(</span><span class="n">keep_top_n</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">episode</span> <span class="ow">in</span> <span class="n">robot_dataset</span><span class="p">:</span>
+            <span class="n">observations</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s1">&#39;observations&#39;</span><span class="p">]</span>
+            <span class="n">instructions</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s1">&#39;instructions&#39;</span><span class="p">]</span>
+            <span class="n">actions</span> <span class="o">=</span> <span class="n">episode</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">]</span>
+
+            <span class="c1"># 动作预测损失</span>
+            <span class="n">pred_actions</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">observations</span><span class="p">,</span> <span class="n">instructions</span><span class="p">)</span>
+            <span class="n">action_loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">mse_loss</span><span class="p">(</span><span class="n">pred_actions</span><span class="p">,</span> <span class="n">actions</span><span class="p">)</span>
+
+            <span class="c1"># 辅助任务：场景理解</span>
+            <span class="n">scene_desc</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">describe_scene</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span>
+            <span class="n">desc_loss</span> <span class="o">=</span> <span class="n">compute_description_loss</span><span class="p">(</span><span class="n">scene_desc</span><span class="p">,</span> <span class="n">episode</span><span class="p">[</span><span class="s1">&#39;scene_labels&#39;</span><span class="p">])</span>
+
+            <span class="n">total_loss</span> <span class="o">=</span> <span class="n">action_loss</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">desc_loss</span>
+            <span class="n">total_loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">stage3_co_finetuning</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">mixed_dataset</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;第三阶段：混合微调&quot;&quot;&quot;</span>
+        <span class="c1"># 同时使用互联网数据和机器人数据</span>
+        <span class="k">for</span> <span class="n">batch</span> <span class="ow">in</span> <span class="n">mixed_dataset</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;internet&#39;</span><span class="p">:</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_vl_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># robot data</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_robot_loss</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">batch</span><span class="p">)</span>
+
+            <span class="c1"># 动态权重平衡</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">balance_losses</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">batch</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">])</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="2163">21.6.3 部署优化技术</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RT2Deployment</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">quantization_config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;weight_bits&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s1">&#39;activation_bits&#39;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s1">&#39;kv_cache_bits&#39;</span><span class="p">:</span> <span class="mi">4</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">optimize_for_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;边缘设备优化&quot;&quot;&quot;</span>
+        <span class="c1"># 1. 模型量化</span>
+        <span class="n">quantized_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">quantization</span><span class="o">.</span><span class="n">quantize_dynamic</span><span class="p">(</span>
+            <span class="n">model</span><span class="p">,</span>
+            <span class="p">{</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">,</span> <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">},</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">qint8</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 2. 知识蒸馏到小模型</span>
+        <span class="n">student_model</span> <span class="o">=</span> <span class="n">RT2StudentModel</span><span class="p">(</span><span class="n">hidden_size</span><span class="o">=</span><span class="mi">768</span><span class="p">)</span>  <span class="c1"># 原模型的 1/10</span>
+        <span class="n">student_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distill_knowledge</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">student_model</span><span class="p">)</span>
+
+        <span class="c1"># 3. 模型剪枝</span>
+        <span class="n">pruned_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">structured_pruning</span><span class="p">(</span>
+            <span class="n">student_model</span><span class="p">,</span>
+            <span class="n">pruning_ratio</span><span class="o">=</span><span class="mf">0.3</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 4. 编译优化</span>
+        <span class="n">compiled_model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="n">pruned_model</span><span class="p">,</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;reduce-overhead&#39;</span><span class="p">,</span>
+            <span class="n">backend</span><span class="o">=</span><span class="s1">&#39;inductor&#39;</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">compiled_model</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">streaming_inference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">instruction</span><span class="p">,</span> <span class="n">image_stream</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;流式推理优化&quot;&quot;&quot;</span>
+        <span class="n">action_buffer</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">image_stream</span><span class="p">:</span>
+            <span class="c1"># 增量处理</span>
+            <span class="n">features</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">encode_image_incremental</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+            <span class="c1"># 预测下一个动作</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict_next_action</span><span class="p">(</span>
+                <span class="n">instruction</span><span class="p">,</span>
+                <span class="n">features</span><span class="p">,</span>
+                <span class="n">history</span><span class="o">=</span><span class="n">action_buffer</span><span class="p">[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>  <span class="c1"># 使用最近10个动作作为上下文</span>
+            <span class="p">)</span>
+
+            <span class="n">action_buffer</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+            <span class="c1"># 并行执行和推理</span>
+            <span class="k">yield</span> <span class="n">action</span>
+</code></pre></div>
+
+<h3 id="2164">21.6.4 最新研究方向</h3>
+<ol>
+<li><strong>思维链推理（Chain-of-Thought）</strong>：让机器人解释其决策过程</li>
+<li><strong>少样本学习</strong>：通过少量演示快速适应新任务</li>
+<li><strong>多机器人协作</strong>：LLM 协调多个机器人执行复杂任务</li>
+<li><strong>持续学习</strong>：从人类反馈中不断改进</li>
+</ol>
+<p>关键论文推荐：</p>
+<ul>
+<li>"RT-2: Vision-Language-Action Models for Robotics" (Google DeepMind, 2023)</li>
+<li>"PaLM-E: An Embodied Multimodal Language Model" (Google, 2023)</li>
+<li>"Code as Policies: Language Model Programs for Embodied Control" (Google, 2022)</li>
+</ul>
+<h2 id="217-gotchas">21.7 常见陷阱与错误（Gotchas）</h2>
+<h3 id="2171-llm">21.7.1 LLM 幻觉问题</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">HallucinationMitigation</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;LLM 幻觉缓解策略&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fact_checker</span> <span class="o">=</span> <span class="n">FactChecker</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">confidence_threshold</span> <span class="o">=</span> <span class="mf">0.8</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_llm_output</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">llm_response</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;验证 LLM 输出的真实性&quot;&quot;&quot;</span>
+        <span class="c1"># 1. 检查物理可行性</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_physical_feasibility</span><span class="p">(</span><span class="n">llm_response</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;违反物理约束&quot;</span>
+
+        <span class="c1"># 2. 检查环境一致性</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_environmental_consistency</span><span class="p">(</span><span class="n">llm_response</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;与环境状态不一致&quot;</span>
+
+        <span class="c1"># 3. 检查动作序列合理性</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_action_sequence_validity</span><span class="p">(</span><span class="n">llm_response</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;动作序列不合理&quot;</span>
+
+        <span class="k">return</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;验证通过&quot;</span>
+</code></pre></div>
+
+<h3 id="2172">21.7.2 延迟与实时性权衡</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LatencyOptimization</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;延迟优化策略&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="n">maxsize</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span> <span class="o">=</span> <span class="n">ActionPredictor</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">reduce_inference_latency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">instruction</span><span class="p">):</span>
+        <span class="c1"># 1. 查询缓存</span>
+        <span class="k">if</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">instruction</span><span class="p">]</span>
+
+        <span class="c1"># 2. 预测性执行</span>
+        <span class="n">predicted_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predictor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="c1"># 3. 异步 LLM 调用</span>
+        <span class="n">future</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">async_llm_call</span><span class="p">(</span><span class="n">instruction</span><span class="p">)</span>
+
+        <span class="c1"># 4. 使用预测结果，同时等待 LLM</span>
+        <span class="k">return</span> <span class="n">predicted_action</span><span class="p">,</span> <span class="n">future</span>
+</code></pre></div>
+
+<h3 id="2173">21.7.3 安全性考虑</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SafetyMonitor</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;安全监控系统&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safety_rules</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_safety_rules</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span> <span class="o">=</span> <span class="n">EmergencyStop</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">monitor_execution</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action_stream</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">action_stream</span><span class="p">:</span>
+            <span class="c1"># 1. 预检查</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">pre_check_action</span><span class="p">(</span><span class="n">action</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">emergency_stop</span><span class="o">.</span><span class="n">trigger</span><span class="p">()</span>
+                <span class="k">raise</span> <span class="n">SafetyViolation</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsafe action: </span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="c1"># 2. 执行监控</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">monitor_action_execution</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+            <span class="c1"># 3. 后验证</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">post_validate_state</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rollback_action</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="218">21.8 最佳实践检查清单</h2>
+<h3 id="_1">系统设计审查要点</h3>
+<ul>
+<li>[ ] <strong>模型选择</strong></li>
+<li>选择适合任务复杂度的 LLM 规模</li>
+<li>考虑部署环境的计算资源限制</li>
+<li>
+<p>评估模型的多语言支持能力</p>
+</li>
+<li>
+<p>[ ] <strong>安全机制</strong></p>
+</li>
+<li>实现多层安全验证</li>
+<li>设置物理和逻辑约束</li>
+<li>
+<p>配置紧急停止机制</p>
+</li>
+<li>
+<p>[ ] <strong>性能优化</strong></p>
+</li>
+<li>使用模型量化和剪枝</li>
+<li>实现智能缓存策略</li>
+<li>
+<p>采用流式处理架构</p>
+</li>
+<li>
+<p>[ ] <strong>鲁棒性设计</strong></p>
+</li>
+<li>处理 LLM 输出不确定性</li>
+<li>实现失败恢复机制</li>
+<li>
+<p>设计降级运行模式</p>
+</li>
+<li>
+<p>[ ] <strong>人机交互</strong></p>
+</li>
+<li>提供自然语言反馈</li>
+<li>支持多轮对话澄清</li>
+<li>
+<p>记录决策过程用于解释</p>
+</li>
+<li>
+<p>[ ] <strong>数据管理</strong></p>
+</li>
+<li>收集执行数据用于改进</li>
+<li>实现隐私保护机制</li>
+<li>
+<p>建立数据版本控制</p>
+</li>
+<li>
+<p>[ ] <strong>测试验证</strong></p>
+</li>
+<li>仿真环境充分测试</li>
+<li>边界条件测试</li>
+<li>
+<p>长期运行稳定性测试</p>
+</li>
+<li>
+<p>[ ] <strong>监控运维</strong></p>
+</li>
+<li>实时性能监控</li>
+<li>异常检测和报警</li>
+<li>日志记录和分析</li>
+</ul>
+<h2 id="219">21.9 本章小结</h2>
+<p>本章深入探讨了大语言模型与 ROS2 机器人系统的深度集成。我们学习了：</p>
+<ol>
+<li>
+<p><strong>LLM 任务规划</strong>：如何构建基于 LLM 的高层任务规划器，包括 Prompt 工程、上下文管理和行为树集成</p>
+</li>
+<li>
+<p><strong>多模态感知</strong>：VLM 模型在场景理解、视觉问答和 Grounding 任务中的应用</p>
+</li>
+<li>
+<p><strong>自然语言导航</strong>：实现从语言指令到机器人导航的完整管道，包括空间语言理解和歧义消解</p>
+</li>
+<li>
+<p><strong>Code as Policies</strong>：让 LLM 直接生成可执行代码，实现灵活的任务执行策略</p>
+</li>
+<li>
+<p><strong>产业实践</strong>：通过 Google PaLM-E 案例了解大规模部署经验</p>
+</li>
+<li>
+<p><strong>前沿技术</strong>：RT-2 等最新模型架构和训练策略</p>
+</li>
+</ol>
+<p>关键要点：</p>
+<ul>
+<li>LLM 为机器人带来了前所未有的语言理解和推理能力</li>
+<li>多模态融合是实现真正智能机器人的关键</li>
+<li>安全性和可靠性仍是部署的主要挑战</li>
+<li>边缘计算优化对实时应用至关重要</li>
+</ul>
+<h2 id="2110">21.10 练习题</h2>
+<h3 id="_2">基础题</h3>
+<p><strong>练习 21.1</strong>：设计一个简单的 LLM 任务规划器，能够将"清理桌子"这样的高层指令分解为具体的机器人动作序列。</p>
+<details>
+<summary>提示</summary>
+<p>考虑以下步骤：</p>
+<ol>
+<li>扫描桌面识别物体</li>
+<li>分类物体（垃圾/非垃圾）</li>
+<li>规划抓取顺序</li>
+<li>执行清理动作</li>
+</ol>
+</details>
+<details>
+<summary>答案</summary>
+<p>任务分解流程：</p>
+<ol>
+<li>调用视觉系统扫描桌面</li>
+<li>使用 VLM 识别每个物体类别</li>
+<li>查询 LLM 判断物体归属</li>
+<li>生成抓取和放置序列</li>
+<li>优化路径减少移动距离</li>
+<li>逐个执行并验证结果</li>
+</ol>
+</details>
+<p><strong>练习 21.2</strong>：实现一个基础的视觉 Grounding 系统，能够定位"红色杯子左边的书"这样的指称表达。</p>
+<details>
+<summary>提示</summary>
+<p>分解任务：</p>
+<ol>
+<li>检测所有物体</li>
+<li>识别红色杯子</li>
+<li>确定"左边"的空间关系</li>
+<li>找到符合条件的书</li>
+</ol>
+</details>
+<details>
+<summary>答案</summary>
+<p>实现步骤：</p>
+<ol>
+<li>使用目标检测获取所有边界框</li>
+<li>通过颜色分割找到红色杯子</li>
+<li>计算杯子左侧区域</li>
+<li>在该区域内搜索书本</li>
+<li>返回最近的书的位置</li>
+</ol>
+</details>
+<p><strong>练习 21.3</strong>：设计一个 Code as Policies 的安全验证器，防止生成的代码执行危险操作。</p>
+<details>
+<summary>提示</summary>
+<p>需要检查：</p>
+<ul>
+<li>工作空间边界</li>
+<li>速度限制</li>
+<li>碰撞风险</li>
+<li>系统调用</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>验证器包含：</p>
+<ol>
+<li>AST 分析禁止危险函数</li>
+<li>参数范围检查</li>
+<li>模拟执行验证轨迹</li>
+<li>运行时监控和中断</li>
+<li>沙盒环境隔离</li>
+</ol>
+</details>
+<h3 id="_3">挑战题</h3>
+<p><strong>练习 21.4</strong>：设计一个多轮对话系统，能够通过询问用户来消除指令中的歧义。</p>
+<details>
+<summary>提示</summary>
+<p>考虑：</p>
+<ul>
+<li>歧义类型分类</li>
+<li>问题生成策略</li>
+<li>答案整合机制</li>
+<li>上下文追踪</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>系统设计：</p>
+<ol>
+<li>使用 NER 提取实体</li>
+<li>场景匹配找出歧义</li>
+<li>生成区分性问题</li>
+<li>解析用户回答更新理解</li>
+<li>维护对话状态机</li>
+<li>确认理解后执行</li>
+</ol>
+</details>
+<p><strong>练习 21.5</strong>：实现一个 LLM 驱动的错误恢复系统，当任务执行失败时能自动分析原因并尝试新策略。</p>
+<details>
+<summary>提示</summary>
+<p>关键组件：</p>
+<ul>
+<li>失败检测</li>
+<li>原因分析</li>
+<li>策略生成</li>
+<li>验证执行</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>恢复流程：</p>
+<ol>
+<li>监控执行状态检测异常</li>
+<li>收集失败上下文信息</li>
+<li>调用 LLM 分析失败原因</li>
+<li>生成备选执行策略</li>
+<li>评估策略可行性</li>
+<li>选择最优策略重试</li>
+<li>记录经验用于学习</li>
+</ol>
+</details>
+<p><strong>练习 21.6</strong>：设计一个分布式 LLM 机器人系统，多个机器人可以协作完成复杂任务。</p>
+<details>
+<summary>提示</summary>
+<p>需要解决：</p>
+<ul>
+<li>任务分配</li>
+<li>通信协议</li>
+<li>同步机制</li>
+<li>冲突解决</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>架构设计：</p>
+<ol>
+<li>中央 LLM 分解总任务</li>
+<li>评估机器人能力匹配</li>
+<li>分配子任务给各机器人</li>
+<li>建立 P2P 通信通道</li>
+<li>实时同步执行状态</li>
+<li>动态重分配处理失败</li>
+<li>合并结果完成总任务</li>
+</ol>
+</details>
+<p><strong>练习 21.7</strong>：实现一个自适应 Prompt 优化系统，根据执行效果自动改进 Prompt 模板。</p>
+<details>
+<summary>提示</summary>
+<p>优化维度：</p>
+<ul>
+<li>指令清晰度</li>
+<li>上下文完整性</li>
+<li>输出格式规范</li>
+<li>约束条件表达</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>优化策略：</p>
+<ol>
+<li>记录 Prompt-结果对</li>
+<li>评估执行成功率</li>
+<li>识别失败模式</li>
+<li>使用元 Prompt 生成改进</li>
+<li>A/B 测试新模板</li>
+<li>贝叶斯优化超参数</li>
+<li>持续迭代改进</li>
+</ol>
+</details>
+<p><strong>练习 21.8</strong>：设计一个边缘-云协同的 LLM 机器人架构，平衡实时性和计算能力。</p>
+<details>
+<summary>提示</summary>
+<p>考虑：</p>
+<ul>
+<li>任务划分策略</li>
+<li>网络延迟处理</li>
+<li>缓存机制</li>
+<li>降级方案</li>
+</ul>
+</details>
+<details>
+<summary>答案</summary>
+<p>协同架构：</p>
+<ol>
+<li>边缘部署轻量模型</li>
+<li>云端运行大模型</li>
+<li>简单任务本地处理</li>
+<li>复杂推理云端执行</li>
+<li>预测性缓存常用结果</li>
+<li>网络中断时降级运行</li>
+<li>异步更新同步状态</li>
+</ol>
+</details>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter20.html" class="nav-link prev">← 第 20 章：机器人强化学习</a><a href="chapter22.html" class="nav-link next">第 22 章：神经网络运动控制 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

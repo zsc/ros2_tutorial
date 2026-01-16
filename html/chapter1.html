@@ -1,0 +1,1817 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 1 章：ROS1 核心概念回顾</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="1-ros1">第 1 章：ROS1 核心概念回顾</h1>
+<h2 id="_1">开篇段落</h2>
+<p>ROS1（Robot Operating System）作为机器人领域最成功的中间件框架，从 2007 年诞生至今已经成为学术界和工业界的事实标准。尽管 ROS2 带来了诸多架构改进，但理解 ROS1 的核心设计理念对于掌握 ROS2 至关重要。本章将系统回顾 ROS1 的核心架构，重点分析其设计决策背后的权衡，为后续章节理解 ROS2 的改进动机奠定基础。</p>
+<p><strong>学习目标</strong>：</p>
+<ul>
+<li>深入理解 ROS1 的 Master-Slave 架构及其设计哲学</li>
+<li>掌握三种通信机制（话题、服务、动作）的实现原理与适用场景</li>
+<li>理解 Catkin 构建系统的工作原理与包管理机制</li>
+<li>分析参数服务器的设计模式与动态重配置能力</li>
+<li>通过 PR2 机器人案例理解大规模机器人系统的架构设计</li>
+</ul>
+<h2 id="master">Master 节点与分布式架构</h2>
+<h3 id="ros-master">ROS Master 的角色定位</h3>
+<p>ROS1 采用了中心化的 Master 节点设计，这是整个系统的神经中枢。Master 节点本质上是一个轻量级的名称服务器（Name Server），提供以下核心功能：</p>
+<ol>
+<li><strong>名称注册与解析</strong>：维护节点名称到网络地址的映射表</li>
+<li><strong>服务发现</strong>：帮助节点之间建立点对点连接</li>
+<li><strong>参数服务器</strong>：存储和分发全局配置参数</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c">     </span><span class="nb">+----------------+</span>
+<span class="c">     |   ROS Master   |</span>
+<span class="c">     |   (roscore)    |</span>
+<span class="c">     </span><span class="nb">+-------+--------+</span>
+<span class="c">             |</span>
+<span class="c">     </span><span class="nb">+-------+--------+</span>
+<span class="c">     |  Name Service  |</span>
+<span class="c">     |   Registry     |</span>
+<span class="c">     </span><span class="nb">+----------------+</span>
+<span class="c">            / | \</span>
+<span class="c">           /  |  \</span>
+<span class="c">    </span><span class="nb">+-----+</span><span class="c">   |   </span><span class="nb">+-----+</span>
+<span class="c">    |Node1|   |   |Node2|</span>
+<span class="c">    </span><span class="nb">+-----+</span><span class="c">   |   </span><span class="nb">+-----+</span>
+<span class="c">              |</span>
+<span class="c">          </span><span class="nb">+-------+</span>
+<span class="c">          |Node3  |</span>
+<span class="c">          </span><span class="nb">+-------+</span>
+</code></pre></div>
+
+<h3 id="xmlrpc">XMLRPC 协议与通信流程</h3>
+<p>ROS1 使用 XMLRPC 作为节点与 Master 之间的通信协议。这个选择反映了 2007 年的技术栈现状：XMLRPC 简单、跨语言支持好，但也带来了性能开销。</p>
+<p><strong>节点启动与注册流程</strong>：</p>
+<ol>
+<li>节点启动时，通过 <code>ROS_MASTER_URI</code> 环境变量找到 Master</li>
+<li>使用 XMLRPC 调用 <code>registerNode()</code> 方法注册自己</li>
+<li>Master 返回注册确认，节点获得唯一 ID</li>
+<li>节点注册自己提供的话题/服务到 Master</li>
+</ol>
+<p><strong>话题订阅建立流程</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">发布者节点</span><span class="w">                </span><span class="n">Master</span><span class="w">                </span><span class="err">订阅者节点</span>
+<span class="w">    </span><span class="o">|</span><span class="w">                      </span><span class="o">|</span><span class="w">                      </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|--</span><span class="n">registerPublisher</span><span class="o">--&gt;|</span><span class="w">                      </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">                      </span><span class="o">|&lt;--</span><span class="n">registerSubscriber</span><span class="o">-|</span>
+
+<span class="w">    </span><span class="o">|</span><span class="w">                      </span><span class="o">|&lt;--</span><span class="n">registerSubscriber</span><span class="o">-|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">                      </span><span class="o">|</span><span class="w">                      </span><span class="o">|</span>
+<span class="w">    </span><span class="o">|</span><span class="w">                      </span><span class="o">|--</span><span class="n">publisherUpdate</span><span class="o">----&gt;|</span>
+<span class="w">    </span><span class="o">|&lt;-----------------</span><span class="n">requestTopic</span><span class="o">---------------|</span>
+<span class="w">    </span><span class="o">|------------------</span><span class="n">TCPROS连接</span><span class="o">----------------&gt;|</span>
+</code></pre></div>
+
+<p>这个过程的关键点：</p>
+<ul>
+<li>Master 只负责"牵线搭桥"，不参与数据传输</li>
+<li>节点之间建立直接的 TCPROS 连接传输数据</li>
+<li>这种设计降低了 Master 负载，但也引入了单点故障</li>
+</ul>
+<h3 id="_2">分布式系统设计考量</h3>
+<p>ROS1 的分布式架构设计有几个重要特征：</p>
+<ol>
+<li><strong>松耦合通信</strong>
+节点之间通过话题进行松耦合通信，发布者和订阅者互不知晓对方存在。这种设计带来了极大的灵活性，但也引入了一些挑战：</li>
+</ol>
+<ul>
+<li><strong>优势</strong>：节点可以独立开发、测试和部署</li>
+<li><strong>挑战</strong>：难以保证消息的可靠传输和时序一致性</li>
+</ul>
+<ol start="2">
+<li><strong>点对点数据传输</strong>
+数据不经过 Master 直接在节点间传输，这个设计决策影响深远：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>带宽利用率 = 数据量 / (数据量 + 协议开销)
+
+对于 ROS1：
+
+- 小消息（&lt;1KB）：带宽利用率约 60-70%
+- 大消息（&gt;100KB）：带宽利用率可达 95%+
+</code></pre></div>
+
+<ol start="3">
+<li><strong>网络透明性</strong>
+ROS1 的网络透明性设计让分布式部署变得简单，但也带来了安全隐患：</li>
+</ol>
+<ul>
+<li>任何知道 Master URI 的节点都可以加入网络</li>
+<li>没有内置的认证和加密机制</li>
+<li>适合可信网络环境，不适合公网部署</li>
+</ul>
+<h3 id="_3">多机通信配置</h3>
+<p>在多机环境下部署 ROS1 需要careful配置：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 机器 A (Master 所在)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_MASTER_URI</span><span class="o">=</span>http://192.168.1.100:11311
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_IP</span><span class="o">=</span><span class="m">192</span>.168.1.100
+
+<span class="c1"># 机器 B (Worker 节点)</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_MASTER_URI</span><span class="o">=</span>http://192.168.1.100:11311
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_IP</span><span class="o">=</span><span class="m">192</span>.168.1.101
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_HOSTNAME</span><span class="o">=</span>worker-robot<span class="w">  </span><span class="c1"># 可选，用于 DNS 解析</span>
+</code></pre></div>
+
+<p><strong>网络配置检查清单</strong>：</p>
+<ol>
+<li>所有机器时钟同步（NTP）</li>
+<li>防火墙开放必要端口（11311 for Master, 随机端口 for nodes）</li>
+<li>主机名解析正确（/etc/hosts 或 DNS）</li>
+<li>网络延迟 &lt; 10ms（局域网环境）</li>
+</ol>
+<h2 id="_4">话题、服务、动作通信机制</h2>
+<h3 id="topics-">话题（Topics）：发布-订阅模式</h3>
+<p>话题是 ROS1 中最基础的通信机制，实现了经典的发布-订阅模式。</p>
+<p><strong>消息传输特征</strong>：</p>
+<ul>
+<li><strong>异步通信</strong>：发布者不等待订阅者接收</li>
+<li><strong>多对多通信</strong>：多个发布者和订阅者可以共享同一话题</li>
+<li><strong>无应答机制</strong>：发布者不知道消息是否被接收</li>
+</ul>
+<p><strong>TCPROS 协议细节</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">[4字节长度][消息序列化数据]</span>
+<span class="w">           </span><span class="na">|</span>
+<span class="w">           </span><span class="na">+-- 使用 ROS 消息序列化格式</span>
+<span class="w">               </span><span class="na">(类似 Protocol Buffers 但更简单)</span>
+</code></pre></div>
+
+<p><strong>性能特征分析</strong>：</p>
+<ul>
+<li>延迟：局域网 &lt; 1ms，取决于消息大小和网络状况</li>
+<li>吞吐量：可达网络带宽的 80-90%（大消息）</li>
+<li>CPU 开销：序列化/反序列化约占 5-15%（取决于消息复杂度）</li>
+</ul>
+<p><strong>队列管理策略</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 发布者队列大小设置</span>
+<span class="n">pub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s1">&#39;topic&#39;</span><span class="p">,</span> <span class="n">MessageType</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="c1"># queue_size 影响：</span>
+<span class="c1"># - 太小：高频发布时可能丢失消息</span>
+<span class="c1"># - 太大：占用内存，增加延迟</span>
+</code></pre></div>
+
+<h3 id="services-">服务（Services）：请求-响应模式</h3>
+<p>服务提供同步的请求-响应通信模式，适合需要确定性结果的场景。</p>
+<p><strong>服务调用流程</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">客户端</span><span class="w">                    </span><span class="err">服务器</span>
+<span class="w">  </span><span class="o">|</span><span class="w">                         </span><span class="o">|</span>
+<span class="w">  </span><span class="o">|---</span><span class="err">请求（</span><span class="n">Request</span><span class="err">）</span><span class="o">------&gt;|</span>
+<span class="w">  </span><span class="o">|</span><span class="w">                         </span><span class="o">|</span><span class="err">处理请求</span>
+<span class="w">  </span><span class="o">|&lt;---</span><span class="err">响应（</span><span class="n">Response</span><span class="err">）</span><span class="o">------|</span>
+
+<span class="w">  </span><span class="o">|&lt;---</span><span class="err">响应（</span><span class="n">Response</span><span class="err">）</span><span class="o">------|</span>
+<span class="w">  </span><span class="o">|</span><span class="w">                         </span><span class="o">|</span>
+</code></pre></div>
+
+<p><strong>关键设计决策</strong>：</p>
+<ol>
+<li><strong>同步阻塞</strong>：客户端等待服务器响应</li>
+<li><strong>单次连接</strong>：每次调用建立新的 TCP 连接</li>
+<li><strong>无状态</strong>：服务器不维护客户端状态</li>
+</ol>
+<p><strong>性能考量</strong>：</p>
+<div class="codehilite"><pre><span></span><code>服务调用开销 = 连接建立时间 + 请求传输 + 处理时间 + 响应传输
+
+典型场景：
+
+- 小请求（&lt;1KB）：总开销 5-10ms
+- 大请求（&gt;10KB）：主要受网络带宽限制
+</code></pre></div>
+
+<p><strong>持久连接优化</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用持久连接减少开销</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rospy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServiceProxy</span>
+<span class="n">service</span> <span class="o">=</span> <span class="n">ServiceProxy</span><span class="p">(</span><span class="s1">&#39;service_name&#39;</span><span class="p">,</span> <span class="n">ServiceType</span><span class="p">,</span> <span class="n">persistent</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># 重用 TCP 连接，减少握手开销</span>
+</code></pre></div>
+
+<h3 id="actions">动作（Actions）：带反馈的异步任务</h3>
+<p>动作是 ROS1 中最复杂的通信机制，适合长时间运行的任务。</p>
+<p><strong>动作协议的五个组成部分</strong>：</p>
+<ol>
+<li><strong>Goal</strong>：任务目标</li>
+<li><strong>Result</strong>：最终结果</li>
+<li><strong>Feedback</strong>：执行过程中的反馈</li>
+<li><strong>Status</strong>：任务状态（pending/active/succeeded/aborted）</li>
+<li><strong>Cancel</strong>：取消机制</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>动作内部实现 = 5个话题 + 状态机管理
+           /action_name/goal        (目标发送)
+           /action_name/cancel      (取消请求)
+           /action_name/status      (状态更新)
+           /action_name/feedback    (进度反馈)
+           /action_name/result      (最终结果)
+</code></pre></div>
+
+<p><strong>状态机转换图</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="w">        </span><span class="o">[</span><span class="n">PENDING</span><span class="o">]</span>
+<span class="w">            </span><span class="o">|</span>
+<span class="w">            </span><span class="n">v</span>
+<span class="w">        </span><span class="o">[</span><span class="n">ACTIVE</span><span class="o">]</span><span class="w"> </span><span class="o">&lt;</span><span class="c1">---&gt; [PREEMPTING]</span>
+<span class="w">         </span><span class="o">/</span><span class="w">    </span><span class="err">\</span><span class="w">              </span><span class="o">|</span>
+<span class="w">        </span><span class="n">v</span><span class="w">      </span><span class="n">v</span><span class="w">             </span><span class="n">v</span>
+<span class="w">   </span><span class="o">[</span><span class="n">SUCCEEDED</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">ABORTED</span><span class="o">]</span><span class="w"> </span><span class="o">[</span><span class="n">PREEMPTED</span><span class="o">]</span>
+</code></pre></div>
+
+<p><strong>设计模式应用场景</strong>：</p>
+<ul>
+<li><strong>导航任务</strong>：发送目标点，接收路径执行反馈</li>
+<li><strong>机械臂控制</strong>：执行轨迹，监控执行进度</li>
+<li><strong>感知处理</strong>：长时间的图像处理或 SLAM 建图</li>
+</ul>
+<h2 id="catkin">Catkin 构建系统</h2>
+<h3 id="catkin_1">Catkin 的设计理念</h3>
+<p>Catkin 是 ROS1 的构建系统，基于 CMake 扩展而来，解决了大规模机器人软件的构建挑战。</p>
+<p><strong>核心设计目标</strong>：</p>
+<ol>
+<li><strong>包管理</strong>：支持细粒度的功能包组织</li>
+<li><strong>依赖管理</strong>：自动处理包之间的依赖关系</li>
+<li><strong>并行构建</strong>：充分利用多核 CPU</li>
+<li><strong>跨平台</strong>：支持 Linux、macOS（部分）</li>
+</ol>
+<h3 id="_5">工作空间结构</h3>
+<div class="codehilite"><pre><span></span><code><span class="nx">catkin_ws</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">src</span><span class="o">/</span><span class="w">               </span><span class="err">#</span><span class="w"> </span><span class="nx">源代码目录</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">package1</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">CMakeLists</span><span class="p">.</span><span class="nx">txt</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="kn">package</span><span class="p">.</span><span class="nx">xml</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">src</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">include</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">package2</span><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">build</span><span class="o">/</span><span class="w">             </span><span class="err">#</span><span class="w"> </span><span class="nx">构建中间文件</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="p">[</span><span class="nx">CMake</span><span class="w"> </span><span class="nx">生成的构建文件</span><span class="p">]</span>
+<span class="err">├──</span><span class="w"> </span><span class="nx">devel</span><span class="o">/</span><span class="w">             </span><span class="err">#</span><span class="w"> </span><span class="nx">开发空间</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">setup</span><span class="p">.</span><span class="nx">bash</span><span class="w">     </span><span class="err">#</span><span class="w"> </span><span class="nx">环境配置脚本</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="nx">lib</span><span class="o">/</span><span class="w">           </span><span class="err">#</span><span class="w"> </span><span class="nx">编译的库文件</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="nx">share</span><span class="o">/</span><span class="w">         </span><span class="err">#</span><span class="w"> </span><span class="nx">资源文件</span>
+<span class="err">└──</span><span class="w"> </span><span class="nx">install</span><span class="o">/</span><span class="w">           </span><span class="err">#</span><span class="w"> </span><span class="nx">安装空间</span><span class="err">（</span><span class="nx">可选</span><span class="err">）</span>
+<span class="w">    </span><span class="err">└──</span><span class="w"> </span><span class="p">[</span><span class="nx">发布版本文件</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="cmakeliststxt">CMakeLists.txt 深度解析</h3>
+<div class="codehilite"><pre><span></span><code><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.0.2</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">my_robot_package</span><span class="p">)</span>
+
+<span class="c"># 查找 catkin 和依赖包</span>
+<span class="nb">find_package</span><span class="p">(</span><span class="s">catkin</span><span class="w"> </span><span class="s">REQUIRED</span><span class="w"> </span><span class="s">COMPONENTS</span>
+<span class="w">  </span><span class="s">roscpp</span>
+<span class="w">  </span><span class="s">std_msgs</span>
+<span class="w">  </span><span class="s">sensor_msgs</span>
+<span class="w">  </span><span class="s">geometry_msgs</span>
+<span class="p">)</span>
+
+<span class="c"># 声明 catkin 包</span>
+<span class="nb">catkin_package</span><span class="p">(</span>
+<span class="w">  </span><span class="s">INCLUDE_DIRS</span><span class="w"> </span><span class="s">include</span>
+<span class="w">  </span><span class="s">LIBRARIES</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">  </span><span class="s">CATKIN_DEPENDS</span><span class="w"> </span><span class="s">roscpp</span><span class="w"> </span><span class="s">std_msgs</span>
+<span class="w">  </span><span class="s">DEPENDS</span><span class="w"> </span><span class="s">eigen3</span><span class="w">  </span><span class="c"># 系统依赖</span>
+<span class="p">)</span>
+
+<span class="c"># 包含目录</span>
+<span class="nb">include_directories</span><span class="p">(</span>
+<span class="w">  </span><span class="s">include</span>
+<span class="w">  </span><span class="o">${</span><span class="nv">catkin_INCLUDE_DIRS</span><span class="o">}</span>
+<span class="p">)</span>
+
+<span class="c"># 编译库</span>
+<span class="nb">add_library</span><span class="p">(</span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">  </span><span class="s">src/algorithm.cpp</span>
+<span class="p">)</span>
+
+<span class="c"># 编译可执行文件</span>
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">robot_node</span><span class="w"> </span><span class="s">src/main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">robot_node</span>
+<span class="w">  </span><span class="o">${</span><span class="nv">PROJECT_NAME</span><span class="o">}</span>
+<span class="w">  </span><span class="o">${</span><span class="nv">catkin_LIBRARIES</span><span class="o">}</span>
+<span class="p">)</span>
+
+<span class="c"># 安装规则</span>
+<span class="nb">install</span><span class="p">(</span><span class="s">TARGETS</span><span class="w"> </span><span class="s">robot_node</span>
+<span class="w">  </span><span class="s">RUNTIME</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CATKIN_PACKAGE_BIN_DESTINATION</span><span class="o">}</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h3 id="_6">包依赖管理</h3>
+<p><strong>package.xml 结构</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;package</span><span class="w"> </span><span class="na">format=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;name&gt;</span>my_robot_package<span class="nt">&lt;/name&gt;</span>
+<span class="w">  </span><span class="nt">&lt;version&gt;</span>1.0.0<span class="nt">&lt;/version&gt;</span>
+<span class="w">  </span><span class="nt">&lt;description&gt;</span>机器人控制包<span class="nt">&lt;/description&gt;</span>
+
+<span class="w">  </span><span class="nt">&lt;maintainer</span><span class="w"> </span><span class="na">email=</span><span class="s">&quot;dev@robot.com&quot;</span><span class="nt">&gt;</span>Developer<span class="nt">&lt;/maintainer&gt;</span>
+<span class="w">  </span><span class="nt">&lt;license&gt;</span>MIT<span class="nt">&lt;/license&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- 构建依赖 --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;buildtool_depend&gt;</span>catkin<span class="nt">&lt;/buildtool_depend&gt;</span>
+<span class="w">  </span><span class="nt">&lt;build_depend&gt;</span>roscpp<span class="nt">&lt;/build_depend&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- 运行依赖 --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;exec_depend&gt;</span>roscpp<span class="nt">&lt;/exec_depend&gt;</span>
+<span class="w">  </span><span class="nt">&lt;exec_depend&gt;</span>rospy<span class="nt">&lt;/exec_depend&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- 测试依赖 --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;test_depend&gt;</span>rostest<span class="nt">&lt;/test_depend&gt;</span>
+<span class="nt">&lt;/package&gt;</span>
+</code></pre></div>
+
+<p><strong>依赖解析算法</strong>：</p>
+<ol>
+<li>拓扑排序确定构建顺序</li>
+<li>检测循环依赖</li>
+<li>并行构建无依赖关系的包</li>
+</ol>
+<h3 id="_7">构建优化技巧</h3>
+<p><strong>1. 并行构建加速</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用所有 CPU 核心</span>
+catkin_make<span class="w"> </span>-j<span class="k">$(</span>nproc<span class="k">)</span>
+
+<span class="c1"># 或使用 catkin_tools（推荐）</span>
+catkin<span class="w"> </span>build<span class="w"> </span>--jobs<span class="w"> </span><span class="k">$(</span>nproc<span class="k">)</span>
+</code></pre></div>
+
+<p><strong>2. 增量构建优化</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 只构建修改的包</span>
+catkin<span class="w"> </span>build<span class="w"> </span>--this
+
+<span class="c1"># 构建指定包及其依赖</span>
+catkin<span class="w"> </span>build<span class="w"> </span>package_name<span class="w"> </span>--deps
+</code></pre></div>
+
+<p><strong>3. ccache 加速重复编译</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 安装 ccache</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>ccache
+
+<span class="c1"># 配置 catkin 使用 ccache</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CC</span><span class="o">=</span><span class="s2">&quot;ccache gcc&quot;</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">CXX</span><span class="o">=</span><span class="s2">&quot;ccache g++&quot;</span>
+</code></pre></div>
+
+<h2 id="_8">参数服务器与动态配置</h2>
+<h3 id="_9">参数服务器架构</h3>
+<p>ROS1 的参数服务器是一个中心化的配置存储系统，运行在 Master 节点上。它使用层次化的命名空间存储键值对。</p>
+<p><strong>参数类型支持</strong>：</p>
+<ul>
+<li>基本类型：bool, int, double, string</li>
+<li>复合类型：list, dict（嵌套结构）</li>
+<li>二进制数据：base64 编码的二进制 blob</li>
+</ul>
+<p><strong>命名空间层次结构</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="o">/</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">robot_name</span><span class="w">              </span><span class="err">#</span><span class="w"> </span><span class="err">全局参数</span>
+<span class="err">├──</span><span class="w"> </span><span class="o">/</span><span class="n">navigation</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">max_velocity</span><span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="err">导航模块参数</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">planner</span><span class="o">/</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">algorithm</span><span class="w">       </span><span class="err">#</span><span class="w"> </span><span class="err">规划器配置</span>
+<span class="err">│</span><span class="w">   </span><span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="n">resolution</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="n">controller</span><span class="o">/</span>
+<span class="err">│</span><span class="w">       </span><span class="err">└──</span><span class="w"> </span><span class="n">gains</span><span class="w">           </span><span class="err">#</span><span class="w"> </span><span class="err">控制器参数</span>
+<span class="err">└──</span><span class="w"> </span><span class="o">/</span><span class="n">perception</span><span class="o">/</span>
+<span class="w">    </span><span class="err">├──</span><span class="w"> </span><span class="nb">camera</span><span class="o">/</span>
+<span class="w">    </span><span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="n">fps</span>
+<span class="w">    </span><span class="err">└──</span><span class="w"> </span><span class="n">lidar</span><span class="o">/</span>
+<span class="w">        </span><span class="err">└──</span><span class="w"> </span><span class="k">range</span>
+</code></pre></div>
+
+<h3 id="api">参数操作 API</h3>
+<p><strong>参数读写操作</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Python API</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rospy</span>
+
+<span class="c1"># 读取参数</span>
+<span class="n">max_vel</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;/navigation/max_velocity&#39;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># 带默认值</span>
+<span class="n">params</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;/navigation/&#39;</span><span class="p">)</span>  <span class="c1"># 获取整个命名空间</span>
+
+<span class="c1"># 写入参数</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;/navigation/max_velocity&#39;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span>
+
+<span class="c1"># 删除参数</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">delete_param</span><span class="p">(</span><span class="s1">&#39;/navigation/obsolete_param&#39;</span><span class="p">)</span>
+
+<span class="c1"># 检查参数存在</span>
+<span class="k">if</span> <span class="n">rospy</span><span class="o">.</span><span class="n">has_param</span><span class="p">(</span><span class="s1">&#39;/navigation/max_velocity&#39;</span><span class="p">):</span>
+    <span class="c1"># 参数存在</span>
+    <span class="k">pass</span>
+
+<span class="c1"># C++ API</span>
+<span class="n">ros</span><span class="p">::</span><span class="n">NodeHandle</span> <span class="n">nh</span><span class="p">;</span>
+<span class="n">double</span> <span class="n">max_vel</span><span class="p">;</span>
+<span class="n">nh</span><span class="o">.</span><span class="n">getParam</span><span class="p">(</span><span class="s2">&quot;/navigation/max_velocity&quot;</span><span class="p">,</span> <span class="n">max_vel</span><span class="p">);</span>
+<span class="n">nh</span><span class="o">.</span><span class="n">setParam</span><span class="p">(</span><span class="s2">&quot;/navigation/max_velocity&quot;</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">);</span>
+</code></pre></div>
+
+<p><strong>私有参数与相对命名</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 私有参数（节点命名空间）</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s1">&#39;my_node&#39;</span><span class="p">)</span>
+<span class="c1"># 参数实际路径：/my_node/param_name</span>
+<span class="n">private_param</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;~param_name&#39;</span><span class="p">)</span>
+
+<span class="c1"># 相对参数（当前命名空间）</span>
+<span class="c1"># 如果当前命名空间是 /robot1/</span>
+<span class="n">relative_param</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;sensor/range&#39;</span><span class="p">)</span>
+<span class="c1"># 实际路径：/robot1/sensor/range</span>
+</code></pre></div>
+
+<h3 id="dynamic-reconfigure">动态重配置（Dynamic Reconfigure）</h3>
+<p>动态重配置是 ROS1 的一个强大特性，允许运行时修改参数而无需重启节点。</p>
+<p><strong>配置文件定义（.cfg）</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dynamic_reconfigure.parameter_generator_catkin</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+
+<span class="n">gen</span> <span class="o">=</span> <span class="n">ParameterGenerator</span><span class="p">()</span>
+
+<span class="c1"># 添加参数：名称、类型、级别、描述、默认值、最小值、最大值</span>
+<span class="n">gen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;max_velocity&quot;</span><span class="p">,</span> <span class="n">double_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> 
+        <span class="s2">&quot;Maximum velocity&quot;</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+<span class="n">gen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;enable_obstacle_avoidance&quot;</span><span class="p">,</span> <span class="n">bool_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="s2">&quot;Enable obstacle avoidance&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># 枚举类型</span>
+<span class="n">algorithm_enum</span> <span class="o">=</span> <span class="n">gen</span><span class="o">.</span><span class="n">enum</span><span class="p">([</span>
+    <span class="n">gen</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="s2">&quot;DWA&quot;</span><span class="p">,</span> <span class="n">int_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;Dynamic Window Approach&quot;</span><span class="p">),</span>
+    <span class="n">gen</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="s2">&quot;TEB&quot;</span><span class="p">,</span> <span class="n">int_t</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;Timed Elastic Band&quot;</span><span class="p">),</span>
+    <span class="n">gen</span><span class="o">.</span><span class="n">const</span><span class="p">(</span><span class="s2">&quot;MPC&quot;</span><span class="p">,</span> <span class="n">int_t</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;Model Predictive Control&quot;</span><span class="p">)</span>
+<span class="p">],</span> <span class="s2">&quot;Planning algorithm selection&quot;</span><span class="p">)</span>
+
+<span class="n">gen</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;algorithm&quot;</span><span class="p">,</span> <span class="n">int_t</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> 
+        <span class="s2">&quot;Path planning algorithm&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> 
+        <span class="n">edit_method</span><span class="o">=</span><span class="n">algorithm_enum</span><span class="p">)</span>
+
+<span class="n">exit</span><span class="p">(</span><span class="n">gen</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="s2">&quot;my_package&quot;</span><span class="p">,</span> <span class="s2">&quot;my_node&quot;</span><span class="p">,</span> <span class="s2">&quot;MyConfig&quot;</span><span class="p">))</span>
+</code></pre></div>
+
+<p><strong>节点实现动态重配置</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;dynamic_reconfigure/server.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;my_package/MyConfigConfig.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">MyNode</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">dynamic_reconfigure</span><span class="o">::</span><span class="n">Server</span><span class="o">&lt;</span><span class="n">my_package</span><span class="o">::</span><span class="n">MyConfigConfig</span><span class="o">&gt;</span><span class="w"> </span><span class="n">server_</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">configCallback</span><span class="p">(</span><span class="n">my_package</span><span class="o">::</span><span class="n">MyConfigConfig</span><span class="w"> </span><span class="o">&amp;</span><span class="n">config</span><span class="p">,</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">level</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 更新内部参数</span>
+<span class="w">        </span><span class="n">max_velocity_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">max_velocity</span><span class="p">;</span>
+<span class="w">        </span><span class="n">use_obstacle_avoidance_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">config</span><span class="p">.</span><span class="n">enable_obstacle_avoidance</span><span class="p">;</span>
+
+<span class="w">        </span><span class="c1">// 级别检查（哪些参数改变了）</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">level</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="mh">0x1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 速度参数改变</span>
+<span class="w">            </span><span class="n">updateVelocityController</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">MyNode</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置回调</span>
+<span class="w">        </span><span class="n">server_</span><span class="p">.</span><span class="n">setCallback</span><span class="p">(</span>
+<span class="w">            </span><span class="n">boost</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">MyNode</span><span class="o">::</span><span class="n">configCallback</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">_1</span><span class="p">,</span><span class="w"> </span><span class="n">_2</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="_10">参数服务器性能分析</h3>
+<p><strong>性能特征</strong>：</p>
+<div class="codehilite"><pre><span></span><code>参数读取延迟 = 网络往返时间 + XMLRPC 解析
+             ≈ 1-5ms（局域网）
+
+批量操作优化：
+
+- 单个参数读取：N 次网络往返
+- 命名空间读取：1 次网络往返
+- 推荐：启动时批量读取，缓存在本地
+</code></pre></div>
+
+<p><strong>缓存策略</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ParameterCache</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">namespace</span><span class="p">):</span>
+        <span class="c1"># 启动时批量读取</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="n">namespace</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">namespace</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># 从本地缓存读取</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">default</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 定期刷新缓存</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="willow-garage-pr2">产业案例研究：Willow Garage PR2 机器人系统架构</h2>
+<h3 id="pr2">PR2 系统概述</h3>
+<p>PR2（Personal Robot 2）是 Willow Garage 开发的双臂移动服务机器人，是 ROS1 发展史上的里程碑项目。其系统架构充分展示了 ROS1 在复杂机器人系统中的应用。</p>
+<p><strong>硬件规格</strong>：</p>
+<ul>
+<li>2 个 7 自由度机械臂 + 2 自由度夹爪</li>
+<li>全向移动底盘（4 个驱动轮）</li>
+<li>传感器阵列：激光雷达、立体相机、Kinect、力/力矩传感器</li>
+<li>计算资源：2 个 Xeon 服务器（16 核心），32GB RAM</li>
+</ul>
+<h3 id="_11">软件架构设计</h3>
+<p><strong>节点拓扑结构</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c">                    PR2 ROS 节点架构</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">    |                  高层任务规划                    |</span>
+<span class="c">    |    task_executive    move_base    manipulation  |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">                            |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">    |                   中间件服务                     |</span>
+<span class="c">    |  tf  robot_state  diagnostics  power_management |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">                            |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">    |                  硬件抽象层                       |</span>
+<span class="c">    |   pr2_controller_manager    pr2_ethercat        |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">                            |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+<span class="c">    |                  驱动程序层                       |</span>
+<span class="c">    | motor_drivers  sensor_drivers  camera_drivers   |</span>
+<span class="c">    </span><span class="nb">+------------------------------------------------+</span>
+</code></pre></div>
+
+<p><strong>关键设计决策</strong>：</p>
+<ol>
+<li>
+<p><strong>实时控制回路分离</strong>：
+   - 1kHz 电机控制回路运行在实时内核
+   - 100Hz 运动规划运行在普通用户空间
+   - 通过共享内存传递控制命令</p>
+</li>
+<li>
+<p><strong>传感器数据流水线</strong>：</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>激光雷达 (40Hz) ─┐
+                 ├─&gt; 传感器融合 ─&gt; 八叉树地图 ─&gt; 导航规划
+立体相机 (30Hz) ─┘                    |
+                                     v
+Kinect (30Hz) ────&gt; 点云处理 ─&gt; 物体识别 ─&gt; 抓取规划
+</code></pre></div>
+
+<ol start="3">
+<li><strong>分布式计算架构</strong>：
+   - 主计算机：高层规划、传感器融合
+   - 从计算机：图像处理、点云处理
+   - 实时控制器：电机控制、安全监控</li>
+</ol>
+<h3 id="_12">通信模式选择策略</h3>
+<p>PR2 在不同场景下选择不同的 ROS1 通信机制：</p>
+<p><strong>话题使用场景</strong>：</p>
+<ul>
+<li>传感器数据流（激光、相机、IMU）</li>
+<li>机器人状态发布（关节状态、电池状态）</li>
+<li>可视化数据（RViz 显示）</li>
+</ul>
+<p><strong>服务使用场景</strong>：</p>
+<ul>
+<li>运动学求解（IK 服务）</li>
+<li>抓取规划请求</li>
+<li>系统配置更改</li>
+</ul>
+<p><strong>动作使用场景</strong>：</p>
+<ul>
+<li>机械臂轨迹执行</li>
+<li>导航目标执行</li>
+<li>复杂任务执行（开门、抓取）</li>
+</ul>
+<h3 id="_13">性能优化实践</h3>
+<p><strong>1. 消息传输优化</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 nodelet 减少数据拷贝</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ImageProcessingNodelet</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">nodelet</span><span class="o">::</span><span class="n">Nodelet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 同进程内使用指针传递，避免序列化</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">imageCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">ImageConstPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 零拷贝处理</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><strong>2. 话题分流策略</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 高频数据使用独立话题</span>
+<span class="o">/</span><span class="n">base_scan</span>          <span class="c1"># 40Hz 激光数据</span>
+<span class="o">/</span><span class="n">base_scan_filtered</span> <span class="c1"># 10Hz 滤波数据（导航使用）</span>
+<span class="o">/</span><span class="n">base_scan_marking</span>  <span class="c1"># 5Hz 障碍标记（建图使用）</span>
+</code></pre></div>
+
+<p><strong>3. 参数服务器优化</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 启动时批量加载参数</span>
+<span class="nt">rosparam</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/navigation.yaml</span>
+<span class="w">    </span><span class="nt">ns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/move_base</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">config/manipulation.yaml</span><span class="w">  </span>
+<span class="w">    </span><span class="nt">ns</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/arm_controller</span>
+</code></pre></div>
+
+<h3 id="_14">故障处理与恢复</h3>
+<p>PR2 实现了多层次的故障检测与恢复机制：</p>
+<p><strong>1. 硬件层安全机制</strong>：
+- 急停按钮（硬件中断）
+- 电机过流保护
+- 关节限位检测</p>
+<p><strong>2. 软件层监控</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 诊断聚合器配置</span>
+<span class="n">analyzers</span><span class="p">:</span>
+  <span class="n">motors</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">diagnostic_aggregator</span><span class="o">/</span><span class="n">GenericAnalyzer</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Motors</span>
+    <span class="n">contains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;motor_&#39;</span><span class="p">]</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="mf">5.0</span>
+
+  <span class="n">sensors</span><span class="p">:</span>
+    <span class="nb">type</span><span class="p">:</span> <span class="n">diagnostic_aggregator</span><span class="o">/</span><span class="n">GenericAnalyzer</span>
+    <span class="n">path</span><span class="p">:</span> <span class="n">Sensors</span>
+    <span class="n">contains</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;laser&#39;</span><span class="p">,</span> <span class="s1">&#39;camera&#39;</span><span class="p">,</span> <span class="s1">&#39;imu&#39;</span><span class="p">]</span>
+    <span class="n">timeout</span><span class="p">:</span> <span class="mf">2.0</span>
+</code></pre></div>
+
+<p><strong>3. 系统级恢复策略</strong>：
+- 节点看门狗（自动重启）
+- 降级运行模式（单臂操作）
+- 安全停机程序</p>
+<h3 id="_15">经验教训总结</h3>
+<p>PR2 项目为 ROS2 的设计提供了宝贵经验：</p>
+<ol>
+<li><strong>Master 单点故障</strong>：PR2 在实际部署中多次遇到 Master 崩溃导致全系统失效</li>
+<li><strong>实时性不足</strong>：TCPROS 的不确定延迟影响控制性能</li>
+<li><strong>安全性缺失</strong>：缺乏认证机制，任何节点都可以控制机器人</li>
+<li><strong>资源开销大</strong>：每个节点都是独立进程，内存和 CPU 开销显著</li>
+</ol>
+<h2 id="ros1-master">高级话题：ROS1 分布式系统优化与多 Master 方案</h2>
+<h3 id="_16">分布式系统性能优化</h3>
+<h4 id="_17">网络拓扑优化</h4>
+<p>在大规模机器人系统中，网络拓扑设计直接影响系统性能：</p>
+<p><strong>星型 vs 网状拓扑</strong>：</p>
+<div class="codehilite"><pre><span></span><code>星型拓扑（中心化）：           网状拓扑（分布式）：
+     Master                   Node1 ←→ Node2
+    /   |   \                   ↑  ×  ↓
+Node1 Node2 Node3             Node3 ←→ Node4
+
+延迟：O(1)跳                 延迟：O(log n)跳
+带宽：受中心限制              带宽：多路径均衡
+容错：单点故障                容错：多路径冗余
+</code></pre></div>
+
+<p><strong>优化策略</strong>：</p>
+<ol>
+<li><strong>话题路由优化</strong>：根据数据流量模式调整网络拓扑</li>
+<li><strong>局部性原理</strong>：相关节点部署在同一子网</li>
+<li><strong>带宽预留</strong>：为关键数据流预留网络带宽</li>
+</ol>
+<h4 id="_18">消息传输优化技术</h4>
+<p><strong>1. 消息批处理（Message Batching）</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">BatchedPublisher</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">batch_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Timer</span><span class="w"> </span><span class="n">batch_timer_</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">batchTimerCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">TimerEvent</span><span class="o">&amp;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">batch_</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 打包发送</span>
+<span class="w">            </span><span class="n">custom_msgs</span><span class="o">::</span><span class="n">PointCloudBatch</span><span class="w"> </span><span class="n">msg</span><span class="p">;</span>
+<span class="w">            </span><span class="n">msg</span><span class="p">.</span><span class="n">clouds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">batch_</span><span class="p">;</span>
+<span class="w">            </span><span class="n">batch_pub_</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="n">batch_</span><span class="p">.</span><span class="n">clear</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">addToBatch</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&amp;</span><span class="w"> </span><span class="n">cloud</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">batch_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">batch_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="n">BATCH_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 立即发送</span>
+<span class="w">            </span><span class="n">batchTimerCallback</span><span class="p">(</span><span class="n">ros</span><span class="o">::</span><span class="n">TimerEvent</span><span class="p">());</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><strong>2. 压缩传输</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">rospy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sensor_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompressedImage</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">cv2</span>
+
+<span class="c1"># 发布压缩图像</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">publish_compressed</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="c1"># JPEG 压缩</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">compressed</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imencode</span><span class="p">(</span><span class="s1">&#39;.jpg&#39;</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> 
+                                 <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">IMWRITE_JPEG_QUALITY</span><span class="p">,</span> <span class="mi">80</span><span class="p">])</span>
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">CompressedImage</span><span class="p">()</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">compressed</span><span class="o">.</span><span class="n">tostring</span><span class="p">()</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;jpeg&quot;</span>
+    <span class="n">compressed_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>3. 共享内存传输（同机优化）</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 nodelet 实现零拷贝</span>
+<span class="k">namespace</span><span class="w"> </span><span class="nn">my_package</span><span class="w"> </span><span class="p">{</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ProcessingNodelet</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">nodelet</span><span class="o">::</span><span class="n">Nodelet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onInit</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 订阅和发布使用共享指针</span>
+<span class="w">        </span><span class="n">sub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh_</span><span class="p">.</span><span class="n">subscribe</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="s">&quot;input&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="n">boost</span><span class="o">::</span><span class="n">bind</span><span class="p">(</span><span class="o">&amp;</span><span class="n">ProcessingNodelet</span><span class="o">::</span><span class="n">callback</span><span class="p">,</span><span class="w"> </span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">_1</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">callback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">PointCloud2ConstPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 直接操作指针，无需拷贝</span>
+<span class="w">        </span><span class="n">processCloud</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="master_1">多 Master 架构方案</h3>
+<h4 id="foreign-relay">方案一：Foreign Relay</h4>
+<p>Foreign Relay 是最简单的多 Master 连接方案：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># foreign_relay.py</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">rospy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">std_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">String</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">ForeignRelay</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">foreign_master_uri</span><span class="p">,</span> <span class="n">local_topic</span><span class="p">,</span> <span class="n">foreign_topic</span><span class="p">):</span>
+        <span class="c1"># 连接到外部 Master</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">foreign_master</span> <span class="o">=</span> <span class="n">xmlrpclib</span><span class="o">.</span><span class="n">ServerProxy</span><span class="p">(</span><span class="n">foreign_master_uri</span><span class="p">)</span>
+
+        <span class="c1"># 本地发布者</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_pub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="n">local_topic</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="c1"># 定期拉取外部话题</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">relay_callback</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">relay_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="c1"># 从外部 Master 获取数据</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fetch_foreign_topic</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>优缺点分析</strong>：</p>
+<ul>
+<li>✅ 实现简单，不需要修改 ROS 核心</li>
+<li>✅ 可以选择性中继特定话题</li>
+<li>❌ 增加延迟（额外的序列化/反序列化）</li>
+<li>❌ 需要手动配置每个中继话题</li>
+</ul>
+<h4 id="multimaster-fkie">方案二：Multimaster FKIE</h4>
+<p>Multimaster FKIE 是功能最完整的多 Master 解决方案：</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- multimaster.launch --&gt;</span>
+<span class="nt">&lt;launch&gt;</span>
+<span class="w">  </span><span class="cm">&lt;!-- Master 发现节点 --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;node</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;master_discovery&quot;</span><span class="w"> </span><span class="na">pkg=</span><span class="s">&quot;master_discovery_fkie&quot;</span><span class="w"> </span>
+<span class="w">        </span><span class="na">type=</span><span class="s">&quot;master_discovery&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;mcast_group&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;224.0.0.1&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;mcast_port&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;11511&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;param</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;robot_hosts&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;[robot1, robot2, robot3]&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/node&gt;</span>
+
+<span class="w">  </span><span class="cm">&lt;!-- Master 同步节点 --&gt;</span>
+<span class="w">  </span><span class="nt">&lt;node</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;master_sync&quot;</span><span class="w"> </span><span class="na">pkg=</span><span class="s">&quot;master_sync_fkie&quot;</span><span class="w"> </span>
+<span class="w">        </span><span class="na">type=</span><span class="s">&quot;master_sync&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- 同步规则配置 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;rosparam&gt;</span>
+<span class="w">      </span>sync_topics:<span class="w"> </span>[&#39;/sensor_data&#39;,<span class="w"> </span>&#39;/robot_status&#39;]
+<span class="w">      </span>sync_services:<span class="w"> </span>[&#39;/get_plan&#39;,<span class="w"> </span>&#39;/compute_ik&#39;]
+<span class="w">      </span>ignore_nodes:<span class="w"> </span>[&#39;/rosout&#39;,<span class="w"> </span>&#39;/diagnostic_agg&#39;]
+<span class="w">    </span><span class="nt">&lt;/rosparam&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/node&gt;</span>
+<span class="nt">&lt;/launch&gt;</span>
+</code></pre></div>
+
+<p><strong>架构设计</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c">  机器人1                    机器人2</span>
+<span class="nb">+----------+</span><span class="c">              </span><span class="nb">+----------+</span>
+<span class="c">| Master 1 |←</span><span class="nb">---</span><span class="c">发现</span><span class="nb">---</span><span class="c">→| Master 2 |</span>
+<span class="nb">+----------+</span><span class="c">              </span><span class="nb">+----------+</span>
+<span class="c">     ↑                         ↑</span>
+<span class="c">     |同步                     |同步</span>
+<span class="c">     ↓                         ↓</span>
+<span class="nb">+----------+</span><span class="c">              </span><span class="nb">+----------+</span>
+<span class="c">| 节点组 1  |←</span><span class="nb">---</span><span class="c">数据</span><span class="nb">---</span><span class="c">→| 节点组 2  |</span>
+<span class="nb">+----------+</span><span class="c">              </span><span class="nb">+----------+</span>
+</code></pre></div>
+
+<p><strong>关键特性</strong>：</p>
+<ol>
+<li><strong>自动发现</strong>：使用组播 UDP 自动发现其他 Master</li>
+<li><strong>选择性同步</strong>：可配置同步规则</li>
+<li><strong>冲突解决</strong>：处理命名冲突和时钟同步</li>
+</ol>
+<h4 id="ros1-gateway">方案三：ROS1 Gateway（面向云机器人）</h4>
+<p>针对云机器人场景的网关架构：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ROSGateway</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_master</span> <span class="o">=</span> <span class="s2">&quot;http://localhost:11311&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cloud_endpoint</span> <span class="o">=</span> <span class="s2">&quot;wss://cloud.robot.com/ros&quot;</span>
+
+        <span class="c1"># WebSocket 连接到云端</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ws</span> <span class="o">=</span> <span class="n">websocket</span><span class="o">.</span><span class="n">WebSocketApp</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cloud_endpoint</span><span class="p">,</span>
+            <span class="n">on_message</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_cloud_message</span><span class="p">,</span>
+            <span class="n">on_error</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_error</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 话题过滤器（减少带宽）</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topic_filters</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;/camera/image&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">compress_image</span><span class="p">,</span>
+            <span class="s1">&#39;/laser/scan&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">downsample_scan</span><span class="p">,</span>
+            <span class="s1">&#39;/tf&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_tf</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compress_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="c1"># H.264 编码</span>
+        <span class="k">return</span> <span class="n">encode_h264</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">downsample_scan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="c1"># 降采样激光数据</span>
+        <span class="k">return</span> <span class="n">msg</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>  <span class="c1"># 每隔一个点</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter_tf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="c1"># 只发送关键坐标系</span>
+        <span class="n">key_frames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">,</span> <span class="s1">&#39;odom&#39;</span><span class="p">,</span> <span class="s1">&#39;base_link&#39;</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">tf</span> <span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">msg</span> <span class="k">if</span> <span class="n">tf</span><span class="o">.</span><span class="n">child_frame</span> <span class="ow">in</span> <span class="n">key_frames</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="_19">实时性增强技术</h3>
+<h4 id="rt-preempt">RT-PREEMPT 内核集成</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 安装 RT-PREEMPT 内核</span>
+sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>linux-image-rt-amd64
+
+<span class="c1"># 配置实时优先级</span>
+cat<span class="w"> </span><span class="s">&lt;&lt; EOF &gt; /etc/security/limits.d/ros-rt.conf</span>
+<span class="s">@ros-rt - rtprio 98</span>
+<span class="s">@ros-rt - memlock unlimited</span>
+<span class="s">EOF</span>
+
+<span class="c1"># 将用户添加到实时组</span>
+sudo<span class="w"> </span>usermod<span class="w"> </span>-a<span class="w"> </span>-G<span class="w"> </span>ros-rt<span class="w"> </span><span class="nv">$USER</span>
+</code></pre></div>
+
+<p><strong>实时节点模板</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RealtimeNode</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">sched_param</span><span class="w"> </span><span class="n">param_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">setupRealtimePriority</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置 FIFO 调度策略</span>
+<span class="w">        </span><span class="n">param_</span><span class="p">.</span><span class="n">sched_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">sched_setscheduler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED_FIFO</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param_</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ROS_ERROR</span><span class="p">(</span><span class="s">&quot;Failed to set realtime priority&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 锁定内存，防止换页</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mlockall</span><span class="p">(</span><span class="n">MCL_CURRENT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MCL_FUTURE</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">ROS_ERROR</span><span class="p">(</span><span class="s">&quot;Failed to lock memory&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 预分配内存</span>
+<span class="w">        </span><span class="n">preallocateMemory</span><span class="p">();</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">preallocateMemory</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 预分配所有可能使用的内存</span>
+<span class="w">        </span><span class="n">message_pool_</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="mi">1000</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// 触碰每一页，确保物理内存分配</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">message_pool_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">memset</span><span class="p">(</span><span class="o">&amp;</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">msg</span><span class="p">));</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h4 id="_20">确定性通信保证</h4>
+<p><strong>1. 时间触发通信</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TimeTriggeredPublisher</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Timer</span><span class="w"> </span><span class="n">timer_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">data_ready_</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
+<span class="w">    </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">JointState</span><span class="w"> </span><span class="n">latest_msg_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">TimeTriggeredPublisher</span><span class="p">(</span><span class="n">ros</span><span class="o">::</span><span class="n">NodeHandle</span><span class="o">&amp;</span><span class="w"> </span><span class="n">nh</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 固定周期发布</span>
+<span class="w">        </span><span class="n">timer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh</span><span class="p">.</span><span class="n">createTimer</span><span class="p">(</span>
+<span class="w">            </span><span class="n">ros</span><span class="o">::</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.001</span><span class="p">),</span><span class="w">  </span><span class="c1">// 1kHz</span>
+<span class="w">            </span><span class="o">&amp;</span><span class="n">TimeTriggeredPublisher</span><span class="o">::</span><span class="n">timerCallback</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">timerCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">TimerEvent</span><span class="o">&amp;</span><span class="w"> </span><span class="n">event</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">data_ready_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pub_</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">latest_msg_</span><span class="p">);</span>
+
+<span class="w">            </span><span class="c1">// 监控抖动</span>
+<span class="w">            </span><span class="kt">double</span><span class="w"> </span><span class="n">jitter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">current_real</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">current_expected</span><span class="p">).</span><span class="n">toSec</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">abs</span><span class="p">(</span><span class="n">jitter</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mf">0.0001</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 100us</span>
+<span class="w">                </span><span class="n">ROS_WARN</span><span class="p">(</span><span class="s">&quot;Timer jitter: %.6f&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">jitter</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><strong>2. 优先级队列管理</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PriorityMessageQueue</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">PriorityMessage</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="kt">int</span><span class="w"> </span><span class="n">priority</span><span class="p">;</span>
+<span class="w">        </span><span class="n">T</span><span class="w"> </span><span class="n">message</span><span class="p">;</span>
+<span class="w">        </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="w"> </span><span class="n">timestamp</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">bool</span><span class="w"> </span><span class="k">operator</span><span class="o">&lt;</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">PriorityMessage</span><span class="o">&amp;</span><span class="w"> </span><span class="n">other</span><span class="p">)</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">priority</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">other</span><span class="p">.</span><span class="n">priority</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">priority_queue</span><span class="o">&lt;</span><span class="n">PriorityMessage</span><span class="o">&gt;</span><span class="w"> </span><span class="n">queue_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">mutex_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">push</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">T</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">priority</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">mutex_</span><span class="p">);</span>
+<span class="w">        </span><span class="n">queue_</span><span class="p">.</span><span class="n">push</span><span class="p">({</span><span class="n">priority</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="o">::</span><span class="n">now</span><span class="p">()});</span>
+
+<span class="w">        </span><span class="c1">// 限制队列大小，丢弃低优先级旧消息</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">queue_</span><span class="p">.</span><span class="n">size</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">MAX_QUEUE_SIZE</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">queue_</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="_21">论文导读</h3>
+<p><strong>关键论文推荐</strong>：</p>
+<ol>
+<li>
+<p><strong>"ROS: an open-source Robot Operating System"</strong> (Quigley et al., 2009)
+   - ROS 原始设计理念
+   - 分布式架构决策依据
+   - 早期应用案例</p>
+</li>
+<li>
+<p><strong>"Performance Evaluation of ROS-Based Systems"</strong> (Maruyama et al., 2016)
+   - ROS1 性能基准测试
+   - 瓶颈分析方法
+   - 优化建议</p>
+</li>
+<li>
+<p><strong>"Real-Time ROS Extensions"</strong> (Wei et al., 2016)
+   - RT-PREEMPT 集成经验
+   - 实时性保证机制
+   - 工业应用案例</p>
+</li>
+</ol>
+<p><strong>开源项目推荐</strong>：</p>
+<ul>
+<li><a href="https://github.com/fkie/multimaster_fkie">multimaster_fkie</a>：多 Master 解决方案</li>
+<li><a href="https://github.com/ros/ros_comm">ros_comm</a>：ROS1 核心通信实现</li>
+<li><a href="https://github.com/ros/nodelet_core">nodelet_core</a>：零拷贝通信框架</li>
+</ul>
+<h2 id="_22">本章小结</h2>
+<p>本章系统回顾了 ROS1 的核心架构和关键设计决策。让我们总结本章的关键要点：</p>
+<h3 id="_23">核心概念总结</h3>
+<ol>
+<li>
+<p><strong>Master-Slave 架构</strong>：
+   - Master 作为名称服务器，负责节点发现和连接建立
+   - 节点间直接通信，Master 不参与数据传输
+   - 简化了系统设计，但引入了单点故障风险</p>
+</li>
+<li>
+<p><strong>三种通信模式</strong>：
+   - <strong>话题</strong>：异步发布-订阅，适合数据流传输
+   - <strong>服务</strong>：同步请求-响应，适合命令执行
+   - <strong>动作</strong>：带反馈的异步任务，适合长时间操作</p>
+</li>
+<li>
+<p><strong>关键性能公式</strong>：</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>系统延迟 = 网络延迟 + 序列化时间 + 处理时间
+
+其中：
+
+- 网络延迟 ≈ RTT/2 (局域网 &lt; 1ms)
+- 序列化时间 ≈ 消息大小 / CPU频率 × 复杂度因子
+- 处理时间 = 应用相关
+</code></pre></div>
+
+<ol start="4">
+<li>
+<p><strong>Catkin 构建系统</strong>：
+   - 基于 CMake 的包管理系统
+   - 支持并行构建和依赖管理
+   - 工作空间隔离开发环境</p>
+</li>
+<li>
+<p><strong>参数服务器</strong>：
+   - 中心化配置存储
+   - 支持动态重配置
+   - 层次化命名空间组织</p>
+</li>
+</ol>
+<h3 id="_24">设计权衡分析</h3>
+<p>| 设计决策 | 优势 | 劣势 | ROS2 改进方向 |</p>
+<table>
+<thead>
+<tr>
+<th>设计决策</th>
+<th>优势</th>
+<th>劣势</th>
+<th>ROS2 改进方向</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>中心化 Master</td>
+<td>简单、易理解</td>
+<td>单点故障</td>
+<td>DDS 分布式发现</td>
+</tr>
+<tr>
+<td>XMLRPC 协议</td>
+<td>跨语言支持好</td>
+<td>性能开销大</td>
+<td>DDS-RTPS 二进制协议</td>
+</tr>
+<tr>
+<td>进程隔离</td>
+<td>故障隔离好</td>
+<td>资源开销大</td>
+<td>组件化架构</td>
+</tr>
+<tr>
+<td>TCPROS 传输</td>
+<td>可靠传输</td>
+<td>缺乏 QoS 控制</td>
+<td>DDS QoS 策略</td>
+</tr>
+<tr>
+<td>无安全机制</td>
+<td>部署简单</td>
+<td>安全风险</td>
+<td>SROS2 安全框架</td>
+</tr>
+</tbody>
+</table>
+<h3 id="ros1-ros2">从 ROS1 到 ROS2 的演进动力</h3>
+<p>通过本章的分析，我们可以看到推动 ROS2 诞生的关键因素：</p>
+<ol>
+<li><strong>可靠性需求</strong>：消除 Master 单点故障</li>
+<li><strong>实时性需求</strong>：确定性通信和调度</li>
+<li><strong>安全性需求</strong>：认证、加密、访问控制</li>
+<li><strong>嵌入式支持</strong>：降低资源占用</li>
+<li><strong>产业化需求</strong>：生产环境的稳定性和可维护性</li>
+</ol>
+<h2 id="_25">练习题</h2>
+<h3 id="_26">基础题</h3>
+<p><strong>练习 1.1：Master 故障分析</strong>
+假设一个 ROS1 系统有 10 个节点正在运行，突然 Master 节点崩溃。请分析：
+a) 已建立的话题通信是否会中断？
+b) 新节点能否加入系统？
+c) 参数服务器的数据会发生什么？</p>
+<details>
+<summary>💡 提示</summary>
+<p>考虑 Master 在连接建立前后的不同作用。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p>a) <strong>已建立的话题通信不会立即中断</strong>。因为节点之间已经建立了直接的 TCPROS 连接，数据传输不经过 Master。但是，如果任何一个节点重启或网络中断后，无法重新建立连接。</p>
+<p>b) <strong>新节点无法加入系统</strong>。新节点启动时需要向 Master 注册，如果 Master 不可用，注册会失败，节点无法发现其他节点。</p>
+<p>c) <strong>参数服务器数据完全丢失</strong>。参数服务器运行在 Master 进程中，Master 崩溃意味着所有参数数据丢失。除非节点已经缓存了参数，否则无法获取配置信息。</p>
+<p>这个问题揭示了 ROS1 的核心架构缺陷，也是 ROS2 采用 DDS 的主要原因之一。</p>
+</details>
+<p><strong>练习 1.2：通信模式选择</strong>
+为以下场景选择最合适的 ROS1 通信机制（话题/服务/动作），并说明理由：
+a) 激光雷达数据流（40Hz）
+b) 获取机器人当前位置
+c) 机械臂移动到指定位置
+d) 紧急停止命令</p>
+<details>
+<summary>💡 提示</summary>
+<p>考虑数据频率、是否需要响应、执行时间长短。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p>a) <strong>话题</strong>：高频数据流，不需要确认，多个节点可能需要订阅。</p>
+<p>b) <strong>服务</strong>：一次性查询，需要立即响应，典型的请求-响应模式。</p>
+<p>c) <strong>动作</strong>：长时间执行任务，需要反馈进度，可能需要取消操作。</p>
+<p>d) <strong>话题</strong>（特殊情况）：虽然是命令，但紧急停止需要广播给所有相关节点，且不能等待响应。使用话题确保最快传递，可设置队列大小为1，使用可靠传输。</p>
+</details>
+<p><strong>练习 1.3：Catkin 工作空间问题</strong>
+你有两个 Catkin 工作空间：ws1 和 ws2。ws1 中有包 A（版本 1.0），ws2 中也有包 A（版本 2.0）。如果按照 ws1、ws2 的顺序 source 两个工作空间的 setup.bash，运行时会使用哪个版本的包 A？</p>
+<details>
+<summary>💡 提示</summary>
+<p>考虑 ROS_PACKAGE_PATH 的覆盖机制。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p>会使用 <strong>ws2 中的包 A（版本 2.0）</strong>。</p>
+<p>原因：后 source 的工作空间会覆盖先前的设置。当 source ws2/devel/setup.bash 时，ws2 的路径会被添加到 ROS_PACKAGE_PATH 的前面，因此 ROS 会优先找到 ws2 中的包。</p>
+<p>可以通过以下命令验证：</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span><span class="w"> </span><span class="nv">$ROS_PACKAGE_PATH</span>
+rospack<span class="w"> </span>find<span class="w"> </span>A<span class="w">  </span><span class="c1"># 会显示 ws2 中的路径</span>
+</code></pre></div>
+
+<p>这种机制允许开发者通过工作空间覆盖系统包，方便开发和测试。</p>
+</details>
+<h3 id="_27">挑战题</h3>
+<p><strong>练习 1.4：性能优化方案设计</strong>
+某机器人系统有一个相机节点发布 1920×1080 的 RGB 图像（30 FPS），三个处理节点订阅这些图像。当前架构导致 CPU 使用率过高，网络带宽接近饱和。请设计一个优化方案，要求：</p>
+<ul>
+<li>减少 CPU 使用率 50%</li>
+<li>减少网络带宽 70%</li>
+<li>保持处理精度</li>
+</ul>
+<details>
+<summary>💡 提示</summary>
+<p>考虑 nodelet、图像压缩、感兴趣区域（ROI）等技术。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p><strong>综合优化方案</strong>：</p>
+<ol>
+<li>
+<p><strong>使用 Nodelet 架构</strong>（减少 CPU 30%）：
+   - 将相机节点和处理节点改写为 nodelet
+   - 在同一进程中运行，使用指针传递，避免 3 次图像拷贝
+   - 节省序列化/反序列化开销</p>
+</li>
+<li>
+<p><strong>图像压缩传输</strong>（减少带宽 60%）：
+   - 对于需要网络传输的部分，使用 JPEG 压缩
+   - 压缩质量设为 85，视觉损失最小
+   - 原始：1920×1080×3×30 = 186 MB/s
+   - 压缩后：约 75 MB/s</p>
+</li>
+<li>
+<p><strong>智能处理策略</strong>（减少 CPU 20%，带宽 10%）：
+   - 实现图像金字塔，低分辨率预处理
+   - 只对感兴趣区域进行全分辨率处理
+   - 使用时间相关性，只处理变化区域</p>
+</li>
+<li>
+<p><strong>硬件加速</strong>（额外优化）：
+   - 使用 OpenCV 的 CUDA 支持
+   - 图像预处理使用 GPU</p>
+</li>
+</ol>
+<p>实施代码框架：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimizedImagePipeline</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">nodelet</span><span class="o">::</span><span class="n">Nodelet</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">onInit</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 共享内存发布</span>
+<span class="w">        </span><span class="n">image_pub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh_</span><span class="p">.</span><span class="n">advertise</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">Image</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;image&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">        </span><span class="n">compressed_pub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh_</span><span class="p">.</span><span class="n">advertise</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">CompressedImage</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;image/compressed&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">imageCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">ImageConstPtr</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 本地 nodelet 直接传递指针</span>
+<span class="w">        </span><span class="n">image_pub_</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 远程节点发送压缩版本</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">compressed_pub_</span><span class="p">.</span><span class="n">getNumSubscribers</span><span class="p">()</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">publishCompressed</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+</details>
+<p><strong>练习 1.5：分布式系统设计</strong>
+设计一个多机器人 SLAM 系统，要求：</p>
+<ul>
+<li>3 个机器人协同建图</li>
+<li>每个机器人有自己的 Master</li>
+<li>实时共享地图数据</li>
+<li>处理网络分区故障</li>
+</ul>
+<details>
+<summary>💡 提示</summary>
+<p>考虑多 Master 方案、地图融合策略、冲突解决机制。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p><strong>分布式 SLAM 系统架构</strong>：</p>
+<ol>
+<li><strong>多 Master 配置</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用 multimaster_fkie</span>
+<span class="nt">robot1</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">master_discovery</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">robot_hosts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">robot1</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">robot2</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">robot3</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">heartbeat_hz</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="w">  </span><span class="nt">master_sync</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">sync_topics</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;/map_exchange&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;/loop_closure&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">sync_services</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;/merge_maps&#39;</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>地图数据结构</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">DistributedMap</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">robot_id</span><span class="p">;</span>
+<span class="w">    </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="w"> </span><span class="n">timestamp</span><span class="p">;</span>
+<span class="w">    </span><span class="n">nav_msgs</span><span class="o">::</span><span class="n">OccupancyGrid</span><span class="w"> </span><span class="n">local_map</span><span class="p">;</span>
+<span class="w">    </span><span class="n">geometry_msgs</span><span class="o">::</span><span class="n">Pose</span><span class="w"> </span><span class="n">origin_in_global</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">LoopClosure</span><span class="o">&gt;</span><span class="w"> </span><span class="n">loop_closures</span><span class="p">;</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<ol start="3">
+<li>
+<p><strong>地图融合策略</strong>：
+- 每个机器人维护局部地图
+- 定期（1Hz）交换地图增量
+- 使用图优化融合全局地图
+- 冲突区域使用概率融合</p>
+</li>
+<li>
+<p><strong>网络分区处理</strong>：</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PartitionHandler</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_seen</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_buffer</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_partition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 检测分区</span>
+        <span class="k">for</span> <span class="n">robot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_seen</span><span class="p">[</span><span class="n">robot</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">enter_degraded_mode</span><span class="p">(</span><span class="n">robot</span><span class="p">)</span>
+
+        <span class="c1"># 缓存本地更新</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">buffer_local_updates</span><span class="p">()</span>
+
+        <span class="c1"># 分区恢复后同步</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">partition_healed</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sync_buffered_data</span><span class="p">()</span>
+</code></pre></div>
+
+<ol start="5">
+<li><strong>一致性保证</strong>：
+- 使用逻辑时钟（Lamport 时间戳）
+- 向量时钟追踪因果关系
+- 最终一致性模型</li>
+</ol>
+<p>这个设计确保了系统的鲁棒性和可扩展性，即使在网络不稳定的情况下也能继续工作。</p>
+</details>
+<p><strong>练习 1.6：实时控制系统设计</strong>
+设计一个 1kHz 机械臂控制回路，要求：</p>
+<ul>
+<li>最大延迟 &lt; 1ms</li>
+<li>抖动 &lt; 100μs  </li>
+<li>与 ROS1 导航栈集成</li>
+<li>支持力控制模式</li>
+</ul>
+<details>
+<summary>💡 提示</summary>
+<p>考虑实时内核、共享内存、优先级反转等问题。</p>
+</details>
+<details>
+<summary>📝 参考答案</summary>
+<p><strong>实时控制系统设计</strong>：</p>
+<ol>
+<li><strong>系统架构分层</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">用户空间</span><span class="w"> </span><span class="p">(</span><span class="n">ROS1</span><span class="p">)</span><span class="w">          </span><span class="err">实时空间</span><span class="w"> </span><span class="p">(</span><span class="n">RT</span><span class="p">)</span>
+<span class="err">┌─────────────┐</span><span class="w">         </span><span class="err">┌──────────────┐</span>
+<span class="err">│</span><span class="w"> </span><span class="n">Navigation</span><span class="w">  </span><span class="err">│</span><span class="w">         </span><span class="err">│</span><span class="w"> </span><span class="n">RT</span><span class="w"> </span><span class="n">Controller</span><span class="err">│</span>
+<span class="err">│</span><span class="w">   </span><span class="n">Planner</span><span class="w">   </span><span class="err">│</span><span class="o">&lt;-------&gt;</span><span class="err">│</span><span class="w">    </span><span class="mi">1</span><span class="w"> </span><span class="n">kHz</span><span class="w">     </span><span class="err">│</span>
+<span class="err">└─────────────┘</span><span class="w"> </span><span class="err">共享内存</span><span class="w"> </span><span class="err">└──────────────┘</span>
+<span class="w">                              </span><span class="err">↓</span>
+<span class="w">                        </span><span class="err">┌──────────────┐</span>
+<span class="w">                        </span><span class="err">│</span><span class="w"> </span><span class="n">EtherCAT</span><span class="w"> </span><span class="n">Bus</span><span class="w"> </span><span class="err">│</span>
+<span class="w">                        </span><span class="err">│</span><span class="w">   </span><span class="o">&lt;</span><span class="mi">100</span><span class="w"> </span><span class="err">μ</span><span class="n">s</span><span class="w">    </span><span class="err">│</span>
+<span class="w">                        </span><span class="err">└──────────────┘</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>实时控制器实现</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RTArmController</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// 实时安全的数据结构</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">RTControlData</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">target_pos</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">target_vel</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">force_limit</span><span class="p">[</span><span class="mi">7</span><span class="p">];</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">timestamp</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">RTControlData</span><span class="o">*</span><span class="w"> </span><span class="n">shared_mem_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">rtControlLoop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置 CPU 亲和性</span>
+<span class="w">        </span><span class="kt">cpu_set_t</span><span class="w"> </span><span class="n">cpuset</span><span class="p">;</span>
+<span class="w">        </span><span class="n">CPU_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">);</span>
+<span class="w">        </span><span class="n">CPU_SET</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">);</span><span class="w">  </span><span class="c1">// 独占 CPU3</span>
+<span class="w">        </span><span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">(),</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">cpuset</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 实时调度</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">sched_param</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{.</span><span class="n">sched_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">99</span><span class="p">};</span>
+<span class="w">        </span><span class="n">sched_setscheduler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">SCHED_FIFO</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 控制循环</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">running_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rtClock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+
+<span class="w">            </span><span class="c1">// 1. 读取传感器（EtherCAT）</span>
+<span class="w">            </span><span class="n">readSensors</span><span class="p">();</span><span class="w">  </span><span class="c1">// &lt;50μs</span>
+
+<span class="w">            </span><span class="c1">// 2. 控制计算</span>
+<span class="w">            </span><span class="n">computeControl</span><span class="p">();</span><span class="w">  </span><span class="c1">// &lt;200μs</span>
+
+<span class="w">            </span><span class="c1">// 3. 发送命令</span>
+<span class="w">            </span><span class="n">sendCommands</span><span class="p">();</span><span class="w">  </span><span class="c1">// &lt;50μs</span>
+
+<span class="w">            </span><span class="c1">// 4. 监控时序</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">elapsed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rtClock</span><span class="o">::</span><span class="n">now</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">;</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">elapsed</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">900</span><span class="n">μs</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">rtLog</span><span class="o">::</span><span class="n">warn</span><span class="p">(</span><span class="s">&quot;Cycle overrun: {} μs&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">elapsed</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+
+<span class="w">            </span><span class="c1">// 精确睡眠到下一周期</span>
+<span class="w">            </span><span class="n">rtClock</span><span class="o">::</span><span class="n">sleepUntil</span><span class="p">(</span><span class="n">start</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="n">ms</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<ol start="3">
+<li><strong>ROS1 集成层</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ROSRTBridge</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">trajectoryCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">trajectory_msgs</span><span class="o">::</span><span class="n">JointTrajectory</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 轨迹插值到 1kHz</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">interpolated</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interpolateTrajectory</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="mi">1000</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 写入共享内存（无锁）</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">interpolated</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">shared_mem_</span><span class="o">-&gt;</span><span class="n">target_pos</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">store</span><span class="p">(</span><span class="n">interpolated</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">position</span><span class="p">);</span>
+<span class="w">            </span><span class="n">shared_mem_</span><span class="o">-&gt;</span><span class="n">target_vel</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">store</span><span class="p">(</span><span class="n">interpolated</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">velocity</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">shared_mem_</span><span class="o">-&gt;</span><span class="n">timestamp</span><span class="p">.</span><span class="n">store</span><span class="p">(</span><span class="n">rtClock</span><span class="o">::</span><span class="n">now</span><span class="p">());</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<ol start="4">
+<li><strong>力控制实现</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">computeForceControl</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 读取力/力矩传感器</span>
+<span class="w">    </span><span class="n">Vector6d</span><span class="w"> </span><span class="n">wrench</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">readFTSensor</span><span class="p">();</span>
+
+<span class="w">    </span><span class="c1">// 导纳控制</span>
+<span class="w">    </span><span class="n">Vector6d</span><span class="w"> </span><span class="n">delta_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">admittance_matrix_</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="n">wrench</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">target_wrench_</span><span class="p">);</span>
+
+<span class="w">    </span><span class="c1">// 笛卡尔到关节空间</span>
+<span class="w">    </span><span class="n">VectorXd</span><span class="w"> </span><span class="n">delta_q</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jacobian_</span><span class="p">.</span><span class="n">inverse</span><span class="p">()</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">delta_x</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 应用控制</span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">joint_cmd_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">joint_pos_</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">delta_q</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>这个设计通过分离实时和非实时部分，使用共享内存通信，避免了 ROS1 的不确定性，同时保持了与 ROS 生态的兼容性。</p>
+</details>
+<h2 id="gotchas">常见陷阱与错误（Gotchas）</h2>
+<h3 id="1">1. 网络配置错误</h3>
+<p><strong>问题</strong>：多机通信时节点无法互相发现</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 错误配置</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_MASTER_URI</span><span class="o">=</span>http://192.168.1.100:11311
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_HOSTNAME</span><span class="o">=</span>localhost<span class="w">  </span><span class="c1"># 错误！其他机器无法解析</span>
+</code></pre></div>
+
+<p><strong>解决方案</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 正确配置</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_MASTER_URI</span><span class="o">=</span>http://192.168.1.100:11311
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_IP</span><span class="o">=</span><span class="m">192</span>.168.1.101<span class="w">  </span><span class="c1"># 使用实际 IP</span>
+<span class="c1"># 或</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">ROS_HOSTNAME</span><span class="o">=</span>robot1<span class="w">  </span><span class="c1"># 确保所有机器的 /etc/hosts 中有此条目</span>
+</code></pre></div>
+
+<h3 id="2">2. 话题名称不匹配</h3>
+<p><strong>问题</strong>：发布者和订阅者话题不匹配，但难以发现</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 节点 A</span>
+<span class="n">ros</span><span class="o">::</span><span class="n">Publisher</span><span class="w"> </span><span class="n">pub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh</span><span class="p">.</span><span class="n">advertise</span><span class="o">&lt;</span><span class="n">std_msgs</span><span class="o">::</span><span class="n">String</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;/robot/status&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">);</span>
+
+<span class="c1">// 节点 B  </span>
+<span class="n">ros</span><span class="o">::</span><span class="n">Subscriber</span><span class="w"> </span><span class="n">sub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">nh</span><span class="p">.</span><span class="n">subscribe</span><span class="p">(</span><span class="s">&quot;/robot_status&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="n">callback</span><span class="p">);</span><span class="w">  </span><span class="c1">// 拼写错误！</span>
+</code></pre></div>
+
+<p><strong>调试技巧</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 检查话题连接</span>
+rostopic<span class="w"> </span>info<span class="w"> </span>/robot/status
+rosnode<span class="w"> </span>info<span class="w"> </span>/node_name
+rqt_graph<span class="w">  </span><span class="c1"># 可视化节点连接</span>
+</code></pre></div>
+
+<h3 id="3">3. 消息类型版本不一致</h3>
+<p><strong>问题</strong>：自定义消息修改后，忘记重新编译所有依赖包</p>
+<div class="codehilite"><pre><span></span><code># Package A 定义消息
+# Package B 使用旧版本消息
+# 运行时出现序列化错误
+</code></pre></div>
+
+<p><strong>预防措施</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 清理并重新构建所有包</span>
+catkin<span class="w"> </span>clean
+catkin<span class="w"> </span>build
+<span class="c1"># 或使用依赖追踪</span>
+catkin<span class="w"> </span>build<span class="w"> </span>--force-cmake
+</code></pre></div>
+
+<h3 id="4">4. 回调队列阻塞</h3>
+<p><strong>问题</strong>：在回调函数中执行耗时操作</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">imageCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">Image</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 错误：阻塞回调队列</span>
+<span class="w">    </span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">expensiveImageProcessing</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span><span class="w">  </span><span class="c1">// 耗时 500ms</span>
+<span class="w">    </span><span class="n">processed_pub</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p><strong>正确方式</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">imageCallback</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">Image</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 将数据推入处理队列</span>
+<span class="w">    </span><span class="n">image_queue_</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">    </span><span class="n">cv_</span><span class="p">.</span><span class="n">notify_one</span><span class="p">();</span><span class="w">  </span><span class="c1">// 通知处理线程</span>
+<span class="p">}</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">processingThread</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">ros</span><span class="o">::</span><span class="n">ok</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">Image</span><span class="w"> </span><span class="n">img</span><span class="p">;</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">image_queue_</span><span class="p">.</span><span class="n">pop</span><span class="p">(</span><span class="n">img</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="c1">// 在独立线程处理</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">expensiveImageProcessing</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+<span class="w">            </span><span class="n">processed_pub</span><span class="p">.</span><span class="n">publish</span><span class="p">(</span><span class="n">result</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="5">5. 参数服务器竞态条件</h3>
+<p><strong>问题</strong>：多个节点同时修改参数</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 节点 A</span>
+<span class="n">current</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="s1">&#39;/counter&#39;</span><span class="p">)</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="s1">&#39;/counter&#39;</span><span class="p">,</span> <span class="n">current</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># 非原子操作！</span>
+
+<span class="c1"># 节点 B 同时执行相同代码</span>
+<span class="c1"># 结果：计数器可能只增加 1 而不是 2</span>
+</code></pre></div>
+
+<p><strong>解决方案</strong>：
+使用分布式锁或改用服务实现原子操作。</p>
+<h3 id="6-tf">6. tf 时间戳问题</h3>
+<p><strong>问题</strong>：使用错误的时间戳查询 tf</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 错误：使用当前时间查询历史变换</span>
+<span class="n">tf</span><span class="o">::</span><span class="n">StampedTransform</span><span class="w"> </span><span class="n">transform</span><span class="p">;</span>
+<span class="n">listener</span><span class="p">.</span><span class="n">lookupTransform</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;base_link&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="o">::</span><span class="n">now</span><span class="p">(),</span><span class="w"> </span><span class="n">transform</span><span class="p">);</span>
+<span class="c1">// 可能抛出异常：extrapolation into the future</span>
+</code></pre></div>
+
+<p><strong>正确方式</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 Time(0) 获取最新可用变换</span>
+<span class="n">listener</span><span class="p">.</span><span class="n">lookupTransform</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;base_link&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">Time</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span><span class="w"> </span><span class="n">transform</span><span class="p">);</span>
+<span class="c1">// 或等待变换可用</span>
+<span class="n">listener</span><span class="p">.</span><span class="n">waitForTransform</span><span class="p">(</span><span class="s">&quot;map&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;base_link&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">stamp</span><span class="p">,</span><span class="w"> </span><span class="n">ros</span><span class="o">::</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.1</span><span class="p">));</span>
+</code></pre></div>
+
+<h2 id="_28">最佳实践检查清单</h2>
+<h3 id="_29">系统设计审查</h3>
+<ul>
+<li>[ ] <strong>单点故障分析</strong></li>
+<li>识别所有单点故障（Master、关键节点）</li>
+<li>设计故障恢复机制</li>
+<li>
+<p>实施健康检查和自动重启</p>
+</li>
+<li>
+<p>[ ] <strong>性能需求评估</strong></p>
+</li>
+<li>明确延迟和带宽要求</li>
+<li>选择合适的通信模式</li>
+<li>
+<p>考虑是否需要实时性保证</p>
+</li>
+<li>
+<p>[ ] <strong>扩展性设计</strong></p>
+</li>
+<li>节点功能单一职责</li>
+<li>使用命名空间组织话题</li>
+<li>预留配置和接口扩展点</li>
+</ul>
+<h3 id="_30">开发实践</h3>
+<ul>
+<li>[ ] <strong>消息设计</strong></li>
+<li>优先使用标准消息类型</li>
+<li>自定义消息保持向后兼容</li>
+<li>
+<p>避免过度嵌套的消息结构</p>
+</li>
+<li>
+<p>[ ] <strong>节点实现</strong></p>
+</li>
+<li>实现优雅关闭（SIGINT 处理）</li>
+<li>添加诊断信息发布</li>
+<li>
+<p>使用 ROS 日志系统</p>
+</li>
+<li>
+<p>[ ] <strong>参数管理</strong></p>
+</li>
+<li>使用 YAML 文件组织参数</li>
+<li>实施参数验证</li>
+<li>支持动态重配置（如适用）</li>
+</ul>
+<h3 id="_31">测试策略</h3>
+<ul>
+<li>[ ] <strong>单元测试</strong></li>
+<li>使用 rostest 框架</li>
+<li>模拟外部依赖</li>
+<li>
+<p>测试异常情况</p>
+</li>
+<li>
+<p>[ ] <strong>集成测试</strong></p>
+</li>
+<li>测试节点间通信</li>
+<li>验证时序要求</li>
+<li>
+<p>测试网络故障恢复</p>
+</li>
+<li>
+<p>[ ] <strong>性能测试</strong></p>
+</li>
+<li>测量消息延迟</li>
+<li>监控 CPU 和内存使用</li>
+<li>压力测试（高频率、大消息）</li>
+</ul>
+<h3 id="_32">部署准备</h3>
+<ul>
+<li>[ ] <strong>文档完善</strong></li>
+<li>README 包含依赖和构建说明</li>
+<li>记录所有话题/服务/参数</li>
+<li>
+<p>提供 launch 文件示例</p>
+</li>
+<li>
+<p>[ ] <strong>配置管理</strong></p>
+</li>
+<li>环境相关配置外部化</li>
+<li>使用 roslaunch 参数覆盖</li>
+<li>
+<p>版本控制配置文件</p>
+</li>
+<li>
+<p>[ ] <strong>监控部署</strong></p>
+</li>
+<li>配置诊断聚合器</li>
+<li>设置日志轮转</li>
+<li>实施性能监控</li>
+</ul>
+<h3 id="_33">安全考虑</h3>
+<ul>
+<li>[ ] <strong>网络安全</strong></li>
+<li>限制 Master 访问（防火墙）</li>
+<li>使用 VPN 跨网络通信</li>
+<li>
+<p>验证输入数据合法性</p>
+</li>
+<li>
+<p>[ ] <strong>故障安全</strong></p>
+</li>
+<li>实施紧急停止机制</li>
+<li>添加传感器数据合理性检查</li>
+<li>设计降级运行模式</li>
+</ul>
+<p>通过遵循这个检查清单，可以构建更加健壮、可维护的 ROS1 系统，同时为将来迁移到 ROS2 打下良好基础。</p>
+            </article>
+            
+            <nav class="page-nav"><a href="index.html" class="nav-link prev">← ROS2 完全教程：从原理到实践</a><a href="chapter2.html" class="nav-link next">第 2 章：ROS1 的局限性分析 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

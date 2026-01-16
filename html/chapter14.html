@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 14 章：MoveIt2 运动规划</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="14-moveit2">第 14 章：MoveIt2 运动规划</h1>
+<p>MoveIt2 是 ROS2 生态系统中最重要的运动规划框架，为机械臂、移动操作机器人和其他复杂运动系统提供了完整的运动规划、碰撞检测、运动学求解和抓取规划解决方案。本章将深入探讨 MoveIt2 的核心架构、各种求解器的选择策略、场景表示方法以及高级规划技术。我们将通过 ABB YuMi 双臂机器人的实际装配案例，展示如何在工业场景中应用这些技术，并探讨基于优化的轨迹规划等前沿话题。</p>
+<h2 id="141-moveit2">14.1 MoveIt2 架构概览</h2>
+<p>MoveIt2 采用模块化设计，将运动规划问题分解为多个独立但相互协作的组件。相比 MoveIt1，MoveIt2 在架构上进行了重大改进，充分利用 ROS2 的实时性特性和 DDS 通信机制，实现了更低的延迟和更高的可靠性。整个系统围绕 Move Group 节点构建，通过标准化的接口与各个功能模块交互，支持插件化扩展。</p>
+<div class="codehilite"><pre><span></span><code>┌─────────────────────────────────────────────────────┐
+│                    User Interface                    │
+│            (RViz2 Plugin / MoveIt API)              │
+└─────────────────┬───────────────────────────────────┘
+                  │
+┌─────────────────▼───────────────────────────────────┐
+│               Move Group Interface                   │
+│         (Action Server / Service Server)            │
+└─────────────────┬───────────────────────────────────┘
+                  │
+        ┌─────────┴─────────┬─────────────┬──────────┐
+        │                   │             │          │
+┌───────▼──────┐  ┌────────▼────────┐  ┌─▼──────────▼─┐
+│   Planning   │  │    Kinematic    │  │  Collision   │
+│   Pipeline   │  │     Solvers     │  │  Detection   │
+│              │  │                 │  │              │
+│ OMPL/CHOMP  │  │ KDL/IKFast/etc │  │   FCL/Bullet │
+└──────────────┘  └─────────────────┘  └──────────────┘
+</code></pre></div>
+
+<h3 id="1411">14.1.1 核心组件职责</h3>
+<p><strong>Move Group</strong> 是 MoveIt2 的中心协调器，负责：</p>
+<ul>
+<li>接收运动规划请求（通过 Action 或 Service）</li>
+<li>协调各个组件完成规划流程</li>
+<li>管理机器人状态（关节位置、速度、加速度）</li>
+<li>执行轨迹跟踪与监控</li>
+<li>处理规划场景更新</li>
+<li>管理运动规划插件生命周期</li>
+</ul>
+<p>Move Group 采用插件架构，允许用户根据需求选择不同的规划器、运动学求解器和轨迹处理算法。这种设计提供了极大的灵活性，使得 MoveIt2 能够适应从简单的工业机械臂到复杂的人形机器人等各种应用场景。</p>
+<p><strong>Planning Scene</strong> 维护环境的完整表示：</p>
+<ul>
+<li>机器人当前状态（包括关节状态、连杆变换、末端执行器状态）</li>
+<li>环境中的障碍物（静态和动态物体的几何表示）</li>
+<li>附着对象（机器人抓取的物体，成为机器人模型的一部分）</li>
+<li>允许碰撞矩阵（ACM，定义哪些物体对之间的碰撞可以忽略）</li>
+<li>世界几何表示（包括网格、基本形状、点云等）</li>
+<li>传感器数据集成（深度图像、点云的实时更新）</li>
+</ul>
+<p>Planning Scene 通过差分更新机制高效管理场景变化，只传输和处理发生变化的部分，大大减少了通信开销和计算负担。场景监视器（Planning Scene Monitor）持续跟踪环境变化，通过 tf2 获取机器人状态，通过传感器接口更新障碍物信息。</p>
+<p><strong>Motion Planning Pipeline</strong> 处理规划流程：</p>
+<ul>
+<li>预处理阶段</li>
+<li>场景验证（检查初始状态合法性）</li>
+<li>目标可达性初步检查</li>
+<li>规划请求适配器链（Planning Request Adapters）</li>
+<li>添加默认约束和参数</li>
+<li>规划器调用阶段</li>
+<li>选择合适的规划算法（OMPL、CHOMP、Pilz等）</li>
+<li>设置规划上下文（时间限制、优化目标）</li>
+<li>并行规划尝试（多线程加速）</li>
+<li>解的验证和选择</li>
+<li>后处理阶段</li>
+<li>时间参数化（添加速度、加速度信息）</li>
+<li>轨迹平滑（减少不必要的振荡）</li>
+<li>响应适配器链（Planning Response Adapters）</li>
+<li>最终碰撞检查和安全验证</li>
+</ul>
+<p>整个管道支持自定义扩展，用户可以插入自己的预处理和后处理步骤，实现特定的优化目标或约束条件。</p>
+<h2 id="142">14.2 运动学求解器集成</h2>
+<h3 id="1421">14.2.1 求解器类型与选择策略</h3>
+<p>MoveIt2 支持多种运动学求解器，每种都有其适用场景。选择合适的求解器对于实现高效可靠的运动规划至关重要。求解器的选择需要考虑机器人的运动学结构、实时性要求、精度需求以及计算资源等多个因素：</p>
+<ol>
+<li><strong>KDL (Kinematics and Dynamics Library)</strong>
+- 基于数值迭代的通用求解器（Newton-Raphson 方法）
+- 适用于任意运动链结构
+- 收敛速度慢，可能陷入局部最优
+- 对奇异点敏感，需要阻尼处理</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">求解时间复杂度</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">n</span><span class="err">·</span><span class="n">m</span><span class="o">)</span>
+<span class="err">其中</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="err">为迭代次数，</span><span class="n">m</span><span class="w"> </span><span class="err">为自由度</span>
+<span class="err">典型求解时间</span><span class="o">:</span><span class="w"> </span><span class="mi">5</span><span class="o">-</span><span class="mi">50</span><span class="n">ms</span>
+<span class="err">成功率</span><span class="o">:</span><span class="w"> </span><span class="mi">60</span><span class="o">-</span><span class="mi">80</span><span class="o">%</span><span class="err">（取决于初始猜测）</span>
+<span class="err">内存占用</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">m²</span><span class="o">)</span>
+<span class="err">适用场景</span><span class="o">:</span><span class="w"> </span><span class="err">原型开发、非实时应用、通用机器人</span>
+</code></pre></div>
+
+<p>KDL 使用伪逆雅可比矩阵进行迭代：
+$$\Delta q = J^+ \cdot \Delta x + (I - J^+ J) \cdot \nabla H$$
+其中 $J^+$ 为雅可比伪逆，$\nabla H$ 为零空间优化项。</p>
+<ol start="2">
+<li><strong>IKFast</strong>
+- 解析求解器生成器（基于符号计算）
+- 为特定机器人生成闭式解
+- 速度极快，但需要预先生成
+- 生成过程可能耗时数小时</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>求解时间复杂度: O(1)
+典型求解时间: &lt;1ms (通常 0.01-0.1ms)
+成功率: 100%（在工作空间内）
+限制: 仅支持6自由度或特定结构
+内存占用: 取决于生成的代码大小（通常几MB）
+适用场景: 工业机器人、高频控制、实时系统
+</code></pre></div>
+
+<p>IKFast 生成流程：</p>
+<ol>
+<li>分析机器人 URDF/SDF 模型</li>
+<li>符号化 DH 参数或关节链</li>
+<li>生成解析解方程组</li>
+<li>
+<p>编译为 C++ 插件</p>
+</li>
+<li>
+<p><strong>TRAC-IK</strong>
+- 结合 KDL 和 SQP（Sequential Quadratic Programming）优化
+- 并行运行多个求解器实例
+- 提高成功率和速度
+- 支持关节限位和任务空间约束</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">算法伪代码</span><span class="o">:</span>
+<span class="n">parallel_for</span><span class="w"> </span><span class="n">solver</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">[</span><span class="n">KDL_Chain</span><span class="o">,</span><span class="w"> </span><span class="n">SQP_Solver</span><span class="o">]:</span>
+<span class="w">    </span><span class="n">solution</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">solver</span><span class="o">.</span><span class="na">solve</span><span class="o">(</span><span class="n">target_pose</span><span class="o">,</span><span class="w"> </span><span class="n">timeout</span><span class="o">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">solution</span><span class="o">.</span><span class="na">valid</span><span class="o">:</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">first_valid_solution</span>
+</code></pre></div>
+
+<ol start="4">
+<li><strong>BioIK</strong>
+- 基于进化算法（遗传算法 + 粒子群优化）
+- 支持多目标优化
+- 优雅处理冗余自由度
+- 可添加自定义优化目标</li>
+</ol>
+<p>目标函数：
+$$J = w_p \cdot ||p_{target} - p_{current}||^2 + w_o \cdot ||q_{target} \ominus q_{current}||^2 + \sum_{i} w_i \cdot g_i$$
+其中 $g_i$ 为自定义目标（如关节限位、避障等）</p>
+<h3 id="1422">14.2.2 求解器配置与优化</h3>
+<p>求解器的性能很大程度上取决于正确的配置。不同的任务和机器人需要不同的参数调优策略：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># kinematics.yaml 配置示例</span>
+<span class="nt">manipulator</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">kinematics_solver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bio_ik/BioIKKinematicsPlugin</span>
+<span class="w">  </span><span class="nt">kinematics_solver_search_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.005</span>
+<span class="w">  </span><span class="nt">kinematics_solver_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">  </span><span class="nt">kinematics_solver_attempts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="w">  </span><span class="c1"># BioIK 特定参数</span>
+<span class="w">  </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bio2_memetic</span>
+<span class="w">  </span><span class="nt">population_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="w">  </span><span class="nt">elite_count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+
+<span class="w">  </span><span class="c1"># 目标权重</span>
+<span class="w">  </span><span class="nt">position_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100.0</span>
+<span class="w">  </span><span class="nt">orientation_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50.0</span>
+<span class="w">  </span><span class="nt">joint_centering_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">  </span><span class="nt">minimal_displacement_weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+</code></pre></div>
+
+<h3 id="1423">14.2.3 混合求解策略</h3>
+<p>对于复杂任务，可以组合多个求解器形成级联求解策略，利用各求解器的优势互补。这种方法在实际应用中被证明能显著提高求解成功率和效率：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">HybridIKSolver</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target_pose</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+        <span class="c1"># 第一阶段：快速解析解</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_analytic_solver</span><span class="p">:</span>
+            <span class="n">solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ikfast_solve</span><span class="p">(</span><span class="n">target_pose</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">solution</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">solution</span>
+
+        <span class="c1"># 第二阶段：数值优化</span>
+        <span class="n">initial_guess</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nearest_configuration</span><span class="p">()</span>
+        <span class="n">solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trac_ik_solve</span><span class="p">(</span>
+            <span class="n">target_pose</span><span class="p">,</span> 
+            <span class="n">initial_guess</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">solution</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">solution</span>
+
+        <span class="c1"># 第三阶段：全局搜索</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">bio_ik_solve</span><span class="p">(</span>
+            <span class="n">target_pose</span><span class="p">,</span>
+            <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span> <span class="o">*</span> <span class="mf">0.5</span><span class="p">,</span>
+            <span class="n">population_size</span><span class="o">=</span><span class="mi">200</span>
+        <span class="p">)</span>
+</code></pre></div>
+
+<h2 id="143">14.3 场景规划与碰撞检测</h2>
+<h3 id="1431">14.3.1 场景表示</h3>
+<p>MoveIt2 使用 Planning Scene 来表示环境，这是一个包含机器人状态和环境信息的完整数据结构。Planning Scene 采用分层表示方法，从粗略到精细逐级描述环境，优化碰撞检测效率：</p>
+<div class="codehilite"><pre><span></span><code>Planning Scene 结构:
+├── World Geometry (环境模型)
+│   ├── Collision Objects (障碍物)
+│   └── Octomap (3D 占据栅格)
+├── Robot State (机器人状态)
+│   ├── Joint Values
+│   ├── Link Transforms
+│   └── Attached Objects
+└── Allowed Collision Matrix (ACM)
+    └── Collision Pairs Enable/Disable
+</code></pre></div>
+
+<h3 id="1432">14.3.2 碰撞检测算法</h3>
+<p>碰撞检测是运动规划的核心组件，直接影响规划的安全性和效率。MoveIt2 支持多种碰撞检测库，每种都有其特点和适用场景。</p>
+<p><strong>FCL (Flexible Collision Library)</strong></p>
+<ul>
+<li>基于包围盒层次结构（BVH）</li>
+<li>支持连续碰撞检测（CCD）</li>
+<li>高效的几何形状间距离计算</li>
+<li>支持多种几何表示（网格、基本形状、八叉树）</li>
+</ul>
+<p>碰撞检测流程：</p>
+<ol>
+<li>
+<p><strong>宽相位（Broad Phase）</strong>
+   - AABB 包围盒快速剔除
+   - 空间分割数据结构（八叉树、kd-tree）
+   - Sweep and Prune 算法
+   - 减少需要精确检测的物体对</p>
+</li>
+<li>
+<p><strong>窄相位（Narrow Phase）</strong>
+   - GJK（Gilbert-Johnson-Keerthi）算法用于凸体
+   - SAT（Separating Axis Theorem）分离轴定理
+   - MPR（Minkowski Portal Refinement）算法
+   - 网格间的三角形相交测试</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">碰撞检测时间复杂度</span><span class="o">:</span>
+<span class="err">宽相位</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">n</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="o">)</span><span class="w"> </span><span class="err">使用空间分割</span>
+<span class="err">窄相位</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">m</span><span class="o">)</span><span class="w"> </span><span class="err">其中</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="err">为潜在碰撞对数量</span>
+<span class="n">GJK</span><span class="w"> </span><span class="err">算法</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">k</span><span class="o">)</span><span class="w"> </span><span class="err">其中</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="err">为迭代次数（通常</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">10</span><span class="err">）</span>
+<span class="err">网格碰撞</span><span class="o">:</span><span class="w"> </span><span class="n">O</span><span class="o">(</span><span class="n">t²</span><span class="o">)</span><span class="w"> </span><span class="err">最坏情况，</span><span class="n">t</span><span class="w"> </span><span class="err">为三角形数量</span>
+</code></pre></div>
+
+<p><strong>Bullet Physics</strong></p>
+<ul>
+<li>物理仿真引擎的碰撞检测模块</li>
+<li>支持凸包优化和凸分解</li>
+<li>更好的 mesh-mesh 碰撞处理</li>
+<li>支持软体碰撞和变形体</li>
+<li>GPU 加速支持（Bullet3）</li>
+</ul>
+<p>选择建议：</p>
+<ul>
+<li>简单几何形状：使用 FCL</li>
+<li>复杂网格模型：使用 Bullet</li>
+<li>需要物理仿真：使用 Bullet</li>
+<li>实时性要求高：使用 FCL 或 GPU 加速</li>
+</ul>
+<h3 id="1433">14.3.3 距离计算与安全边界</h3>
+<p>安全距离计算对于碰撞避免至关重要。除了二值碰撞检测，距离信息可以用于构建排斥场、优化轨迹以及实现更安全的运动。MoveIt2 提供了多层次的距离计算机制：
+$$d_{safe} = \min_{i,j} (d(L_i, O_j) - margin_{ij})$$
+其中 $L_i$ 为机器人连杆，$O_j$ 为障碍物，$margin_{ij}$ 为安全边界。</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SafetyDistanceMonitor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_safety_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot_state</span><span class="p">,</span> <span class="n">obstacles</span><span class="p">):</span>
+        <span class="n">distances</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">robot_state</span><span class="o">.</span><span class="n">links</span><span class="p">:</span>
+            <span class="n">min_distance</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+            <span class="n">closest_point</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">for</span> <span class="n">obstacle</span> <span class="ow">in</span> <span class="n">obstacles</span><span class="p">:</span>
+                <span class="n">dist</span><span class="p">,</span> <span class="n">point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fcl</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span>
+                    <span class="n">link</span><span class="o">.</span><span class="n">collision_geometry</span><span class="p">,</span>
+                    <span class="n">obstacle</span><span class="o">.</span><span class="n">geometry</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_distance</span><span class="p">:</span>
+                    <span class="n">min_distance</span> <span class="o">=</span> <span class="n">dist</span>
+                    <span class="n">closest_point</span> <span class="o">=</span> <span class="n">point</span>
+
+            <span class="n">distances</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="n">min_distance</span><span class="p">,</span>
+                <span class="s1">&#39;gradient&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_distance_gradient</span><span class="p">(</span>
+                    <span class="n">link</span><span class="p">,</span> <span class="n">closest_point</span>
+                <span class="p">),</span>
+                <span class="s1">&#39;safety_margin&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">margins</span><span class="p">[</span><span class="n">link</span><span class="o">.</span><span class="n">name</span><span class="p">]</span>
+            <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">distances</span>
+</code></pre></div>
+
+<h3 id="1434-octomap">14.3.4 Octomap 集成</h3>
+<p>Octomap 提供了高效的 3D 环境表示，特别适合处理大规模、动态环境。它使用概率八叉树结构，能够有效地融合多个传感器数据并处理不确定性：</p>
+<div class="codehilite"><pre><span></span><code>Octomap 参数优化:
+├── Resolution: 0.02m (精度与性能平衡)
+├── Max Range: 5.0m (传感器范围)
+├── Probability Hit: 0.7 (占据概率更新)
+├── Probability Miss: 0.4
+└── Clamping Thresholds: [0.12, 0.97]
+</code></pre></div>
+
+<p>更新方程（贝叶斯更新）：
+$$P(n|z_{1:t}) = \left[1 + \frac{1-P(n|z_t)}{P(n|z_t)} \cdot \frac{1-P(n|z_{1:t-1})}{P(n|z_{1:t-1})} \cdot \frac{P(n)}{1-P(n)}\right]^{-1}$$
+其中 $P(n|z_t)$ 为传感器模型，$P(n)$ 为先验概率。</p>
+<p><strong>Octomap 优化策略：</strong></p>
+<ol>
+<li><strong>动态分辨率调整</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">adaptive_resolution</span><span class="p">(</span><span class="n">distance_to_robot</span><span class="p">,</span> <span class="n">base_resolution</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="c1"># 近处高分辨率，远处低分辨率</span>
+    <span class="k">if</span> <span class="n">distance_to_robot</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">base_resolution</span> <span class="o">*</span> <span class="mf">0.5</span>  <span class="c1"># 0.025m</span>
+    <span class="k">elif</span> <span class="n">distance_to_robot</span> <span class="o">&lt;</span> <span class="mf">3.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">base_resolution</span>  <span class="c1"># 0.05m</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">base_resolution</span> <span class="o">*</span> <span class="mi">2</span>  <span class="c1"># 0.1m</span>
+</code></pre></div>
+
+<ol start="2">
+<li>
+<p><strong>增量式更新</strong>
+   - 只更新视野内的节点
+   - 使用 frustum culling 减少计算
+   - 并行化射线追踪</p>
+</li>
+<li>
+<p><strong>内存管理</strong>
+   - 剪枝（pruning）合并相同状态节点
+   - 压缩存储未被占据的空间
+   - 使用滚动窗口限制地图大小</p>
+</li>
+</ol>
+<h2 id="144">14.4 抓取规划</h2>
+<h3 id="1441">14.4.1 抓取生成策略</h3>
+<p>MoveIt2 的抓取规划包含三个核心步骤：</p>
+<ol>
+<li><strong>抓取姿态生成</strong></li>
+<li><strong>可达性分析</strong></li>
+<li><strong>抓取质量评估</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">GraspGenerator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_grasps</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">object_mesh</span><span class="p">,</span> <span class="n">gripper_model</span><span class="p">):</span>
+        <span class="n">grasps</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># 基于几何的抓取生成</span>
+        <span class="k">for</span> <span class="n">point</span> <span class="ow">in</span> <span class="n">object_mesh</span><span class="o">.</span><span class="n">surface_points</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">approach_angle</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">16</span><span class="p">):</span>
+                <span class="n">grasp_pose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_grasp_pose</span><span class="p">(</span>
+                    <span class="n">point</span><span class="p">,</span> 
+                    <span class="n">approach_angle</span><span class="p">,</span>
+                    <span class="n">object_mesh</span><span class="o">.</span><span class="n">surface_normal</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+                <span class="p">)</span>
+
+                <span class="c1"># 抓取前后姿态</span>
+                <span class="n">pre_grasp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_pose</span><span class="p">(</span><span class="n">grasp_pose</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">)</span>
+                <span class="n">post_grasp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">offset_pose</span><span class="p">(</span><span class="n">grasp_pose</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">)</span>
+
+                <span class="n">grasps</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                    <span class="s1">&#39;pose&#39;</span><span class="p">:</span> <span class="n">grasp_pose</span><span class="p">,</span>
+                    <span class="s1">&#39;pre_grasp&#39;</span><span class="p">:</span> <span class="n">pre_grasp</span><span class="p">,</span>
+                    <span class="s1">&#39;post_grasp&#39;</span><span class="p">:</span> <span class="n">post_grasp</span><span class="p">,</span>
+                    <span class="s1">&#39;quality&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_grasp</span><span class="p">(</span><span class="n">grasp_pose</span><span class="p">,</span> <span class="n">object_mesh</span><span class="p">)</span>
+                <span class="p">})</span>
+
+        <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">grasps</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="p">[</span><span class="s1">&#39;quality&#39;</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1442">14.4.2 抓取质量度量</h3>
+<p><strong>力闭合分析（Force Closure）</strong></p>
+<p>抓取质量 ε-metric：
+$$\epsilon = \min_{||w||=1} \max_i |w^T \cdot g_i|$$
+其中 $g_i$ 为接触点的单位扳手（wrench），$w$ 为外部扰动。</p>
+<p>扳手空间表示：
+$$G = [g_1, g_2, ..., g_n] \in \mathbb{R}^{6 \times n}$$
+其中每个扳手：
+$$g_i = \begin{bmatrix} f_i \\ p_i \times f_i + \tau_i \end{bmatrix}$$
+$f_i$ 为接触力，$p_i$ 为接触点位置，$\tau_i$ 为摩擦力矩。</p>
+<p><strong>可操作性椭球（Manipulability Ellipsoid）</strong>
+$$\mu = \sqrt{\det(J \cdot J^T)}$$
+其中 $J$ 为雅可比矩阵，$\mu$ 越大表示可操作性越好。</p>
+<h3 id="1443">14.4.3 抓取规划管道</h3>
+<div class="codehilite"><pre><span></span><code><span class="err">抓取执行流程</span><span class="o">:</span>
+
+<span class="mi">1</span><span class="o">.</span><span class="w"> </span><span class="err">目标识别与定位</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">点云分割</span>
+<span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="mi">6</span><span class="n">D</span><span class="w"> </span><span class="err">姿态估计</span>
+
+<span class="mi">2</span><span class="o">.</span><span class="w"> </span><span class="err">抓取候选生成</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">GPD</span><span class="w"> </span><span class="o">(</span><span class="n">Grasp</span><span class="w"> </span><span class="n">Pose</span><span class="w"> </span><span class="n">Detection</span><span class="o">)</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">基于模板匹配</span>
+<span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="err">深度学习方法</span>
+
+<span class="mi">3</span><span class="o">.</span><span class="w"> </span><span class="err">可达性过滤</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">逆运动学检查</span>
+<span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="err">碰撞检测</span>
+
+<span class="mi">4</span><span class="o">.</span><span class="w"> </span><span class="err">轨迹规划</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">Approach</span><span class="w"> </span><span class="o">(</span><span class="err">接近</span><span class="o">)</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="n">Grasp</span><span class="w"> </span><span class="o">(</span><span class="err">抓取</span><span class="o">)</span>
+<span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="n">Retreat</span><span class="w"> </span><span class="o">(</span><span class="err">撤退</span><span class="o">)</span>
+
+<span class="mi">5</span><span class="o">.</span><span class="w"> </span><span class="err">执行与监控</span>
+<span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">力</span><span class="o">/</span><span class="err">力矩反馈</span>
+<span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="err">视觉伺服</span>
+</code></pre></div>
+
+<h2 id="145">14.5 任务级规划</h2>
+<h3 id="1451-tamp">14.5.1 任务与运动规划集成（TAMP）</h3>
+<p>任务级规划将符号规划与几何规划结合：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TaskAndMotionPlanner</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">goal_state</span><span class="p">):</span>
+        <span class="c1"># 符号层规划</span>
+        <span class="n">symbolic_plan</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">task_planner</span><span class="o">.</span><span class="n">plan</span><span class="p">(</span>
+            <span class="n">initial_state</span><span class="o">.</span><span class="n">symbolic</span><span class="p">,</span>
+            <span class="n">goal_state</span><span class="o">.</span><span class="n">symbolic</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 几何可行性检查</span>
+        <span class="k">for</span> <span class="n">action</span> <span class="ow">in</span> <span class="n">symbolic_plan</span><span class="p">:</span>
+            <span class="n">motion_constraints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_constraints</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+            <span class="c1"># 运动规划</span>
+            <span class="n">trajectory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">motion_planner</span><span class="o">.</span><span class="n">plan</span><span class="p">(</span>
+                <span class="n">start</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_robot_state</span><span class="p">(),</span>
+                <span class="n">goal</span><span class="o">=</span><span class="n">motion_constraints</span><span class="p">,</span>
+                <span class="n">scene</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">planning_scene</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">trajectory</span><span class="p">:</span>
+                <span class="c1"># 回溯并重新规划</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backtrack_and_replan</span><span class="p">(</span>
+                    <span class="n">symbolic_plan</span><span class="p">,</span> 
+                    <span class="n">failed_action</span><span class="o">=</span><span class="n">action</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compile_full_plan</span><span class="p">(</span><span class="n">symbolic_plan</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1452">14.5.2 约束规划</h3>
+<p>MoveIt2 支持多种约束类型：</p>
+<p><strong>路径约束（Path Constraints）</strong></p>
+<ul>
+<li>位置约束：保持末端在特定区域</li>
+<li>姿态约束：保持工具方向</li>
+<li>关节约束：限制关节范围</li>
+<li>可见性约束：保持目标在视野内</li>
+</ul>
+<p>约束满足的优化问题：
+$$\min_{q} \sum_{i} w_i \cdot ||f_i(q) - t_i||^2$$
+受约束于：
+$$g_j(q) \leq 0, \quad j = 1...m$$
+其中 $f_i$ 为任务空间目标，$g_j$ 为不等式约束。</p>
+<h3 id="1453">14.5.3 双臂协调</h3>
+<p>双臂协调需要考虑：</p>
+<ol>
+<li><strong>时间同步</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">synchronize_dual_arm_trajectories</span><span class="p">(</span><span class="n">traj_left</span><span class="p">,</span> <span class="n">traj_right</span><span class="p">):</span>
+    <span class="c1"># 时间归一化</span>
+    <span class="n">t_max</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">traj_left</span><span class="o">.</span><span class="n">duration</span><span class="p">,</span> <span class="n">traj_right</span><span class="o">.</span><span class="n">duration</span><span class="p">)</span>
+
+    <span class="c1"># 重新参数化</span>
+    <span class="n">traj_left_sync</span> <span class="o">=</span> <span class="n">time_parameterize</span><span class="p">(</span><span class="n">traj_left</span><span class="p">,</span> <span class="n">t_max</span><span class="p">)</span>
+    <span class="n">traj_right_sync</span> <span class="o">=</span> <span class="n">time_parameterize</span><span class="p">(</span><span class="n">traj_right</span><span class="p">,</span> <span class="n">t_max</span><span class="p">)</span>
+
+    <span class="c1"># 碰撞检查</span>
+    <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t_max</span><span class="p">,</span> <span class="mi">100</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">check_self_collision</span><span class="p">(</span>
+            <span class="n">traj_left_sync</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">),</span>
+            <span class="n">traj_right_sync</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">traj_left_sync</span><span class="p">,</span> <span class="n">traj_right_sync</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>相对约束维持</strong>
+$$C_{relative} = ||T_{left}^{-1} \cdot T_{right} - T_{desired}||_F$$
+其中 $T$ 为变换矩阵，$||\cdot||_F$ 为 Frobenius 范数。</li>
+</ol>
+<h2 id="146">14.6 轨迹优化与平滑</h2>
+<p>轨迹优化是提高机器人运动性能的关键步骤。MoveIt2 提供了多种轨迹优化算法，可以根据不同的优化目标（时间最优、能量最优、平滑性等）对规划出的轨迹进行后处理。这些优化方法不仅提高了执行效率，还减少了机械磨损和能耗：</p>
+<h3 id="1461-totp">14.6.1 时间最优轨迹参数化（TOTP）</h3>
+<p>时间最优轨迹参数化是工业机器人应用中最常见的优化目标。它在保证不违反动力学约束的前提下，找到最快完成运动的速度剖面：</p>
+<p>给定几何路径，计算时间最优的速度剖面：
+$$\min_{s(t)} \int_0^T dt$$
+受约束于：</p>
+<ul>
+<li>速度约束：$|\dot{q}_i| \leq v_{max,i}$</li>
+<li>加速度约束：$|\ddot{q}_i| \leq a_{max,i}$</li>
+<li>加加速度约束：$|\dddot{q}_i| \leq j_{max,i}$</li>
+</ul>
+<p>相空间表示：
+$$\ddot{s} = u(s, \dot{s})$$
+其中 $s$ 为路径参数，边界条件由动力学约束决定。</p>
+<p><strong>数值解法：</strong></p>
+<ol>
+<li>
+<p><strong>前向积分法</strong>
+   - 从起点开始，最大化加速度
+   - 在约束边界处切换
+   - 计算减速点</p>
+</li>
+<li>
+<p><strong>后向积分法</strong>
+   - 从终点反向计算
+   - 确保终点速度约束
+   - 与前向积分结果合并</p>
+</li>
+<li>
+<p><strong>凸优化方法</strong>
+   - 将问题转化为二阶锥规划（SOCP）
+   - 使用内点法求解
+   - 全局最优性保证</p>
+</li>
+</ol>
+<h3 id="1462-stomp">14.6.2 STOMP 平滑算法</h3>
+<p>STOMP（Stochastic Trajectory Optimization for Motion Planning）是一种基于随机优化的轨迹平滑算法。与传统的梯度方法不同，STOMP 通过随机采样探索轨迹空间，避免了局部最优问题：</p>
+<p>STOMP（Stochastic Trajectory Optimization for Motion Planning）通过随机采样优化轨迹：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">stomp_optimize</span><span class="p">(</span><span class="n">initial_trajectory</span><span class="p">,</span> <span class="n">cost_function</span><span class="p">,</span> <span class="n">iterations</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">trajectory</span> <span class="o">=</span> <span class="n">initial_trajectory</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iterations</span><span class="p">):</span>
+        <span class="c1"># 生成噪声轨迹</span>
+        <span class="n">noisy_trajectories</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_samples</span><span class="p">):</span>
+            <span class="n">noise</span> <span class="o">=</span> <span class="n">generate_smooth_noise</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+            <span class="n">noisy_trajectories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">trajectory</span> <span class="o">+</span> <span class="n">noise</span><span class="p">)</span>
+
+        <span class="c1"># 计算成本</span>
+        <span class="n">costs</span> <span class="o">=</span> <span class="p">[</span><span class="n">cost_function</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span> <span class="k">for</span> <span class="n">traj</span> <span class="ow">in</span> <span class="n">noisy_trajectories</span><span class="p">]</span>
+
+        <span class="c1"># 计算概率权重</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">compute_probability_weights</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
+
+        <span class="c1"># 更新轨迹</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">traj</span> <span class="o">-</span> <span class="n">trajectory</span><span class="p">)</span> 
+                   <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">traj</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weights</span><span class="p">,</span> <span class="n">noisy_trajectories</span><span class="p">))</span>
+        <span class="n">trajectory</span> <span class="o">+=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">delta</span>
+
+    <span class="k">return</span> <span class="n">trajectory</span>
+</code></pre></div>
+
+<p>成本函数典型包含：
+$$J = w_1 J_{obstacle} + w_2 J_{smoothness} + w_3 J_{dynamics}$$</p>
+<p>其中：</p>
+<ul>
+<li>$J_{obstacle}$：障碍物成本，使用指数衰减距离场</li>
+<li>$J_{smoothness}$：平滑性成本，最小化加速度和加加速度</li>
+<li>$J_{dynamics}$：动力学成本，考虑力矩和功率限制</li>
+</ul>
+<p><strong>STOMP 的优势：</strong></p>
+<ol>
+<li>
+<p><strong>无需梯度计算</strong>
+   - 避免了复杂的雅可比计算
+   - 对非凸成本函数鲁棒
+   - 适合高维空间</p>
+</li>
+<li>
+<p><strong>并行化能力</strong>
+   - 多个轨迹采样可并行评估
+   - GPU 加速支持
+   - 实时性能优异</p>
+</li>
+<li>
+<p><strong>灵活的成本设计</strong>
+   - 可添加自定义成本项
+   - 支持软约束和硬约束
+   - 动态权重调整</p>
+</li>
+</ol>
+<h2 id="147-abb-yumi">14.7 产业案例研究：ABB YuMi 双臂协作装配</h2>
+<h3 id="1471">14.7.1 项目背景</h3>
+<p>ABB YuMi（You and Me）是专为人机协作设计的双臂机器人，在消费电子产品装配线上广泛应用。本案例研究基于某电子制造商使用 YuMi 进行精密电子装配的实际项目。</p>
+<p><strong>系统规格：</strong></p>
+<ul>
+<li>双 7 自由度机械臂</li>
+<li>负载：每臂 0.5kg</li>
+<li>重复精度：±0.02mm</li>
+<li>工作空间：559mm 半径</li>
+<li>集成视觉系统：2D/3D 相机</li>
+<li>力传感器：腕部 6 轴力/力矩</li>
+</ul>
+<p><strong>任务需求：</strong></p>
+<ul>
+<li>PCB 板精密装配</li>
+<li>小型连接器插装</li>
+<li>柔性线缆布线</li>
+<li>质量检测与分拣</li>
+</ul>
+<h3 id="1472">14.7.2 技术架构</h3>
+<div class="codehilite"><pre><span></span><code>YuMi ROS2 系统架构:
+┌──────────────────────────────────────────┐
+│          Task Coordinator Node            │
+│    (基于状态机的任务调度与监控)            │
+└────────────┬──────────────────────────────┘
+             │
+    ┌────────┴────────┬────────────┐
+    │                 │            │
+┌───▼──────┐ ┌───────▼──────┐ ┌──▼──────┐
+│ Vision   │ │  MoveIt2     │ │  Force  │
+│ Pipeline │ │  Dual Arm    │ │ Control │
+│          │ │  Planning    │ │         │
+└──────────┘ └──────────────┘ └─────────┘
+    │                 │            │
+┌───▼──────────────────────────────▼──────┐
+│        ABB Robot Driver (RWS/EGM)       │
+│         实时以太网通信 (1kHz)             │
+└──────────────────────────────────────────┘
+</code></pre></div>
+
+<h3 id="1473">14.7.3 双臂协调策略</h3>
+<ol>
+<li><strong>主从模式（Master-Slave）</strong></li>
+</ol>
+<p>左臂作为主臂执行主要操作，右臂辅助：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MasterSlaveCoordinator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_assembly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part_pose</span><span class="p">):</span>
+        <span class="c1"># 主臂抓取并定位</span>
+        <span class="n">master_traj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan_master_grasp</span><span class="p">(</span><span class="n">part_pose</span><span class="p">)</span>
+
+        <span class="c1"># 从臂计算辅助位置</span>
+        <span class="n">slave_goal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_support_pose</span><span class="p">(</span>
+            <span class="n">master_traj</span><span class="o">.</span><span class="n">goal_pose</span><span class="p">,</span>
+            <span class="n">offset</span><span class="o">=</span><span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">]</span>  <span class="c1"># 相对偏移</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 同步执行</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">execute_synchronized</span><span class="p">([</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_arm</span><span class="p">,</span> <span class="n">master_traj</span><span class="p">),</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_arm</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan_to_pose</span><span class="p">(</span><span class="n">slave_goal</span><span class="p">))</span>
+        <span class="p">])</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>对称协作模式</strong></li>
+</ol>
+<p>双臂对称操作，用于处理较大物体：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">plan_symmetric_grasp</span><span class="p">(</span><span class="n">object_center</span><span class="p">,</span> <span class="n">object_width</span><span class="p">):</span>
+    <span class="c1"># 计算对称抓取点</span>
+    <span class="n">grasp_offset</span> <span class="o">=</span> <span class="n">object_width</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">gripper_clearance</span>
+
+    <span class="n">left_grasp</span> <span class="o">=</span> <span class="n">Transform</span><span class="p">(</span>
+        <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">object_center</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">grasp_offset</span><span class="p">,</span> 
+                 <span class="n">object_center</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> 
+                 <span class="n">object_center</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">right_grasp</span> <span class="o">=</span> <span class="n">Transform</span><span class="p">(</span>
+        <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="n">object_center</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">grasp_offset</span><span class="p">,</span>
+                 <span class="n">object_center</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                 <span class="n">object_center</span><span class="o">.</span><span class="n">z</span><span class="p">],</span>
+        <span class="n">orientation</span><span class="o">=</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">left_grasp</span><span class="p">,</span> <span class="n">right_grasp</span>
+</code></pre></div>
+
+<h3 id="1474">14.7.4 性能优化措施</h3>
+<ol>
+<li><strong>轨迹缓存与预计算</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">TrajectoryCache</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_cache_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span> <span class="o">=</span> <span class="n">LRUCache</span><span class="p">(</span><span class="n">max_cache_size</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">constraints</span><span class="p">):</span>
+        <span class="n">cache_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_hash</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">constraints</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">cache_key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">:</span>
+            <span class="c1"># 验证缓存轨迹仍然有效</span>
+            <span class="n">cached_traj</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">validate_trajectory</span><span class="p">(</span><span class="n">cached_traj</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">cached_traj</span>
+
+        <span class="c1"># 计算新轨迹</span>
+        <span class="n">trajectory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">planner</span><span class="o">.</span><span class="n">plan</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">constraints</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cache</span><span class="p">[</span><span class="n">cache_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">trajectory</span>
+        <span class="k">return</span> <span class="n">trajectory</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>并行规划优化</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">parallel_dual_arm_planning</span><span class="p">(</span><span class="n">left_goal</span><span class="p">,</span> <span class="n">right_goal</span><span class="p">):</span>
+    <span class="c1"># 并发规划</span>
+    <span class="n">left_future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+        <span class="n">plan_arm_async</span><span class="p">(</span><span class="n">left_arm</span><span class="p">,</span> <span class="n">left_goal</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">right_future</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">create_task</span><span class="p">(</span>
+        <span class="n">plan_arm_async</span><span class="p">(</span><span class="n">right_arm</span><span class="p">,</span> <span class="n">right_goal</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 等待两臂规划完成</span>
+    <span class="n">left_traj</span><span class="p">,</span> <span class="n">right_traj</span> <span class="o">=</span> <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span>
+        <span class="n">left_future</span><span class="p">,</span> <span class="n">right_future</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 碰撞后处理</span>
+    <span class="k">return</span> <span class="n">resolve_collisions</span><span class="p">(</span><span class="n">left_traj</span><span class="p">,</span> <span class="n">right_traj</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1475">14.7.5 实际性能指标</h3>
+<p><strong>装配任务性能：</strong></p>
+<ul>
+<li>平均周期时间：8.5 秒/件</li>
+<li>装配成功率：99.2%</li>
+<li>位置精度：±0.03mm</li>
+<li>力控精度：±0.5N</li>
+</ul>
+<p><strong>规划性能：</strong></p>
+<ul>
+<li>IK 求解时间：&lt; 2ms (IKFast)</li>
+<li>双臂规划时间：50-200ms</li>
+<li>轨迹执行偏差：&lt; 1mm</li>
+<li>碰撞检测开销：15% CPU</li>
+</ul>
+<h3 id="1476">14.7.6 关键挑战与解决方案</h3>
+<p>在 YuMi 双臂协作装配项目中，我们遇到了多个技术挑战，以下是主要问题及其解决方案：</p>
+<p><strong>挑战 1：线缆处理</strong></p>
+<p>柔性线缆的形变建模困难：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CableManipulationPlanner</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plan_cable_routing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cable_model</span><span class="p">,</span> <span class="n">fixtures</span><span class="p">):</span>
+        <span class="c1"># 基于最小能量的线缆形状预测</span>
+        <span class="n">cable_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_cable_deformation</span><span class="p">(</span>
+            <span class="n">cable_model</span><span class="p">,</span>
+            <span class="n">grasp_points</span><span class="p">,</span>
+            <span class="n">gravity_vector</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 生成中间路径点</span>
+        <span class="n">waypoints</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_routing_waypoints</span><span class="p">(</span>
+            <span class="n">cable_shape</span><span class="p">,</span>
+            <span class="n">fixtures</span><span class="p">,</span>
+            <span class="n">clearance</span><span class="o">=</span><span class="mf">0.02</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 双臂协调移动</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plan_bimanual_trajectory</span><span class="p">(</span><span class="n">waypoints</span><span class="p">)</span>
+</code></pre></div>
+
+<p><strong>挑战 2：精密插装</strong></p>
+<p>高精度要求的连接器插装：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">precision_insertion_with_force_feedback</span><span class="p">():</span>
+    <span class="c1"># 视觉粗定位</span>
+    <span class="n">target_pose</span> <span class="o">=</span> <span class="n">vision_localize_connector</span><span class="p">()</span>
+
+    <span class="c1"># 接近阶段</span>
+    <span class="n">approach_pose</span> <span class="o">=</span> <span class="n">offset_pose</span><span class="p">(</span><span class="n">target_pose</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.05</span><span class="p">])</span>
+    <span class="n">move_to_pose</span><span class="p">(</span><span class="n">approach_pose</span><span class="p">)</span>
+
+    <span class="c1"># 力引导精细对准</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">aligned</span><span class="p">:</span>
+        <span class="n">force</span><span class="p">,</span> <span class="n">torque</span> <span class="o">=</span> <span class="n">read_force_sensor</span><span class="p">()</span>
+
+        <span class="c1"># 计算修正量</span>
+        <span class="n">correction</span> <span class="o">=</span> <span class="n">compute_alignment_correction</span><span class="p">(</span>
+            <span class="n">force</span><span class="p">,</span> <span class="n">torque</span><span class="p">,</span>
+            <span class="n">stiffness_matrix</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 柔顺控制</span>
+        <span class="n">apply_cartesian_correction</span><span class="p">(</span><span class="n">correction</span><span class="p">)</span>
+
+        <span class="n">aligned</span> <span class="o">=</span> <span class="n">check_alignment_criteria</span><span class="p">(</span><span class="n">force</span><span class="p">,</span> <span class="n">torque</span><span class="p">)</span>
+
+    <span class="c1"># 插入执行</span>
+    <span class="n">execute_insertion_with_force_limit</span><span class="p">(</span>
+        <span class="n">target_pose</span><span class="p">,</span>
+        <span class="n">force_threshold</span><span class="o">=</span><span class="mf">10.0</span>  <span class="c1"># N</span>
+    <span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1477">14.7.7 经验教训</h3>
+<p>通过 YuMi 双臂机器人在电子装配中的实践，我们总结出以下重要经验：</p>
+<ol>
+<li>
+<p><strong>工作空间优化</strong>：YuMi 的工作空间有限，需要精心设计工装布局，确保双臂可达性。</p>
+</li>
+<li>
+<p><strong>实时性要求</strong>：装配任务对实时性要求高，使用 RT-PREEMPT 内核将控制延迟降至 1ms 以下。</p>
+</li>
+<li>
+<p><strong>传感器融合</strong>：结合视觉和力反馈，视觉用于粗定位，力传感器用于精细操作。</p>
+</li>
+<li>
+<p><strong>异常处理</strong>：建立完善的错误恢复机制，包括抓取失败重试、碰撞检测停止等。</p>
+</li>
+<li>
+<p><strong>标定精度</strong>：手眼标定和工具标定的精度直接影响装配质量，采用主动标定策略定期更新。</p>
+</li>
+<li>
+<p><strong>数据驱动优化</strong>：收集大量执行数据，使用机器学习方法优化参数和策略。</p>
+</li>
+<li>
+<p><strong>模块化设计</strong>：将复杂任务分解为可重用的子任务，提高开发效率和系统可维护性。</p>
+</li>
+</ol>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter13.html" class="nav-link prev">← 第 13 章：ros2_control 框架</a><a href="chapter15.html" class="nav-link next">第 15 章：实时系统与性能优化 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

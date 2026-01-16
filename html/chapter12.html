@@ -1,0 +1,1731 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 12 章：导航栈 Nav2</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="12-nav2">第 12 章：导航栈 Nav2</h1>
+<h2 id="_1">章节大纲</h2>
+<ol>
+<li>开篇段落</li>
+<li>文字论述
+   - 12.1 Nav2 架构概览
+   - 12.2 行为树（Behavior Trees）架构
+   - 12.3 路径规划器设计
+   - 12.4 控制器与轨迹跟踪
+   - 12.5 恢复行为与异常处理
+   - 12.6 动态障碍物处理</li>
+<li>产业案例研究：Fetch Robotics 仓库导航解决方案</li>
+<li>高级话题：社会导航与人机共存</li>
+<li>本章小结</li>
+<li>练习题</li>
+<li>常见陷阱与错误</li>
+<li>最佳实践检查清单</li>
+</ol>
+<hr />
+<h2 id="_2">开篇段落</h2>
+<p>Nav2（Navigation2）是 ROS2 中用于自主导航的完整软件栈，它继承并改进了 ROS1 中的 move_base 导航框架。本章将深入探讨 Nav2 的核心架构，重点介绍行为树（Behavior Trees）这一革命性的任务编排机制，以及各种路径规划器和控制器的设计原理。通过学习本章，您将掌握如何设计和调优复杂的机器人导航系统，处理动态环境中的各种挑战，并了解工业界在大规模部署中的最佳实践。</p>
+<h2 id="121-nav2">12.1 Nav2 架构概览</h2>
+<h3 id="_3">系统组成</h3>
+<p>Nav2 采用模块化设计，主要包含以下核心组件：</p>
+<div class="codehilite"><pre><span></span><code>                    ┌─────────────────┐
+                    │   Nav2 BT      │
+                    │  Navigator     │
+                    └────────┬────────┘
+                             │
+        ┌────────────────────┼────────────────────┐
+        │                    │                    │
+   ┌────▼────┐         ┌────▼────┐         ┌────▼────┐
+   │ Planner │         │Controller│         │Recovery │
+   │ Server  │         │  Server  │         │ Server  │
+   └─────────┘         └──────────┘         └─────────┘
+        │                    │                    │
+   ┌────▼────┐         ┌────▼────┐         ┌────▼────┐
+   │ Global  │         │  Local   │         │  Spin   │
+   │ Costmap │         │ Costmap  │         │ Clear   │
+   └─────────┘         └──────────┘         └─────────┘
+</code></pre></div>
+
+<h3 id="_4">生命周期管理</h3>
+<p>Nav2 的所有节点都实现了 ROS2 的生命周期接口，支持以下状态转换：</p>
+<p>$$
+\text{Unconfigured} \xrightarrow{\text{configure}} \text{Inactive} \xrightarrow{\text{activate}} \text{Active}
+$$</p>
+<p>这种设计允许系统在运行时动态重配置，无需重启整个导航栈。生命周期管理器（Lifecycle Manager）负责协调所有节点的状态转换：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 生命周期转换序列</span>
+<span class="n">lifecycle_sequence</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;map_server&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;amcl&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;controller_server&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;planner_server&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;recoveries_server&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;bt_navigator&#39;</span>
+<span class="p">]</span>
+</code></pre></div>
+
+<h3 id="_5">坐标系约定</h3>
+<p>Nav2 遵循 REP-105 坐标系约定：</p>
+<ul>
+<li><strong>map</strong>: 全局固定坐标系，用于长期路径规划</li>
+<li><strong>odom</strong>: 里程计坐标系，短期内连续但长期会漂移</li>
+<li><strong>base_link</strong>: 机器人本体坐标系</li>
+<li><strong>base_footprint</strong>: 机器人在地面的投影</li>
+</ul>
+<p>坐标变换关系：
+$$
+T_{map}^{base} = T_{map}^{odom} \cdot T_{odom}^{base}
+$$</p>
+<h2 id="122-behavior-trees">12.2 行为树（Behavior Trees）架构</h2>
+<h3 id="_6">行为树基础</h3>
+<p>行为树是一种用于描述任务执行流程的层次化结构，相比传统的有限状态机（FSM），具有更好的模块化和可重用性。</p>
+<p>基本节点类型：</p>
+<ol>
+<li>
+<p><strong>控制节点（Control Nodes）</strong>：
+   - Sequence: 顺序执行子节点，任一失败则失败
+   - Fallback: 依次尝试子节点，任一成功则成功<br />
+   - Parallel: 并行执行多个子节点</p>
+</li>
+<li>
+<p><strong>装饰节点（Decorator Nodes）</strong>：
+   - Inverter: 反转子节点结果
+   - RetryUntilSuccessful: 重试直到成功
+   - RateController: 限制执行频率</p>
+</li>
+<li>
+<p><strong>动作节点（Action Nodes）</strong>：
+   - ComputePathToPose: 计算到目标的路径
+   - FollowPath: 跟踪路径
+   - Spin: 原地旋转</p>
+</li>
+</ol>
+<h3 id="nav2">Nav2 标准行为树</h3>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;root</span><span class="w"> </span><span class="na">main_tree_to_execute=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;MainTree&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;6&quot;</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;NavigateRecovery&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;PipelineSequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;NavigateWithReplanning&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;RateController</span><span class="w"> </span><span class="na">hz=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="w">          </span><span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+<span class="w">            </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{goal}&quot;</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;ClearEntireCostmap</span><span class="w"> </span><span class="na">service_name=</span><span class="s">&quot;global_costmap/clear_entirely&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/RecoveryNode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/RateController&gt;</span>
+<span class="w">        </span><span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;1&quot;</span><span class="nt">&gt;</span>
+<span class="w">          </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;ClearEntireCostmap</span><span class="w"> </span><span class="na">service_name=</span><span class="s">&quot;local_costmap/clear_entirely&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/RecoveryNode&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/PipelineSequence&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SequenceStar</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;RecoveryActions&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ClearEntireCostmap</span><span class="w"> </span><span class="na">service_name=</span><span class="s">&quot;local_costmap/clear_entirely&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;ClearEntireCostmap</span><span class="w"> </span><span class="na">service_name=</span><span class="s">&quot;global_costmap/clear_entirely&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Spin</span><span class="w"> </span><span class="na">spin_dist=</span><span class="s">&quot;1.57&quot;</span><span class="nt">/&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Wait</span><span class="w"> </span><span class="na">wait_duration=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/SequenceStar&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/RecoveryNode&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/BehaviorTree&gt;</span>
+<span class="nt">&lt;/root&gt;</span>
+</code></pre></div>
+
+<h3 id="_7">自定义行为树节点</h3>
+<p>创建自定义 BT 节点需要继承相应的基类：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">CheckBattery</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">ConditionNode</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="n">CheckBattery</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span>
+<span class="w">                </span><span class="k">const</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeConfiguration</span><span class="o">&amp;</span><span class="w"> </span><span class="n">config</span><span class="p">)</span>
+<span class="w">    </span><span class="o">:</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">ConditionNode</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">config</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+
+<span class="w">  </span><span class="k">static</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">PortsList</span><span class="w"> </span><span class="n">providedPorts</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">InputPort</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;min_battery&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">};</span>
+<span class="w">  </span><span class="p">}</span>
+
+<span class="w">  </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="w"> </span><span class="n">tick</span><span class="p">()</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">min_battery</span><span class="p">;</span>
+<span class="w">    </span><span class="n">getInput</span><span class="p">(</span><span class="s">&quot;min_battery&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">min_battery</span><span class="p">);</span>
+
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">battery_level_</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_battery</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">FAILURE</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">BT</span><span class="o">::</span><span class="n">NodeStatus</span><span class="o">::</span><span class="n">SUCCESS</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2 id="123">12.3 路径规划器设计</h2>
+<h3 id="_8">全局规划器</h3>
+<p>Nav2 提供多种全局路径规划算法：</p>
+<ol>
+<li><strong>NavFn Planner</strong>（Dijkstra/A*）:</li>
+</ol>
+<p>A* 启发式函数：
+   $$
+f(n) = g(n) + h(n)
+$$
+   其中 $g(n)$ 是起点到节点 $n$ 的实际代价，$h(n)$ 是节点 $n$ 到目标的启发式估计。</p>
+<ol start="2">
+<li><strong>Smac Planner</strong> (State Lattice/Hybrid-A*):</li>
+</ol>
+<p>Hybrid-A* 结合了连续空间和离散搜索：
+   $$
+\text{State} = (x, y, \theta)
+$$</p>
+<p>运动原语基于 Dubins 或 Reeds-Shepp 曲线。</p>
+<ol start="3">
+<li><strong>Theta* Planner</strong>（任意角度路径）:</li>
+</ol>
+<p>Line-of-sight 检查实现任意角度路径：
+   $$
+\text{parent}(s) = \begin{cases}
+   \text{parent}(s') &amp; \text{if LOS}(\text{parent}(s'), s) \\
+   s' &amp; \text{otherwise}
+   \end{cases}
+$$</p>
+<h3 id="_9">路径平滑</h3>
+<p>原始路径通常需要平滑处理以提高可执行性：</p>
+<ol>
+<li>
+<p><strong>Simple Smoother</strong>：基于梯度下降的平滑
+   $$
+\min \sum_{i} \alpha |p_i - p_i^{orig}|^2 + \beta |p_{i-1} - 2p_i + p_{i+1}|^2
+$$</p>
+</li>
+<li>
+<p><strong>Constrained Smoother</strong>：保持障碍物约束的平滑</p>
+</li>
+</ol>
+<p>约束优化问题：
+   $$
+\begin{aligned}
+   \min_{\{p_i\}} &amp; \sum_{i} w_{smooth} \cdot \text{curvature}(p_i) \\
+   \text{s.t.} &amp; \quad \text{distance}(p_i, \text{obstacles}) &gt; d_{min}
+   \end{aligned}
+$$</p>
+<h3 id="costmap">代价地图（Costmap）</h3>
+<p>代价地图是路径规划的基础，将传感器数据转换为规划可用的代价值：</p>
+<div class="codehilite"><pre><span></span><code>代价值范围：
+
+- 0: 自由空间
+- 1-252: 不同程度的代价
+- 253: 膨胀半径内
+- 254: 致命障碍物（碰撞）
+- 255: 未知区域
+</code></pre></div>
+
+<p>膨胀函数：
+$$
+\text{cost}(d) = \begin{cases}
+254 &amp; d \leq r_{inscribed} \\
+253 \cdot e^{-\alpha(d - r_{inscribed})} &amp; r_{inscribed} &lt; d \leq r_{inflation} \\
+0 &amp; d &gt; r_{inflation}
+\end{cases}
+$$</p>
+<h2 id="124">12.4 控制器与轨迹跟踪</h2>
+<h3 id="dwb">DWB 控制器</h3>
+<p>Dynamic Window Based (DWB) 控制器基于动态窗口方法，在速度空间中搜索最优控制：</p>
+<p>速度搜索空间：
+$$
+V_s = \{(v, \omega) | v \in [v_{min}, v_{max}], \omega \in [\omega_{min}, \omega_{max}]\}
+$$</p>
+<p>动态窗口约束：
+$$
+V_d = \{(v, \omega) | v \in [v_c - \dot{v} \cdot \Delta t, v_c + \dot{v} \cdot \Delta t]\}
+$$</p>
+<p>评价函数：
+$$
+G(v, \omega) = \sigma(\alpha \cdot \text{heading}(v, \omega) + \beta \cdot \text{dist}(v, \omega) + \gamma \cdot \text{vel}(v, \omega))
+$$</p>
+<h3 id="mppi">MPPI 控制器</h3>
+<p>Model Predictive Path Integral (MPPI) 控制器使用采样优化方法：</p>
+<p>控制序列优化：
+$$
+u^* = \arg\min_{u} \mathbb{E}[\sum_{t=0}^{T} L(x_t, u_t) + \Phi(x_T)]
+$$</p>
+<p>权重更新：
+$$
+w_i = \frac{e^{-\frac{1}{\lambda}S_i}}{\sum_j e^{-\frac{1}{\lambda}S_j}}
+$$</p>
+<h3 id="_10">纯追踪控制器</h3>
+<p>Pure Pursuit 控制器通过跟踪前视点实现路径跟踪：</p>
+<p>转向角计算：
+$$
+\delta = \arctan\left(\frac{2L\sin\alpha}{l_d}\right)
+$$</p>
+<p>其中 $L$ 是轴距，$\alpha$ 是前视点角度，$l_d$ 是前视距离。</p>
+<p>自适应前视距离：
+$$
+l_d = k_v \cdot v + l_{d,min}
+$$</p>
+<h2 id="125">12.5 恢复行为与异常处理</h2>
+<h3 id="_11">恢复行为设计</h3>
+<p>Nav2 提供了多层次的恢复机制来处理导航失败：</p>
+<ol>
+<li>
+<p><strong>局部恢复</strong>：
+   - Clear Costmap: 清除代价地图中的动态障碍物
+   - Spin: 原地旋转以获取更多环境信息
+   - Back Up: 后退一定距离</p>
+</li>
+<li>
+<p><strong>全局恢复</strong>：
+   - Wait: 等待动态障碍物离开
+   - Assisted Teleop: 请求人工干预</p>
+</li>
+</ol>
+<p>恢复决策树：</p>
+<div class="codehilite"><pre><span></span><code>导航失败
+├── 路径规划失败？
+│   ├── 清除全局代价地图
+│   └── 重新规划
+├── 路径跟踪失败？
+│   ├── 清除局部代价地图
+│   ├── 原地旋转
+│   └── 后退重试
+└── 多次失败？
+    └── 请求人工干预
+</code></pre></div>
+
+<h3 id="_12">异常检测与处理</h3>
+<p>实时监控导航状态，及时检测异常：</p>
+<ol>
+<li>
+<p><strong>振荡检测</strong>：
+   $$
+\text{oscillation} = \frac{1}{T} \int_0^T |\dot{\theta}(t)| dt &gt; \theta_{threshold}
+$$</p>
+</li>
+<li>
+<p><strong>卡死检测</strong>：
+   $$
+\text{stuck} = |p_t - p_{t-\Delta t}| &lt; \epsilon \quad \forall t \in [t_0, t_0 + T_{stuck}]
+$$</p>
+</li>
+<li>
+<p><strong>路径偏离检测</strong>：
+   $$
+d_{lateral} = \min_{p \in \text{path}} |p_{robot} - p| &gt; d_{max}
+$$</p>
+</li>
+</ol>
+<h3 id="_13">多层安全保障</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SafetyController</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kt">bool</span><span class="w"> </span><span class="nf">checkCollision</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">Trajectory</span><span class="o">&amp;</span><span class="w"> </span><span class="n">traj</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="c1">// 层级1：几何碰撞检测</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">geometricCollisionCheck</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 层级2：动态障碍物预测</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">predictiveCollisionCheck</span><span class="p">(</span><span class="n">traj</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 层级3：紧急制动距离</span>
+<span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">stop_dist</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a_max</span><span class="p">);</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">stop_dist</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">clearance</span><span class="p">)</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">false</span><span class="p">;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2 id="126">12.6 动态障碍物处理</h2>
+<h3 id="_14">障碍物检测与跟踪</h3>
+<p>使用多传感器融合进行障碍物检测：</p>
+<div class="codehilite"><pre><span></span><code>传感器融合架构：
+LaserScan ──┐
+            ├── Obstacle ──&gt; Tracking ──&gt; Prediction
+PointCloud ─┘    Layer
+</code></pre></div>
+
+<p>卡尔曼滤波器跟踪动态障碍物：</p>
+<p>状态向量：
+$$
+x = [p_x, p_y, v_x, v_y]^T
+$$</p>
+<p>预测步骤：
+$$
+\begin{aligned}
+x_{k|k-1} &amp;= F x_{k-1|k-1} \\
+P_{k|k-1} &amp;= F P_{k-1|k-1} F^T + Q
+\end{aligned}
+$$</p>
+<p>更新步骤：
+$$
+\begin{aligned}
+K_k &amp;= P_{k|k-1} H^T (H P_{k|k-1} H^T + R)^{-1} \\
+x_{k|k} &amp;= x_{k|k-1} + K_k(z_k - H x_{k|k-1})
+\end{aligned}
+$$</p>
+<h3 id="_15">速度障碍物方法</h3>
+<p>Velocity Obstacles (VO) 用于动态避障：</p>
+<p>速度障碍物集合：
+$$
+VO_{A|B} = \{v_A | \exists t \geq 0: p_A + tv_A \in B \oplus -A\}
+$$</p>
+<p>可行速度空间：
+$$
+V_{feasible} = V_{reachable} \setminus \bigcup_i VO_{A|O_i}
+$$</p>
+<h3 id="_16">社会力模型</h3>
+<p>在人群中导航时使用社会力模型：</p>
+<p>$$
+F_{total} = F_{goal} + \sum_i F_{obstacle}^i + \sum_j F_{social}^j
+$$</p>
+<p>目标吸引力：
+$$
+F_{goal} = k_{goal} \cdot \frac{p_{goal} - p_{robot}}{|p_{goal} - p_{robot}|}
+$$</p>
+<p>社会排斥力：
+$$
+F_{social} = A \cdot e^{(r_{ij} - d_{ij})/B} \cdot \vec{n}_{ij}
+$$</p>
+<h3 id="_17">时空规划</h3>
+<p>考虑时间维度的路径规划：</p>
+<p>状态空间扩展：
+$$
+\text{State} = (x, y, t)
+$$</p>
+<p>时空代价函数：
+$$
+C(x, y, t) = C_{static}(x, y) + \sum_i C_{dynamic}^i(x, y, t)
+$$</p>
+<p>动态障碍物预测轨迹：
+$$
+p_i(t) = p_i(0) + v_i \cdot t + \frac{1}{2} a_i \cdot t^2
+$$</p>
+<h2 id="fetch-robotics">产业案例研究：Fetch Robotics 仓库导航解决方案</h2>
+<h3 id="_18">项目背景</h3>
+<p>Fetch Robotics 为大型电商仓库提供自主移动机器人（AMR）解决方案，其 Freight 系列机器人需要在复杂的仓库环境中实现 24/7 不间断运行。主要挑战包括：</p>
+<ul>
+<li>高密度动态环境（人员、叉车、其他机器人）</li>
+<li>狭窄通道导航（过道宽度仅 1.2m）</li>
+<li>实时任务调度（平均响应时间 &lt; 30s）</li>
+<li>多机器人协调（单仓库 50+ 机器人）</li>
+</ul>
+<h3 id="_19">技术选型决策</h3>
+<ol>
+<li>
+<p><strong>导航框架选择</strong>：
+   - ROS1 Navigation Stack → Nav2 迁移
+   - 决策原因：生命周期管理、更好的实时性、行为树灵活性</p>
+</li>
+<li>
+<p><strong>规划器配置</strong>：</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nt">planner_server</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">planner_plugins</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;GridBased&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;Lattice&quot;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">GridBased</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nav2_navfn_planner/NavfnPlanner&quot;</span>
+<span class="w">      </span><span class="nt">use_astar</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">      </span><span class="nt">allow_unknown</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">Lattice</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">plugin</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nav2_smac_planner/SmacPlannerLattice&quot;</span>
+<span class="w">      </span><span class="nt">lattice_filepath</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;warehouse_lattice.json&quot;</span>
+<span class="w">      </span><span class="nt">w_smooth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span>
+<span class="w">      </span><span class="nt">w_data</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
+</code></pre></div>
+
+<ol start="3">
+<li><strong>控制器选择</strong>：
+   - 直线段：Regulated Pure Pursuit（效率优先）
+   - 转弯/对接：MPPI Controller（精度优先）</li>
+</ol>
+<h3 id="_20">性能指标与优化</h3>
+<p>关键性能指标（KPIs）：</p>
+<p>| 指标 | 目标值 | 实际达成 | 优化措施 |</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>实际达成</th>
+<th>优化措施</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>平均速度</td>
+<td>1.2 m/s</td>
+<td>1.15 m/s</td>
+<td>动态速度调节</td>
+</tr>
+<tr>
+<td>定位精度</td>
+<td>±5 cm</td>
+<td>±3 cm</td>
+<td>UWB 辅助定位</td>
+</tr>
+<tr>
+<td>路径效率</td>
+<td>&gt;85%</td>
+<td>89%</td>
+<td>A* 启发式优化</td>
+</tr>
+<tr>
+<td>碰撞率</td>
+<td>&lt;0.01%</td>
+<td>0.008%</td>
+<td>多层安全检测</td>
+</tr>
+<tr>
+<td>系统可用性</td>
+<td>&gt;99%</td>
+<td>99.3%</td>
+<td>自动恢复机制</td>
+</tr>
+</tbody>
+</table>
+<p>优化实践：</p>
+<ol>
+<li><strong>代价地图分层</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 静态层：仓库布局</span>
+<span class="nl">static_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nl">map_topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;warehouse_map&quot;</span>
+<span class="w">  </span><span class="nl">subscribe_to_updates</span><span class="p">:</span><span class="w"> </span><span class="nb">false</span>
+
+<span class="c1">// 动态层：实时障碍物</span>
+<span class="nl">obstacle_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nl">observation_sources</span><span class="p">:</span><span class="w"> </span><span class="n">laser_scan</span><span class="w"> </span><span class="n">point_cloud</span>
+<span class="w">  </span><span class="nl">laser_scan</span><span class="p">:</span>
+<span class="w">    </span><span class="nl">clearing</span><span class="p">:</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nl">marking</span><span class="p">:</span><span class="w"> </span><span class="nb">true</span>
+<span class="w">    </span><span class="nl">max_obstacle_height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.8</span>
+
+<span class="c1">// 膨胀层：安全距离</span>
+<span class="nl">inflation_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nl">inflation_radius</span><span class="p">:</span><span class="w"> </span><span class="mf">0.55</span>
+<span class="w">  </span><span class="nl">cost_scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="mf">3.0</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>行为树优化</strong>：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- 仓库特定行为树 --&gt;</span>
+<span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Sequence&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- 检查货架占用 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;CheckShelfOccupancy</span><span class="w"> </span><span class="na">shelf_id=</span><span class="s">&quot;{target_shelf}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- 动态重规划 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;RateController</span><span class="w"> </span><span class="na">hz=</span><span class="s">&quot;2.0&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{goal}&quot;</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/RateController&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- 精确对接 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;PreciseDocking</span><span class="w"> </span><span class="na">tolerance=</span><span class="s">&quot;0.02&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ForceSuccess&gt;</span>
+<span class="w">    </span><span class="nt">&lt;RequestHumanAssistance/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/ForceSuccess&gt;</span>
+<span class="nt">&lt;/RecoveryNode&gt;</span>
+</code></pre></div>
+
+<h3 id="_21">踩坑与解决方案</h3>
+<ol>
+<li><strong>问题：狭窄通道振荡</strong>
+   - 现象：机器人在 1.2m 宽通道中左右振荡
+   - 原因：DWB 控制器评分函数不平衡
+   - 解决：</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nt">DWBLocalPlanner</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">critics</span><span class="p">:</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">RotateToGoal</span><span class="p">:</span><span class="w"> </span>
+<span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">32.0</span>
+<span class="w">        </span><span class="nt">slowing_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Oscillation</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="w">        </span><span class="nt">oscillation_reset_dist</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>问题：多机器人死锁</strong>
+   - 现象：狭窄通道两机器人相向而行死锁
+   - 解决：实现分布式协调协议</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">resolve_deadlock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other_robot_id</span><span class="p">):</span>
+    <span class="n">priority</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_priority</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">priority</span> <span class="o">&lt;</span> <span class="n">other_priority</span><span class="p">:</span>
+        <span class="c1"># 后退到最近的避让点</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">navigate_to_passing_zone</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># 等待对方避让</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wait_for_clearance</span><span class="p">()</span>
+</code></pre></div>
+
+<ol start="3">
+<li><strong>问题：动态障碍物误检</strong>
+   - 现象：地面反光被误识别为障碍物
+   - 解决：多传感器投票机制 + 高度过滤</li>
+</ol>
+<h3 id="_22">大规模部署经验</h3>
+<ol>
+<li>
+<p><strong>集中式地图管理</strong>：
+   - 所有机器人共享同一高精度地图
+   - 增量更新机制（仅传输变化部分）
+   - 版本控制确保一致性</p>
+</li>
+<li>
+<p><strong>分布式路径协调</strong>：</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FleetCoordinator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">coordinate_paths</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot_paths</span><span class="p">):</span>
+        <span class="c1"># 时空预留表</span>
+        <span class="n">spacetime_map</span> <span class="o">=</span> <span class="n">SpaceTimeMap</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">robot_id</span><span class="p">,</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">robot_paths</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="c1"># 检测冲突</span>
+            <span class="n">conflicts</span> <span class="o">=</span> <span class="n">spacetime_map</span><span class="o">.</span><span class="n">check_conflicts</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">conflicts</span><span class="p">:</span>
+                <span class="c1"># 协商解决</span>
+                <span class="n">resolved_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">negotiate_path</span><span class="p">(</span>
+                    <span class="n">robot_id</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">conflicts</span>
+                <span class="p">)</span>
+                <span class="n">spacetime_map</span><span class="o">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">robot_id</span><span class="p">,</span> <span class="n">resolved_path</span><span class="p">)</span>
+</code></pre></div>
+
+<ol start="3">
+<li><strong>性能监控系统</strong>：
+   - Prometheus + Grafana 实时监控
+   - 关键指标：CPU 使用率、规划延迟、控制频率
+   - 自动性能降级：高负载时降低规划频率</li>
+</ol>
+<h2 id="_23">高级话题：社会导航与人机共存</h2>
+<h3 id="_24">前沿研究方向</h3>
+<h4 id="1-socially-aware-navigation">1. 社会感知导航（Socially-Aware Navigation）</h4>
+<p>传统导航将人类视为静态或动态障碍物，而社会导航考虑人类的社会规范和舒适度：</p>
+<p><strong>社会代价函数</strong>：
+$$
+C_{social} = w_1 \cdot C_{proximity} + w_2 \cdot C_{visibility} + w_3 \cdot C_{motion} + w_4 \cdot C_{personal_space}
+$$</p>
+<p>其中：</p>
+<ul>
+<li>$C_{proximity}$：与人的距离代价</li>
+<li>$C_{visibility}$：进入人的视野代价  </li>
+<li>$C_{motion}$：相对运动模式代价</li>
+<li>$C_{personal_space}$：个人空间侵犯代价</li>
+</ul>
+<p><strong>Proxemics 理论应用</strong>：</p>
+<p>Hall's Proxemics 空间区域：</p>
+<ul>
+<li>亲密距离（0-0.45m）：$C = \infty$（禁止进入）</li>
+<li>个人距离（0.45-1.2m）：$C = K_1 \cdot e^{-d/\sigma_1}$</li>
+<li>社交距离（1.2-3.6m）：$C = K_2 \cdot e^{-d/\sigma_2}$</li>
+<li>公共距离（&gt;3.6m）：$C = 0$</li>
+</ul>
+<h4 id="2">2. 人类运动预测</h4>
+<p><strong>Social LSTM 模型</strong>：</p>
+<p>隐藏状态更新考虑社会池化：
+$$
+h_i^t = \text{LSTM}(h_i^{t-1}, e_i^t, S_i^t)
+$$</p>
+<p>社会池化层：
+$$
+S_i^t = \sum_{j \in \mathcal{N}_i} \phi(h_j^{t-1})
+$$</p>
+<p><strong>Trajectron++ 多模态预测</strong>：</p>
+<p>条件概率分布：
+$$
+p(\mathbf{y}^{t+1:t+T}_i | \mathbf{x}^{t-H:t}) = \sum_k \pi_k \mathcal{N}(\mu_k, \Sigma_k)
+$$</p>
+<h4 id="3">3. 意图识别与交互</h4>
+<p><strong>注视方向估计</strong>：
+$$
+\vec{g} = R(\theta_{head}) \cdot R(\theta_{gaze}) \cdot \vec{e}_z
+$$</p>
+<p><strong>手势识别状态机</strong>：</p>
+<div class="codehilite"><pre><span></span><code>停止手势 → 减速 → 等待确认
+挥手召唤 → 接近模式 → 服务交互
+指向手势 → 方向理解 → 路径调整
+</code></pre></div>
+
+<h3 id="paper-reading-guide">Paper Reading Guide</h3>
+<ol>
+<li>
+<p><strong>"Socially Aware Motion Planning with Deep Reinforcement Learning"</strong> (IROS 2017)
+   - Chen, Chen, Liu et al.
+   - 关键贡献：CADRL 算法，多智能体避碰
+   - 实现要点：值函数分解、分布式训练</p>
+</li>
+<li>
+<p><strong>"Social GAN: Socially Acceptable Trajectories with GANs"</strong> (CVPR 2018)
+   - Gupta, Johnson et al.
+   - 关键贡献：对抗训练生成社会兼容轨迹
+   - 实现要点：池化模块、变分判别器</p>
+</li>
+<li>
+<p><strong>"Robot Navigation in Constrained Pedestrian Environments using RL"</strong> (ICRA 2020)
+   - Everett, Chen, How
+   - 关键贡献：SA-CADRL，考虑运动学约束
+   - 实现要点：注意力机制、课程学习</p>
+</li>
+</ol>
+<h3 id="_25">开源项目推荐</h3>
+<ol>
+<li>
+<p><strong>SPENCER Robot Platform</strong>
+   - 机场社会导航完整方案
+   - 人群跟踪、群体检测、社会力模型
+   - GitHub: spencer-project/spencer_people_tracking</p>
+</li>
+<li>
+<p><strong>Social Navigation Layers</strong>
+   - Nav2 社会层插件
+   - 个人空间建模、通过区域标记
+   - GitHub: SteveMacenski/social_navigation_layers</p>
+</li>
+<li>
+<p><strong>CrowdNav</strong>
+   - 强化学习社会导航仿真
+   - 多种 RL 算法实现对比
+   - GitHub: vita-epfl/CrowdNav</p>
+</li>
+</ol>
+<h3 id="_26">性能极限优化技巧</h3>
+<h4 id="1-gpu">1. GPU 加速人群预测</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1">// CUDA 核函数：批量轨迹预测</span>
+<span class="n">__global__</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="n">predictTrajectories</span><span class="p">(</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">positions</span><span class="p">,</span><span class="w"> </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">velocities</span><span class="p">,</span>
+<span class="w">    </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">predictions</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">num_agents</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">horizon</span>
+<span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">int</span><span class="w"> </span><span class="n">idx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">blockIdx</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">blockDim</span><span class="p">.</span><span class="n">x</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">threadIdx</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_agents</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 社会力计算</span>
+<span class="w">        </span><span class="n">float3</span><span class="w"> </span><span class="n">social_force</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">computeSocialForce</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span><span class="w"> </span><span class="n">positions</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 轨迹积分</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">horizon</span><span class="p">;</span><span class="w"> </span><span class="n">t</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">predictions</span><span class="p">[</span><span class="n">idx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">horizon</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">t</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>
+<span class="w">                </span><span class="n">integrateMotion</span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span><span class="w"> </span>
+<span class="w">                               </span><span class="n">velocities</span><span class="p">[</span><span class="n">idx</span><span class="p">],</span><span class="w"> </span>
+<span class="w">                               </span><span class="n">social_force</span><span class="p">,</span><span class="w"> </span><span class="n">t</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="2_1">2. 实时注意力机制</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">EfficientSocialAttention</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d_model</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">attention</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">MultiheadAttention</span><span class="p">(</span>
+            <span class="n">d_model</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">batch_first</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        <span class="c1"># 稀疏注意力模式</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sparsity_mask</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_sparse_mask</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">):</span>
+        <span class="c1"># 仅关注最近的 K 个邻居</span>
+        <span class="n">top_k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">topk</span><span class="p">(</span><span class="n">distances</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">k</span><span class="p">,</span> <span class="n">largest</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">sparse_attn</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attention</span><span class="p">(</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">neighbors</span><span class="p">[</span><span class="n">top_k</span><span class="o">.</span><span class="n">indices</span><span class="p">],</span> 
+            <span class="n">attn_mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sparsity_mask</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sparse_attn</span>
+</code></pre></div>
+
+<h4 id="3_1">3. 分层决策架构</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 三层决策架构</span>
+<span class="nt">high_level</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1 Hz</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">goal_selection</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">route_planning</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">social_context_analysis</span>
+
+<span class="nt">mid_level</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10 Hz</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">local_planning</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">crowd_navigation</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gesture_recognition</span>
+
+<span class="nt">low_level</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">50 Hz</span>
+<span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">collision_avoidance</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">trajectory_tracking</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">emergency_stop</span>
+</code></pre></div>
+
+<h3 id="_27">实际应用案例</h3>
+<h4 id="_28">服务机器人导航</h4>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SocialNavigator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">comfort_distance</span> <span class="o">=</span> <span class="mf">1.2</span>  <span class="c1"># 米</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">social_force_model</span> <span class="o">=</span> <span class="n">SocialForceModel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gesture_recognizer</span> <span class="o">=</span> <span class="n">GestureRecognizer</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">plan_social_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">people_tracks</span><span class="p">):</span>
+        <span class="c1"># 预测人群未来轨迹</span>
+        <span class="n">predictions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_crowd_motion</span><span class="p">(</span><span class="n">people_tracks</span><span class="p">)</span>
+
+        <span class="c1"># 生成社会兼容路径</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">astar_social</span><span class="p">(</span>
+            <span class="n">start</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> 
+            <span class="n">static_costmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">costmap</span><span class="p">,</span>
+            <span class="n">dynamic_costs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">compute_social_costs</span><span class="p">(</span><span class="n">predictions</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 速度调节</span>
+        <span class="n">velocity_profile</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adapt_velocity_to_crowd</span><span class="p">(</span>
+            <span class="n">path</span><span class="p">,</span> <span class="n">predictions</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">velocity_profile</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_social_costs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">predictions</span><span class="p">):</span>
+        <span class="n">costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">costmap</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">person_traj</span> <span class="ow">in</span> <span class="n">predictions</span><span class="p">:</span>
+            <span class="c1"># Gaussian 分布个人空间</span>
+            <span class="n">costs</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gaussian_personal_space</span><span class="p">(</span>
+                <span class="n">person_traj</span><span class="p">,</span> 
+                <span class="n">sigma</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">comfort_distance</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">costs</span>
+</code></pre></div>
+
+<h2 id="_29">本章小结</h2>
+<p>本章深入探讨了 ROS2 导航栈 Nav2 的核心架构和关键技术。主要内容包括：</p>
+<h3 id="_30">核心概念</h3>
+<ol>
+<li>
+<p><strong>行为树架构</strong>：相比传统状态机，行为树提供了更好的模块化、可重用性和可读性，成为 Nav2 任务编排的核心机制。</p>
+</li>
+<li>
+<p><strong>路径规划算法</strong>：
+   - 全局规划：NavFn (A<em>/Dijkstra)、Smac (Hybrid-A</em>)、Theta*
+   - 路径平滑：梯度下降平滑、约束优化平滑
+   - 代价地图：分层架构、膨胀函数设计</p>
+</li>
+<li>
+<p><strong>控制器设计</strong>：
+   - DWB：基于动态窗口的速度空间搜索
+   - MPPI：模型预测路径积分优化
+   - Pure Pursuit：几何路径跟踪</p>
+</li>
+<li>
+<p><strong>恢复机制</strong>：多层次恢复行为、异常检测、安全保障</p>
+</li>
+<li>
+<p><strong>动态避障</strong>：
+   - 障碍物跟踪：卡尔曼滤波
+   - 速度障碍物：VO/RVO 方法
+   - 社会力模型：人群导航
+   - 时空规划：考虑时间维度</p>
+</li>
+</ol>
+<h3 id="_31">关键公式</h3>
+<ul>
+<li>A* 启发式：$f(n) = g(n) + h(n)$</li>
+<li>膨胀函数：$\text{cost}(d) = 253 \cdot e^{-\alpha(d - r_{inscribed})}$</li>
+<li>DWB 评价：$G(v, \omega) = \alpha \cdot \text{heading} + \beta \cdot \text{dist} + \gamma \cdot \text{vel}$</li>
+<li>MPPI 优化：$u^* = \arg\min_{u} \mathbb{E}[\sum_{t} L(x_t, u_t)]$</li>
+<li>社会力：$F_{total} = F_{goal} + \sum F_{obstacle} + \sum F_{social}$</li>
+</ul>
+<h3 id="_32">工程实践要点</h3>
+<ol>
+<li>根据环境特点选择合适的规划器和控制器组合</li>
+<li>合理配置代价地图层级和参数</li>
+<li>设计鲁棒的恢复策略处理异常</li>
+<li>在人机共存环境中考虑社会规范</li>
+<li>通过分层架构实现实时性能</li>
+</ol>
+<h2 id="_33">练习题</h2>
+<h3 id="_34">基础题（理解概念）</h3>
+<p><strong>练习 12.1</strong>：解释为什么 Nav2 选择行为树而不是有限状态机作为任务编排机制？至少给出三个技术优势。</p>
+<details>
+<summary>提示</summary>
+<p>考虑模块化、并行执行、条件处理、可重用性等方面。</p>
+</details>
+<details>
+<summary>答案</summary>
+<p>行为树相比有限状态机的优势：</p>
+<ol>
+<li>
+<p><strong>模块化和可重用性</strong>：行为树的节点是独立的模块，可以在不同的树中重复使用，而 FSM 的状态转换是紧耦合的。</p>
+</li>
+<li>
+<p><strong>更好的并行处理</strong>：Parallel 节点可以自然地表达并行任务，而 FSM 需要复杂的状态组合来实现并行。</p>
+</li>
+<li>
+<p><strong>条件处理更清晰</strong>：Fallback 节点提供了优雅的失败处理机制，避免了 FSM 中的状态爆炸问题。</p>
+</li>
+<li>
+<p><strong>易于调试和可视化</strong>：树形结构直观展示执行流程，每个节点返回明确的状态（成功/失败/运行中）。</p>
+</li>
+<li>
+<p><strong>动态修改能力</strong>：可以在运行时修改行为树结构，而 FSM 通常需要重新编译。</p>
+</li>
+</ol>
+</details>
+<p><strong>练习 12.2</strong>：在 DWB 控制器中，如果机器人最大速度为 1.0 m/s，最大加速度为 0.5 m/s²，时间步长为 0.1s，计算动态窗口的速度范围。</p>
+<details>
+<summary>提示</summary>
+<p>动态窗口考虑一个时间步内可达的速度范围。</p>
+</details>
+<details>
+<summary>答案</summary>
+<p>给定：</p>
+<ul>
+<li>当前速度：$v_c$（假设为 0.8 m/s）</li>
+<li>最大加速度：$\dot{v} = 0.5$ m/s²</li>
+<li>时间步长：$\Delta t = 0.1$ s</li>
+</ul>
+<p>动态窗口速度范围：
+$$v \in [v_c - \dot{v} \cdot \Delta t, v_c + \dot{v} \cdot \Delta t]$$
+$$v \in [0.8 - 0.5 \times 0.1, 0.8 + 0.5 \times 0.1]$$
+$$v \in [0.75, 0.85] \text{ m/s}$$
+考虑物理限制：
+$$v \in [\max(0, 0.75), \min(1.0, 0.85)] = [0.75, 0.85] \text{ m/s}$$</p>
+</details>
+<p><strong>练习 12.3</strong>：给定机器人半径 0.3m，障碍物半径 0.2m，计算代价地图的内切圆半径（inscribed radius）和膨胀半径（inflation radius）。</p>
+<details>
+<summary>提示</summary>
+<p>内切圆是机器人中心到边缘的距离，膨胀半径需要考虑安全裕度。</p>
+</details>
+<details>
+<summary>答案</summary>
+<ol>
+<li>
+<p><strong>内切圆半径</strong>：
+   - 机器人半径：$r_{robot} = 0.3$ m
+   - 内切圆半径：$r_{inscribed} = r_{robot} = 0.3$ m</p>
+</li>
+<li>
+<p><strong>膨胀半径</strong>：
+   - 基础膨胀：$r_{base} = r_{robot} + r_{obstacle} = 0.3 + 0.2 = 0.5$ m
+   - 安全裕度（通常 20%）：$r_{safety} = 0.2 \times r_{base} = 0.1$ m
+   - 膨胀半径：$r_{inflation} = r_{base} + r_{safety} = 0.6$ m</p>
+</li>
+<li>
+<p><strong>代价分配</strong>：
+   - $d \leq 0.3$ m：cost = 254（致命）
+   - $0.3 &lt; d \leq 0.6$ m：cost = $253 \cdot e^{-\alpha(d-0.3)}$（渐变）
+   - $d &gt; 0.6$ m：cost = 0（自由）</p>
+</li>
+</ol>
+</details>
+<h3 id="_35">挑战题（深入思考）</h3>
+<p><strong>练习 12.4</strong>：设计一个行为树来处理以下导航场景：机器人需要通过一个可能被占用的狭窄通道，如果通道被占用超过 30 秒，需要寻找替代路径。</p>
+<details>
+<summary>提示</summary>
+<p>使用 Fallback、Timeout、RetryUntilSuccessful 等节点组合。</p>
+</details>
+<details>
+<summary>答案</summary>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;BehaviorTree</span><span class="w"> </span><span class="na">ID=</span><span class="s">&quot;NarrowPassageNavigation&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Fallback</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;MainStrategy&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="cm">&lt;!-- 策略1：尝试通过狭窄通道 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;TryNarrowPassage&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;CheckPassageClear</span><span class="w"> </span><span class="na">passage_id=</span><span class="s">&quot;narrow_1&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Timeout</span><span class="w"> </span><span class="na">msec=</span><span class="s">&quot;30000&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;RetryUntilSuccessful</span><span class="w"> </span><span class="na">num_attempts=</span><span class="s">&quot;6&quot;</span><span class="nt">&gt;</span>
+<span class="w">          </span><span class="nt">&lt;Sequence&gt;</span>
+<span class="w">            </span><span class="nt">&lt;ComputePathThroughPassage</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">            </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/Sequence&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/RetryUntilSuccessful&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/Timeout&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
+
+<span class="w">    </span><span class="cm">&lt;!-- 策略2：等待并重试 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;WaitAndRetry&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;Wait</span><span class="w"> </span><span class="na">wait_duration=</span><span class="s">&quot;5.0&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;CheckPassageClear</span><span class="w"> </span><span class="na">passage_id=</span><span class="s">&quot;narrow_1&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ComputePathThroughPassage</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
+
+<span class="w">    </span><span class="cm">&lt;!-- 策略3：寻找替代路径 --&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Sequence</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;AlternativeRoute&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;SetBlackboard</span><span class="w"> </span><span class="na">key=</span><span class="s">&quot;avoid_passage&quot;</span><span class="w"> </span><span class="na">value=</span><span class="s">&quot;narrow_1&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;ComputePathToPose</span><span class="w"> </span><span class="na">goal=</span><span class="s">&quot;{goal}&quot;</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{alt_path}&quot;</span>
+<span class="w">                         </span><span class="na">blacklist=</span><span class="s">&quot;{avoid_passage}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">      </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{alt_path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Sequence&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Fallback&gt;</span>
+<span class="nt">&lt;/BehaviorTree&gt;</span>
+</code></pre></div>
+
+</details>
+<p><strong>练习 12.5</strong>：实现一个简化的 MPPI 控制器，给定代价函数 $L(x,u) = |x - x_{goal}|^2 + 0.1|u|^2$，采样 100 条轨迹，计算最优控制。</p>
+<details>
+<summary>提示</summary>
+<p>使用重要性采样和加权平均计算最优控制。</p>
+</details>
+<details>
+<summary>答案</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SimpleMPPI</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">horizon</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lambda_</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="n">num_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">T</span> <span class="o">=</span> <span class="n">horizon</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span> <span class="o">=</span> <span class="n">lambda_</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_control</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x_goal</span><span class="p">,</span> <span class="n">dynamics</span><span class="p">):</span>
+        <span class="c1"># 采样控制序列</span>
+        <span class="n">u_samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.5</span>
+
+        <span class="c1"># 评估每条轨迹</span>
+        <span class="n">costs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
+        <span class="n">trajectories</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">K</span><span class="p">):</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x0</span>
+            <span class="n">traj</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+                <span class="c1"># 应用动力学</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">dynamics</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u_samples</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span>
+                <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+                <span class="c1"># 计算代价</span>
+                <span class="n">cost</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x_goal</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+                <span class="n">cost</span> <span class="o">+=</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u_samples</span><span class="p">[</span><span class="n">k</span><span class="p">,</span> <span class="n">t</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="n">costs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost</span>
+            <span class="n">trajectories</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">traj</span><span class="p">)</span>
+
+        <span class="c1"># 计算权重</span>
+        <span class="n">min_cost</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">costs</span> <span class="o">-</span> <span class="n">min_cost</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span>
+
+        <span class="c1"># 加权平均得到最优控制</span>
+        <span class="n">u_optimal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> 
+                          <span class="n">u_samples</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">u_optimal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># 返回第一个控制</span>
+
+<span class="c1"># 使用示例</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">simple_dynamics</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">dt</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+    <span class="c1"># 简单的双积分器模型</span>
+    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">u</span> <span class="o">*</span> <span class="n">dt</span>
+
+<span class="n">mppi</span> <span class="o">=</span> <span class="n">SimpleMPPI</span><span class="p">()</span>
+<span class="n">x_current</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">x_goal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+<span class="n">u_optimal</span> <span class="o">=</span> <span class="n">mppi</span><span class="o">.</span><span class="n">compute_control</span><span class="p">(</span><span class="n">x_current</span><span class="p">,</span> <span class="n">x_goal</span><span class="p">,</span> <span class="n">simple_dynamics</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<p><strong>练习 12.6</strong>：在社会导航场景中，机器人检测到前方 2m 处有一个人以 0.5 m/s 的速度横穿，设计一个基于速度障碍物（VO）的避让策略。</p>
+<details>
+<summary>提示</summary>
+<p>计算 VO 锥形区域，选择锥外的可行速度。</p>
+</details>
+<details>
+<summary>答案</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_velocity_obstacle</span><span class="p">(</span><span class="n">robot_pos</span><span class="p">,</span> <span class="n">human_pos</span><span class="p">,</span> <span class="n">human_vel</span><span class="p">,</span> 
+                              <span class="n">robot_radius</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">human_radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算速度障碍物区域</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 相对位置</span>
+    <span class="n">rel_pos</span> <span class="o">=</span> <span class="n">human_pos</span> <span class="o">-</span> <span class="n">robot_pos</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rel_pos</span><span class="p">)</span>
+
+    <span class="c1"># Minkowski 和半径</span>
+    <span class="n">r_sum</span> <span class="o">=</span> <span class="n">robot_radius</span> <span class="o">+</span> <span class="n">human_radius</span>
+
+    <span class="c1"># VO 锥的半角</span>
+    <span class="k">if</span> <span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">r_sum</span><span class="p">:</span>
+        <span class="c1"># 已经碰撞</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">r_sum</span> <span class="o">/</span> <span class="n">distance</span><span class="p">)</span>
+
+    <span class="c1"># VO 锥的中心方向</span>
+    <span class="n">center_dir</span> <span class="o">=</span> <span class="n">rel_pos</span> <span class="o">/</span> <span class="n">distance</span>
+
+    <span class="c1"># VO 锥的边界方向</span>
+    <span class="n">rot_matrix_left</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)],</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">)]</span>
+    <span class="p">])</span>
+    <span class="n">rot_matrix_right</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="p">)],</span>
+        <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">theta</span><span class="p">)]</span>
+    <span class="p">])</span>
+
+    <span class="n">left_bound</span> <span class="o">=</span> <span class="n">rot_matrix_left</span> <span class="o">@</span> <span class="n">center_dir</span>
+    <span class="n">right_bound</span> <span class="o">=</span> <span class="n">rot_matrix_right</span> <span class="o">@</span> <span class="n">center_dir</span>
+
+    <span class="c1"># 平移 VO 锥（考虑人的速度）</span>
+    <span class="n">vo_apex</span> <span class="o">=</span> <span class="n">human_vel</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;apex&#39;</span><span class="p">:</span> <span class="n">vo_apex</span><span class="p">,</span>
+        <span class="s1">&#39;left_bound&#39;</span><span class="p">:</span> <span class="n">left_bound</span><span class="p">,</span>
+        <span class="s1">&#39;right_bound&#39;</span><span class="p">:</span> <span class="n">right_bound</span><span class="p">,</span>
+        <span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="n">center_dir</span>
+    <span class="p">}</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">select_collision_free_velocity</span><span class="p">(</span><span class="n">vo</span><span class="p">,</span> <span class="n">v_desired</span><span class="p">,</span> <span class="n">v_max</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    选择避开 VO 的速度</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 检查期望速度是否在 VO 内</span>
+    <span class="k">if</span> <span class="n">is_velocity_in_vo</span><span class="p">(</span><span class="n">v_desired</span><span class="p">,</span> <span class="n">vo</span><span class="p">):</span>
+        <span class="c1"># 寻找最近的可行速度</span>
+        <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># 选项1：沿 VO 左边界</span>
+        <span class="n">v_left</span> <span class="o">=</span> <span class="n">vo</span><span class="p">[</span><span class="s1">&#39;apex&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vo</span><span class="p">[</span><span class="s1">&#39;left_bound&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">v_max</span>
+        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v_left</span><span class="p">)</span>
+
+        <span class="c1"># 选项2：沿 VO 右边界  </span>
+        <span class="n">v_right</span> <span class="o">=</span> <span class="n">vo</span><span class="p">[</span><span class="s1">&#39;apex&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">vo</span><span class="p">[</span><span class="s1">&#39;right_bound&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">v_max</span>
+        <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v_right</span><span class="p">)</span>
+
+        <span class="c1"># 选项3：减速</span>
+        <span class="n">v_slow</span> <span class="o">=</span> <span class="n">v_desired</span> <span class="o">*</span> <span class="mf">0.5</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">is_velocity_in_vo</span><span class="p">(</span><span class="n">v_slow</span><span class="p">,</span> <span class="n">vo</span><span class="p">):</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v_slow</span><span class="p">)</span>
+
+        <span class="c1"># 选择与期望速度最接近的</span>
+        <span class="n">best_v</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> 
+                    <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span> <span class="o">-</span> <span class="n">v_desired</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">best_v</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">v_desired</span>
+
+<span class="c1"># 应用示例</span>
+<span class="n">robot_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">human_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">human_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">])</span>  <span class="c1"># 横穿</span>
+<span class="n">v_desired</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>   <span class="c1"># 机器人想直行</span>
+
+<span class="n">vo</span> <span class="o">=</span> <span class="n">compute_velocity_obstacle</span><span class="p">(</span><span class="n">robot_pos</span><span class="p">,</span> <span class="n">human_pos</span><span class="p">,</span> <span class="n">human_vel</span><span class="p">)</span>
+<span class="n">v_safe</span> <span class="o">=</span> <span class="n">select_collision_free_velocity</span><span class="p">(</span><span class="n">vo</span><span class="p">,</span> <span class="n">v_desired</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;安全速度: </span><span class="si">{</span><span class="n">v_safe</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<p><strong>练习 12.7</strong>：设计一个多层恢复策略，处理机器人在电梯门口等待时的各种异常情况。</p>
+<details>
+<summary>提示</summary>
+<p>考虑超时、人群拥挤、电梯故障等情况。</p>
+</details>
+<details>
+<summary>答案</summary>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ElevatorNavigationRecovery</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_wait_time</span> <span class="o">=</span> <span class="mi">120</span>  <span class="c1"># 秒</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">crowd_threshold</span> <span class="o">=</span> <span class="mi">5</span>   <span class="c1"># 人数</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_recovery_strategy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        多层恢复策略</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># 层级1：基础等待</span>
+        <span class="k">if</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;wait_time&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">30</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">basic_wait</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># 层级2：人群处理</span>
+        <span class="k">if</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;crowd_size&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">crowd_threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_crowded_elevator</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># 层级3：超时处理</span>
+        <span class="k">if</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;wait_time&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_wait_time</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_timeout</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># 层级4：电梯故障</span>
+        <span class="k">if</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;elevator_status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;fault&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_elevator_fault</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+        <span class="c1"># 层级5：请求协助</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">request_assistance</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">basic_wait</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;wait&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;position&#39;</span><span class="p">:</span> <span class="s1">&#39;elevator_waiting_zone&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+            <span class="s1">&#39;monitor&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;door_status&#39;</span><span class="p">,</span> <span class="s1">&#39;crowd_size&#39;</span><span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_crowded_elevator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;sequence&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;announce&#39;</span><span class="p">,</span> 
+                 <span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="s1">&#39;Waiting for next elevator&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;move_back&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;wait&#39;</span><span class="p">,</span> <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="mi">30</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;retry&#39;</span><span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;fallback&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;strategies&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;find_alternative_route&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;avoid&#39;</span><span class="p">:</span> <span class="s1">&#39;elevators&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;use_stairs&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;max_floors&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;reschedule_task&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;delay&#39;</span><span class="p">:</span> <span class="mi">300</span><span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_elevator_fault</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;sequence&#39;</span><span class="p">,</span>
+            <span class="s1">&#39;steps&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;report_fault&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;system&#39;</span><span class="p">:</span> <span class="s1">&#39;building_management&#39;</span><span class="p">},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;update_map&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;mark_unavailable&#39;</span><span class="p">:</span> <span class="n">context</span><span class="p">[</span><span class="s1">&#39;elevator_id&#39;</span><span class="p">]},</span>
+                <span class="p">{</span><span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="s1">&#39;find_alternative_route&#39;</span><span class="p">}</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+</code></pre></div>
+
+</details>
+<p><strong>练习 12.8</strong>：实现一个基于社会力模型的人群导航算法，考虑 5 个行人的相互作用。</p>
+<details>
+<summary>提示</summary>
+<p>计算目标吸引力、障碍物排斥力和社会排斥力的矢量和。</p>
+</details>
+<details>
+<summary>答案</summary>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SocialForceNavigator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 社会力参数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">=</span> <span class="mf">2.0</span>      <span class="c1"># 排斥力强度</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">B</span> <span class="o">=</span> <span class="mf">0.8</span>      <span class="c1"># 排斥力范围</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">k_goal</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="c1"># 目标吸引力系数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="mf">0.5</span>    <span class="c1"># 松弛时间</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_goal_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">v_desired</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;目标吸引力&quot;&quot;&quot;</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">goal</span> <span class="o">-</span> <span class="n">pos</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">desired_velocity</span> <span class="o">=</span> <span class="p">(</span><span class="n">direction</span> <span class="o">/</span> <span class="n">distance</span><span class="p">)</span> <span class="o">*</span> <span class="n">v_desired</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">desired_velocity</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_social_force</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">other_pos</span><span class="p">,</span> <span class="n">other_vel</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;社会排斥力&quot;&quot;&quot;</span>
+        <span class="n">diff</span> <span class="o">=</span> <span class="n">pos</span> <span class="o">-</span> <span class="n">other_pos</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">diff</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="mf">5.0</span><span class="p">:</span>  <span class="c1"># 5m 影响范围</span>
+            <span class="c1"># 方向单位向量</span>
+            <span class="n">n_ij</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="n">distance</span>
+
+            <span class="c1"># 考虑相对速度的各向异性</span>
+            <span class="n">v_rel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">-</span> <span class="n">other_vel</span>
+            <span class="c1"># 时间到碰撞</span>
+            <span class="n">ttc</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_time_to_collision</span><span class="p">(</span>
+                <span class="n">pos</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">,</span> <span class="n">other_pos</span><span class="p">,</span> <span class="n">other_vel</span>
+            <span class="p">)</span>
+
+            <span class="c1"># 基础排斥力</span>
+            <span class="n">f_magnitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">A</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">((</span><span class="mf">0.5</span> <span class="o">-</span> <span class="n">distance</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">B</span><span class="p">)</span>
+
+            <span class="c1"># 各向异性因子（前方的人影响更大）</span>
+            <span class="n">cos_phi</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n_ij</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">)</span> <span class="o">+</span> <span class="mf">1e-6</span>
+            <span class="p">)</span>
+            <span class="n">anisotropy</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">cos_phi</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+            <span class="k">return</span> <span class="n">f_magnitude</span> <span class="o">*</span> <span class="n">n_ij</span> <span class="o">*</span> <span class="n">anisotropy</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">navigate_in_crowd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot_pos</span><span class="p">,</span> <span class="n">robot_vel</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> 
+                          <span class="n">pedestrians</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        在人群中导航</span>
+<span class="sd">        pedestrians: [(pos, vel), ...]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">robot_vel</span>
+
+        <span class="c1"># 计算总力</span>
+        <span class="n">force_total</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># 目标吸引力</span>
+        <span class="n">force_total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_goal_force</span><span class="p">(</span><span class="n">robot_pos</span><span class="p">,</span> <span class="n">goal</span><span class="p">)</span>
+
+        <span class="c1"># 社会排斥力</span>
+        <span class="k">for</span> <span class="n">ped_pos</span><span class="p">,</span> <span class="n">ped_vel</span> <span class="ow">in</span> <span class="n">pedestrians</span><span class="p">:</span>
+            <span class="n">force_total</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_social_force</span><span class="p">(</span>
+                <span class="n">robot_pos</span><span class="p">,</span> <span class="n">ped_pos</span><span class="p">,</span> <span class="n">ped_vel</span>
+            <span class="p">)</span>
+
+        <span class="c1"># 限制最大力（加速度）</span>
+        <span class="n">max_force</span> <span class="o">=</span> <span class="mf">2.0</span>  <span class="c1"># m/s²</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">force_total</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_force</span><span class="p">:</span>
+            <span class="n">force_total</span> <span class="o">=</span> <span class="n">force_total</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">force_total</span><span class="p">)</span>
+            <span class="n">force_total</span> <span class="o">*=</span> <span class="n">max_force</span>
+
+        <span class="c1"># 更新速度</span>
+        <span class="n">dt</span> <span class="o">=</span> <span class="mf">0.1</span>
+        <span class="n">new_velocity</span> <span class="o">=</span> <span class="n">robot_vel</span> <span class="o">+</span> <span class="n">force_total</span> <span class="o">*</span> <span class="n">dt</span>
+
+        <span class="c1"># 限制最大速度</span>
+        <span class="n">max_speed</span> <span class="o">=</span> <span class="mf">1.2</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">new_velocity</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">max_speed</span><span class="p">:</span>
+            <span class="n">new_velocity</span> <span class="o">=</span> <span class="n">new_velocity</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">new_velocity</span><span class="p">)</span>
+            <span class="n">new_velocity</span> <span class="o">*=</span> <span class="n">max_speed</span>
+
+        <span class="k">return</span> <span class="n">new_velocity</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_time_to_collision</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;计算碰撞时间&quot;&quot;&quot;</span>
+        <span class="n">rel_pos</span> <span class="o">=</span> <span class="n">p2</span> <span class="o">-</span> <span class="n">p1</span>
+        <span class="n">rel_vel</span> <span class="o">=</span> <span class="n">v2</span> <span class="o">-</span> <span class="n">v1</span>
+
+        <span class="c1"># 二次方程系数</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rel_vel</span><span class="p">,</span> <span class="n">rel_vel</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rel_pos</span><span class="p">,</span> <span class="n">rel_vel</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">rel_pos</span><span class="p">,</span> <span class="n">rel_pos</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mf">0.8</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>  <span class="c1"># 安全距离</span>
+
+        <span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mf">1e-6</span><span class="p">:</span>  <span class="c1"># 相对静止</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+
+        <span class="n">discriminant</span> <span class="o">=</span> <span class="n">b</span><span class="o">*</span><span class="n">b</span> <span class="o">-</span> <span class="mi">4</span><span class="o">*</span><span class="n">a</span><span class="o">*</span><span class="n">c</span>
+        <span class="k">if</span> <span class="n">discriminant</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># 不会碰撞</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+
+        <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="n">b</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">discriminant</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># 使用示例</span>
+<span class="n">navigator</span> <span class="o">=</span> <span class="n">SocialForceNavigator</span><span class="p">()</span>
+<span class="n">robot_pos</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">robot_vel</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">goal</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">10</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># 5个行人</span>
+<span class="n">pedestrians</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.3</span><span class="p">,</span> <span class="mi">0</span><span class="p">])),</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">])),</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">])),</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])),</span>
+    <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">3.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="p">]</span>
+
+<span class="n">new_vel</span> <span class="o">=</span> <span class="n">navigator</span><span class="o">.</span><span class="n">navigate_in_crowd</span><span class="p">(</span>
+    <span class="n">robot_pos</span><span class="p">,</span> <span class="n">robot_vel</span><span class="p">,</span> <span class="n">goal</span><span class="p">,</span> <span class="n">pedestrians</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;调整后速度: </span><span class="si">{</span><span class="n">new_vel</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+</details>
+<h2 id="_36">常见陷阱与错误</h2>
+<h3 id="1">1. 代价地图配置错误</h3>
+<p><strong>问题</strong>：机器人频繁碰撞或过度保守</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 错误配置</span>
+<span class="nt">inflation_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">inflation_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">  </span><span class="c1"># 太小，容易碰撞</span>
+<span class="w">  </span><span class="nt">cost_scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span><span class="w">  </span><span class="c1"># 太大，过度保守</span>
+</code></pre></div>
+
+<p><strong>正确配置</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">inflation_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">inflation_radius</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.55</span><span class="w">  </span><span class="c1"># 机器人半径 + 安全裕度</span>
+<span class="w">  </span><span class="nt">cost_scaling_factor</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span><span class="w">  </span><span class="c1"># 平滑代价渐变</span>
+</code></pre></div>
+
+<h3 id="2_2">2. 行为树死锁</h3>
+<p><strong>问题</strong>：恢复行为相互触发导致死锁</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- 错误：可能无限循环 --&gt;</span>
+<span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;-1&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ClearCostmap/&gt;</span>
+<span class="nt">&lt;/RecoveryNode&gt;</span>
+</code></pre></div>
+
+<p><strong>解决</strong>：设置重试次数限制和超时</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;RecoveryNode</span><span class="w"> </span><span class="na">number_of_retries=</span><span class="s">&quot;3&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;Timeout</span><span class="w"> </span><span class="na">msec=</span><span class="s">&quot;30000&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;FollowPath</span><span class="w"> </span><span class="na">path=</span><span class="s">&quot;{path}&quot;</span><span class="nt">/&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/Timeout&gt;</span>
+<span class="w">  </span><span class="nt">&lt;ClearCostmap/&gt;</span>
+<span class="nt">&lt;/RecoveryNode&gt;</span>
+</code></pre></div>
+
+<h3 id="3_2">3. 控制器振荡</h3>
+<p><strong>症状</strong>：机器人左右摇摆，无法稳定跟踪路径</p>
+<p><strong>原因</strong>：</p>
+<ul>
+<li>控制增益过高</li>
+<li>前视距离不当</li>
+<li>评分函数权重失衡</li>
+</ul>
+<p><strong>调试方法</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 记录控制器输出用于分析</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">debug_controller_oscillation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+        <span class="n">cmd_vel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">controller</span><span class="o">.</span><span class="n">compute_velocity</span><span class="p">()</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+            <span class="s1">&#39;linear&#39;</span><span class="p">:</span> <span class="n">cmd_vel</span><span class="o">.</span><span class="n">linear</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+            <span class="s1">&#39;angular&#39;</span><span class="p">:</span> <span class="n">cmd_vel</span><span class="o">.</span><span class="n">angular</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+            <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">path_error</span>
+        <span class="p">})</span>
+
+    <span class="c1"># 检测振荡</span>
+    <span class="n">angular_changes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">([</span><span class="n">h</span><span class="p">[</span><span class="s1">&#39;angular&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">history</span><span class="p">])</span>
+    <span class="n">oscillation_score</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">angular_changes</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">oscillation_score</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reduce_controller_gains</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="4">4. 动态障碍物处理不当</h3>
+<p><strong>问题</strong>：对快速移动物体反应不及时</p>
+<p><strong>解决</strong>：提高传感器更新频率和预测范围</p>
+<div class="codehilite"><pre><span></span><code><span class="nt">obstacle_layer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">observation_sources</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">laser</span>
+<span class="w">  </span><span class="nt">laser</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">data_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LaserScan</span>
+<span class="w">    </span><span class="nt">clearing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">marking</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">expected_update_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">  </span><span class="c1"># 不检查更新率</span>
+<span class="w">    </span><span class="nt">observation_persistence</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.0</span><span class="w">  </span><span class="c1"># 立即清除旧数据</span>
+</code></pre></div>
+
+<h3 id="5">5. 多机器人协调失败</h3>
+<p><strong>问题</strong>：多机器人在狭窄空间死锁</p>
+<p><strong>预防措施</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MultiRobotCoordinator</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prevent_deadlock</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># 1. 优先级分配</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assign_dynamic_priorities</span><span class="p">()</span>
+
+        <span class="c1"># 2. 预留时空槽</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reserve_spacetime_slots</span><span class="p">()</span>
+
+        <span class="c1"># 3. 死锁检测</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">detect_circular_wait</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">break_deadlock_by_backoff</span><span class="p">()</span>
+</code></pre></div>
+
+<h2 id="_37">最佳实践检查清单</h2>
+<h3 id="_38">系统设计审查</h3>
+<ul>
+<li>[ ] <strong>导航需求分析</strong></li>
+<li>环境类型（结构化/非结构化）</li>
+<li>动态障碍物密度</li>
+<li>精度要求 vs 速度要求</li>
+<li>
+<p>安全等级要求</p>
+</li>
+<li>
+<p>[ ] <strong>算法选择</strong></p>
+</li>
+<li>全局规划器适配环境特点</li>
+<li>控制器匹配机器人运动学</li>
+<li>
+<p>恢复策略覆盖所有失败模式</p>
+</li>
+<li>
+<p>[ ] <strong>参数调优</strong></p>
+</li>
+<li>代价地图分辨率与计算能力平衡</li>
+<li>控制频率满足实时要求</li>
+<li>安全距离考虑最坏情况</li>
+</ul>
+<h3 id="_39">实施检查</h3>
+<ul>
+<li>[ ] <strong>行为树设计</strong></li>
+<li>无死锁和无限循环</li>
+<li>恢复行为有重试限制</li>
+<li>
+<p>关键动作有超时保护</p>
+</li>
+<li>
+<p>[ ] <strong>性能优化</strong></p>
+</li>
+<li>CPU 使用率 &lt; 80%</li>
+<li>规划延迟 &lt; 100ms</li>
+<li>
+<p>控制频率 ≥ 20Hz</p>
+</li>
+<li>
+<p>[ ] <strong>安全机制</strong></p>
+</li>
+<li>紧急停止始终可用</li>
+<li>多层碰撞检测</li>
+<li>速度限制动态调整</li>
+</ul>
+<h3 id="_40">测试验证</h3>
+<ul>
+<li>[ ] <strong>单元测试</strong></li>
+<li>各规划器独立测试</li>
+<li>控制器极限情况测试</li>
+<li>
+<p>恢复行为触发测试</p>
+</li>
+<li>
+<p>[ ] <strong>集成测试</strong></p>
+</li>
+<li>长时间运行稳定性</li>
+<li>多机器人协调测试</li>
+<li>
+<p>异常情况处理测试</p>
+</li>
+<li>
+<p>[ ] <strong>现场测试</strong></p>
+</li>
+<li>真实环境性能验证</li>
+<li>人机交互安全性</li>
+<li>边缘情况处理能力</li>
+</ul>
+<h3 id="_41">部署运维</h3>
+<ul>
+<li>[ ] <strong>监控指标</strong></li>
+<li>导航成功率</li>
+<li>平均完成时间</li>
+<li>
+<p>碰撞/近失事件统计</p>
+</li>
+<li>
+<p>[ ] <strong>日志记录</strong></p>
+</li>
+<li>关键决策点记录</li>
+<li>异常情况详细日志</li>
+<li>
+<p>性能指标时序数据</p>
+</li>
+<li>
+<p>[ ] <strong>更新维护</strong></p>
+</li>
+<li>参数版本控制</li>
+<li>A/B 测试框架</li>
+<li>回滚机制准备</li>
+</ul>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter11.html" class="nav-link prev">← 第 11 章：SLAM 与定位系统</a><a href="chapter13.html" class="nav-link next">第 13 章：ros2_control 框架 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

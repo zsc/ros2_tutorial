@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 16 章：安全性与诊断系统</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="16">第 16 章：安全性与诊断系统</h1>
+<p>本章深入探讨 ROS2 的安全性框架和诊断系统，这是构建可靠、安全的机器人系统的关键基础。我们将从 SROS2（Secure ROS2）安全框架开始，学习如何通过访问控制、加密和认证机制保护机器人系统。随后深入诊断系统的设计与实现，探讨如何监控系统健康状态、检测故障并执行恢复策略。通过医疗机器人 ISO 13485 合规案例，展示如何在实际产业中实施安全和诊断机制。最后讨论功能安全认证和 SIL（Safety Integrity Level）级别，为安全关键型应用提供指导。</p>
+<h2 id="161-sros2">16.1 SROS2 安全框架概述</h2>
+<h3 id="1611">16.1.1 安全威胁模型</h3>
+<p>在分布式机器人系统中，主要面临以下安全威胁：</p>
+<ol>
+<li><strong>数据窃听</strong>（Eavesdropping）：未授权节点监听敏感数据</li>
+<li><strong>数据篡改</strong>（Tampering）：恶意修改传输中的消息</li>
+<li><strong>身份伪造</strong>（Spoofing）：冒充合法节点发送虚假命令</li>
+<li><strong>拒绝服务</strong>（DoS）：通过大量请求使系统瘫痪</li>
+<li><strong>权限提升</strong>（Privilege Escalation）：获取超出授权的系统访问</li>
+</ol>
+<h3 id="1612-sros2">16.1.2 SROS2 架构</h3>
+<p>SROS2 建立在 DDS Security 规范之上，提供端到端的安全保护：</p>
+<div class="codehilite"><pre><span></span><code>┌─────────────────────────────────────────────┐
+│             Application Layer                │
+├─────────────────────────────────────────────┤
+│              ROS2 Middleware                 │
+├─────────────────────────────────────────────┤
+│            DDS Security Plugins              │
+│  ┌──────────┬──────────┬──────────────┐    │
+│  │Auth Plugin│Access    │Crypto Plugin │    │
+│  │          │Control   │              │    │
+│  └──────────┴──────────┴──────────────┘    │
+├─────────────────────────────────────────────┤
+│              DDS Core                        │
+└─────────────────────────────────────────────┘
+</code></pre></div>
+
+<h3 id="1613">16.1.3 安全策略配置</h3>
+<p>SROS2 使用 XML 格式的安全策略文件定义访问权限：</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;dds</span><span class="w"> </span><span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><span class="nt">&gt;</span>
+<span class="w">  </span><span class="nt">&lt;permissions&gt;</span>
+<span class="w">    </span><span class="nt">&lt;grant</span><span class="w"> </span><span class="na">name=</span><span class="s">&quot;robot_controller_permissions&quot;</span><span class="nt">&gt;</span>
+<span class="w">      </span><span class="nt">&lt;subject_name&gt;</span>CN=robot_controller<span class="nt">&lt;/subject_name&gt;</span>
+<span class="w">      </span><span class="nt">&lt;validity&gt;</span>
+<span class="w">        </span><span class="nt">&lt;not_before&gt;</span>2024-01-01T00:00:00<span class="nt">&lt;/not_before&gt;</span>
+<span class="w">        </span><span class="nt">&lt;not_after&gt;</span>2025-01-01T00:00:00<span class="nt">&lt;/not_after&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/validity&gt;</span>
+<span class="w">      </span><span class="nt">&lt;allow_rule&gt;</span>
+<span class="w">        </span><span class="nt">&lt;domains&gt;</span>
+<span class="w">          </span><span class="nt">&lt;id&gt;</span>0<span class="nt">&lt;/id&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/domains&gt;</span>
+<span class="w">        </span><span class="nt">&lt;publish&gt;</span>
+<span class="w">          </span><span class="nt">&lt;topics&gt;</span>
+<span class="w">            </span><span class="nt">&lt;topic&gt;</span>/cmd_vel<span class="nt">&lt;/topic&gt;</span>
+<span class="w">            </span><span class="nt">&lt;topic&gt;</span>/robot_status<span class="nt">&lt;/topic&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/topics&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/publish&gt;</span>
+<span class="w">        </span><span class="nt">&lt;subscribe&gt;</span>
+<span class="w">          </span><span class="nt">&lt;topics&gt;</span>
+<span class="w">            </span><span class="nt">&lt;topic&gt;</span>/sensors/*<span class="nt">&lt;/topic&gt;</span>
+<span class="w">          </span><span class="nt">&lt;/topics&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/subscribe&gt;</span>
+<span class="w">      </span><span class="nt">&lt;/allow_rule&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/grant&gt;</span>
+<span class="w">  </span><span class="nt">&lt;/permissions&gt;</span>
+<span class="nt">&lt;/dds&gt;</span>
+</code></pre></div>
+
+<h3 id="1614">16.1.4 密钥管理</h3>
+<p>SROS2 采用 PKI（Public Key Infrastructure）体系：</p>
+<ol>
+<li><strong>证书颁发机构（CA）</strong>：签发和管理数字证书</li>
+<li><strong>节点证书</strong>：每个节点拥有唯一的身份证书</li>
+<li><strong>密钥存储</strong>：使用密钥库（keystore）安全存储私钥</li>
+<li><strong>证书链验证</strong>：通过证书链验证节点身份</li>
+</ol>
+<p>密钥生成和分发流程：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 初始化安全目录</span>
+ros2<span class="w"> </span>security<span class="w"> </span>create_keystore<span class="w"> </span>demo_keystore
+
+<span class="c1"># 生成根证书</span>
+ros2<span class="w"> </span>security<span class="w"> </span>create_key<span class="w"> </span>demo_keystore<span class="w"> </span>/robot_controller
+
+<span class="c1"># 创建权限文件</span>
+ros2<span class="w"> </span>security<span class="w"> </span>create_permission<span class="w"> </span>demo_keystore<span class="w"> </span>/robot_controller<span class="w"> </span>permissions.xml
+
+<span class="c1"># 签发证书</span>
+ros2<span class="w"> </span>security<span class="w"> </span>create_enclave<span class="w"> </span>demo_keystore<span class="w"> </span>/robot_controller
+</code></pre></div>
+
+<h2 id="162">16.2 访问控制与加密机制</h2>
+<h3 id="1621">16.2.1 细粒度访问控制</h3>
+<p>SROS2 支持多层次的访问控制：</p>
+<ol>
+<li><strong>域级别控制</strong>：限制节点可以加入的 DDS 域</li>
+<li><strong>话题级别控制</strong>：精确控制发布和订阅权限</li>
+<li><strong>服务级别控制</strong>：限制服务调用权限</li>
+<li><strong>参数级别控制</strong>：保护敏感参数访问</li>
+</ol>
+<p>访问控制矩阵示例：</p>
+<p>| 节点 | 发布权限 | 订阅权限 | 服务调用权限 |</p>
+<table>
+<thead>
+<tr>
+<th>节点</th>
+<th>发布权限</th>
+<th>订阅权限</th>
+<th>服务调用权限</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>navigation</td>
+<td>/cmd_vel, /path</td>
+<td>/scan, /map</td>
+<td>/get_plan</td>
+</tr>
+<tr>
+<td>perception</td>
+<td>/scan, /pointcloud</td>
+<td>/camera/*</td>
+<td>-</td>
+</tr>
+<tr>
+<td>controller</td>
+<td>/joint_states</td>
+<td>/cmd_vel</td>
+<td>/emergency_stop</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1622">16.2.2 加密算法选择</h3>
+<p>SROS2 支持多种加密算法，根据性能和安全需求选择：</p>
+<div class="codehilite"><pre><span></span><code>对称加密（数据加密）:
+
+- AES-128-GCM: 标准选择，平衡性能与安全
+- AES-256-GCM: 高安全级别，适用于敏感数据
+- ChaCha20-Poly1305: ARM 设备优化
+
+非对称加密（密钥交换）:
+
+- RSA-2048: 广泛支持，兼容性好
+- ECDSA-P256: 更小的密钥尺寸，更高效
+- EdDSA: 现代算法，抗侧信道攻击
+
+哈希算法（完整性验证）:
+
+- SHA-256: 标准选择
+- SHA-384/512: 更高安全级别
+- BLAKE2: 高性能替代方案
+</code></pre></div>
+
+<h3 id="1623">16.2.3 传输层安全</h3>
+<p>数据传输安全机制：</p>
+<ol>
+<li><strong>消息认证码（MAC）</strong>：验证消息完整性和来源</li>
+<li><strong>序列号</strong>：防止重放攻击</li>
+<li><strong>时间戳</strong>：确保消息时效性</li>
+<li><strong>加密有效载荷</strong>：保护敏感数据内容</li>
+</ol>
+<p>性能影响分析：</p>
+<div class="codehilite"><pre><span></span><code>基准测试（1000字节消息，1kHz 发布频率）：
+
+- 无安全保护: 延迟 0.5ms, CPU 5%
+- 仅认证: 延迟 0.7ms, CPU 8%
+- 认证+加密: 延迟 1.2ms, CPU 15%
+- 完整安全套件: 延迟 1.5ms, CPU 20%
+</code></pre></div>
+
+<h3 id="1624">16.2.4 安全通信建立流程</h3>
+<p>节点间安全通信的建立过程：</p>
+<div class="codehilite"><pre><span></span><code>Node A                          Node B
+  │                               │
+  ├──────[1. Discovery]──────────&gt;│
+  │   (广播节点信息和证书)         │
+  │                               │
+  │&lt;─────[2. Authentication]──────┤
+  │   (相互验证身份证书)           │
+  │                               │
+  ├──────[3. Key Exchange]───────&gt;│
+  │   (协商会话密钥)              │
+  │                               │
+  │&lt;─────[4. Access Check]────────┤
+  │   (验证访问权限)              │
+  │                               │
+  ├══════[5. Secure Channel]══════┤
+  │   (建立加密通道)              │
+  │                               │
+</code></pre></div>
+
+<h2 id="163">16.3 诊断系统架构</h2>
+<h3 id="1631">16.3.1 诊断消息标准</h3>
+<p>ROS2 诊断系统使用标准化的消息格式：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># diagnostic_msgs/msg/DiagnosticStatus.msg</span>
+<span class="n">byte</span> <span class="n">OK</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">byte</span> <span class="n">WARN</span><span class="o">=</span><span class="mi">1</span>
+<span class="n">byte</span> <span class="n">ERROR</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">byte</span> <span class="n">STALE</span><span class="o">=</span><span class="mi">3</span>
+
+<span class="n">byte</span> <span class="n">level</span>              <span class="c1"># 诊断级别</span>
+<span class="n">string</span> <span class="n">name</span>            <span class="c1"># 组件名称</span>
+<span class="n">string</span> <span class="n">message</span>         <span class="c1"># 人类可读的状态描述</span>
+<span class="n">string</span> <span class="n">hardware_id</span>     <span class="c1"># 硬件标识符</span>
+<span class="n">KeyValue</span><span class="p">[]</span> <span class="n">values</span>      <span class="c1"># 键值对形式的详细信息</span>
+</code></pre></div>
+
+<h3 id="1632">16.3.2 诊断聚合器设计</h3>
+<p>诊断聚合器（Diagnostic Aggregator）收集和组织诊断信息：</p>
+<div class="codehilite"><pre><span></span><code><span class="w">                    </span><span class="err">┌──────────────────┐</span>
+<span class="w">                    </span><span class="err">│</span><span class="w"> </span><span class="n">Diagnostic</span><span class="w">       </span><span class="err">│</span>
+<span class="w">                    </span><span class="err">│</span><span class="w"> </span><span class="n">Aggregator</span><span class="w">       </span><span class="err">│</span>
+<span class="w">                    </span><span class="err">└────────┬─────────┘</span>
+<span class="w">                             </span><span class="err">│</span>
+<span class="w">            </span><span class="err">┌────────────────┼────────────────┐</span>
+<span class="w">            </span><span class="err">│</span><span class="w">                </span><span class="err">│</span><span class="w">                </span><span class="err">│</span>
+<span class="w">     </span><span class="err">┌──────┴──────┐</span><span class="w">  </span><span class="err">┌─────┴──────┐</span><span class="w">  </span><span class="err">┌─────┴──────┐</span>
+<span class="w">     </span><span class="err">│</span><span class="w"> </span><span class="n">Hardware</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Software</span><span class="w">   </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Network</span><span class="w">    </span><span class="err">│</span>
+<span class="w">     </span><span class="err">│</span><span class="w"> </span><span class="n">Monitor</span><span class="w">     </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Monitor</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Monitor</span><span class="w">    </span><span class="err">│</span>
+<span class="w">     </span><span class="err">└──────┬──────┘</span><span class="w">  </span><span class="err">└─────┬──────┘</span><span class="w">  </span><span class="err">└─────┬──────┘</span>
+<span class="w">            </span><span class="err">│</span><span class="w">                </span><span class="err">│</span><span class="w">                </span><span class="err">│</span>
+<span class="w">     </span><span class="err">┌──────┴──────┐</span><span class="w">  </span><span class="err">┌─────┴──────┐</span><span class="w">  </span><span class="err">┌─────┴──────┐</span>
+<span class="w">     </span><span class="err">│</span><span class="w"> </span><span class="n">CPU</span><span class="w"> </span><span class="n">Temp</span><span class="w">    </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Node</span><span class="w">       </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Latency</span><span class="w">    </span><span class="err">│</span>
+<span class="w">     </span><span class="err">│</span><span class="w"> </span><span class="n">Memory</span><span class="w">      </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Frequency</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Packet</span><span class="w"> </span><span class="n">Loss</span><span class="err">│</span>
+<span class="w">     </span><span class="err">│</span><span class="w"> </span><span class="n">Disk</span><span class="w"> </span><span class="n">Space</span><span class="w">  </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Queue</span><span class="w"> </span><span class="n">Size</span><span class="w"> </span><span class="err">│</span><span class="w">  </span><span class="err">│</span><span class="w"> </span><span class="n">Bandwidth</span><span class="w">  </span><span class="err">│</span>
+<span class="w">     </span><span class="err">└─────────────┘</span><span class="w">  </span><span class="err">└────────────┘</span><span class="w">  </span><span class="err">└────────────┘</span>
+</code></pre></div>
+
+<h3 id="1633">16.3.3 诊断更新器实现</h3>
+<p>节点级诊断更新器示例：</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">rclpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rclpy.node</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">diagnostic_updater</span><span class="w"> </span><span class="kn">import</span> <span class="n">Updater</span><span class="p">,</span> <span class="n">FunctionDiagnosticTask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">diagnostic_msgs.msg</span><span class="w"> </span><span class="kn">import</span> <span class="n">DiagnosticStatus</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SensorNode</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;sensor_node&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 初始化诊断更新器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updater</span> <span class="o">=</span> <span class="n">Updater</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updater</span><span class="o">.</span><span class="n">setHardwareID</span><span class="p">(</span><span class="s2">&quot;sensor_001&quot;</span><span class="p">)</span>
+
+        <span class="c1"># 添加诊断任务</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updater</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Sensor Connection&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_connection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updater</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Data Rate&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_data_rate</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updater</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Data Quality&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_data_quality</span><span class="p">)</span>
+
+        <span class="c1"># 诊断更新定时器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_timer</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">updater</span><span class="o">.</span><span class="n">update</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_connection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensor_connected</span><span class="p">:</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">DiagnosticStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="s2">&quot;Connected&quot;</span><span class="p">)</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Port&quot;</span><span class="p">,</span> <span class="s2">&quot;/dev/ttyUSB0&quot;</span><span class="p">)</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Baud Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;115200&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">DiagnosticStatus</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="s2">&quot;Disconnected&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_data_rate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stat</span><span class="p">):</span>
+        <span class="n">rate</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_data_rate</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">rate</span> <span class="o">&gt;</span> <span class="mi">90</span><span class="p">:</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">DiagnosticStatus</span><span class="o">.</span><span class="n">OK</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">rate</span> <span class="o">&gt;</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">DiagnosticStatus</span><span class="o">.</span><span class="n">WARN</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Hz (Low)&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">stat</span><span class="o">.</span><span class="n">summary</span><span class="p">(</span><span class="n">DiagnosticStatus</span><span class="o">.</span><span class="n">ERROR</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Hz (Critical)&quot;</span><span class="p">)</span>
+        <span class="n">stat</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Expected Rate&quot;</span><span class="p">,</span> <span class="s2">&quot;100 Hz&quot;</span><span class="p">)</span>
+        <span class="n">stat</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">&quot;Actual Rate&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rate</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2"> Hz&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1634">16.3.4 诊断分析器配置</h3>
+<p>配置诊断分析器以组织和解释诊断信息：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># diagnostic_aggregator.yaml</span>
+<span class="nt">analyzers</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">sensors</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/AnalyzerGroup</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Sensors</span>
+<span class="w">    </span><span class="nt">analyzers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">lidar</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/GenericAnalyzer</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LiDAR</span>
+<span class="w">        </span><span class="nt">contains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;lidar&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+
+<span class="w">      </span><span class="nt">cameras</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/GenericAnalyzer</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Cameras</span>
+<span class="w">        </span><span class="nt">contains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;camera&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">        </span><span class="nt">remove_prefix</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">camera_</span>
+
+<span class="w">  </span><span class="nt">motors</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/GenericAnalyzer</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Motors</span>
+<span class="w">    </span><span class="nt">contains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;motor&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;joint&#39;</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">expected</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;motor_left&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;motor_right&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="w">  </span><span class="nt">system</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/AnalyzerGroup</span>
+<span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">System</span>
+<span class="w">    </span><span class="nt">analyzers</span><span class="p">:</span>
+<span class="w">      </span><span class="nt">cpu</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/GenericAnalyzer</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CPU</span>
+<span class="w">        </span><span class="nt">contains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;cpu&#39;</span><span class="p p-Indicator">]</span>
+
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span>
+<span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">diagnostic_aggregator/GenericAnalyzer</span>
+<span class="w">        </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Memory</span>
+<span class="w">        </span><span class="nt">contains</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;memory&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;ram&#39;</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<h2 id="164">16.4 系统监控与故障处理</h2>
+<h3 id="1641">16.4.1 健康监控指标</h3>
+<p>关键系统健康指标：</p>
+<ol>
+<li>
+<p><strong>性能指标</strong>
+   - CPU 使用率和温度
+   - 内存使用和交换空间
+   - 网络延迟和丢包率
+   - 磁盘 I/O 和空间使用</p>
+</li>
+<li>
+<p><strong>ROS2 特定指标</strong>
+   - 节点存活状态
+   - 话题发布频率
+   - 消息队列深度
+   - 回调执行时间</p>
+</li>
+<li>
+<p><strong>硬件指标</strong>
+   - 传感器数据率
+   - 执行器响应时间
+   - 电池电压和电流
+   - 温度传感器读数</p>
+</li>
+</ol>
+<p>监控数据流水线：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">数据采集</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="err">预处理</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="err">异常检测</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="err">告警生成</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="err">响应执行</span>
+<span class="w">    </span><span class="err">│</span><span class="w">          </span><span class="err">│</span><span class="w">           </span><span class="err">│</span><span class="w">            </span><span class="err">│</span><span class="w">           </span><span class="err">│</span>
+<span class="w">  </span><span class="n">Metrics</span><span class="w">   </span><span class="n">Filter</span><span class="w">    </span><span class="n">Threshold</span><span class="w">     </span><span class="n">Priority</span><span class="w">    </span><span class="n">Action</span>
+<span class="w"> </span><span class="n">Collector</span><span class="w">  </span><span class="o">&amp;</span><span class="w"> </span><span class="n">Aggregate</span><span class="w">  </span><span class="n">Check</span><span class="w">      </span><span class="n">Assignment</span><span class="w">  </span><span class="n">Trigger</span>
+</code></pre></div>
+
+<h3 id="1642">16.4.2 故障检测算法</h3>
+<p>实现多层次故障检测：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FaultDetector</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thresholds</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;cpu_usage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;warn&#39;</span><span class="p">:</span> <span class="mi">70</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="mi">90</span><span class="p">},</span>
+            <span class="s1">&#39;memory_usage&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;warn&#39;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="mi">95</span><span class="p">},</span>
+            <span class="s1">&#39;message_delay&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;warn&#39;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>  <span class="c1"># ms</span>
+            <span class="s1">&#39;packet_loss&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;warn&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;error&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>  <span class="c1"># percentage</span>
+        <span class="p">}</span>
+
+        <span class="c1"># 滑动窗口用于趋势分析</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">history_window</span> <span class="o">=</span> <span class="mi">60</span>  <span class="c1"># seconds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metric_history</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="n">deque</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">detect_anomalies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+        <span class="n">anomalies</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># 阈值检测</span>
+        <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">metric</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">thresholds</span><span class="p">:</span>
+                <span class="n">level</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_threshold</span><span class="p">(</span><span class="n">metric</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">level</span><span class="p">:</span>
+                    <span class="n">anomalies</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">metric</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+
+        <span class="c1"># 趋势分析</span>
+        <span class="n">trends</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analyze_trends</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="n">anomalies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">trends</span><span class="p">)</span>
+
+        <span class="c1"># 相关性分析</span>
+        <span class="n">correlations</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_correlations</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="n">anomalies</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">correlations</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">anomalies</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">analyze_trends</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metrics</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;检测异常趋势&quot;&quot;&quot;</span>
+        <span class="n">trends</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">metric</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">metrics</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metric_history</span><span class="p">[</span><span class="n">metric</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric_history</span><span class="p">[</span><span class="n">metric</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="c1"># 计算变化率</span>
+                <span class="n">recent</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metric_history</span><span class="p">[</span><span class="n">metric</span><span class="p">])[</span><span class="o">-</span><span class="mi">10</span><span class="p">:]</span>
+                <span class="n">slope</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">polyfit</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">recent</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">slope</span><span class="p">)</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_trend_threshold</span><span class="p">(</span><span class="n">metric</span><span class="p">):</span>
+                    <span class="n">trends</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">metric</span><span class="p">,</span> <span class="s1">&#39;trend&#39;</span><span class="p">,</span> <span class="n">slope</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">trends</span>
+</code></pre></div>
+
+<h3 id="1643">16.4.3 故障恢复策略</h3>
+<p>分级故障恢复机制：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">RecoveryManager</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recovery_strategies</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;node_crash&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">restart_node</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">restart_with_safe_config</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_backup_node</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;sensor_failure&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset_sensor</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">use_sensor_fusion</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">enable_degraded_mode</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;network_issue&#39;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reset_network_interface</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_backup_network</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">enable_offline_mode</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_recovery</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fault_type</span><span class="p">,</span> <span class="n">context</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;执行分级恢复策略&quot;&quot;&quot;</span>
+        <span class="n">strategies</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">recovery_strategies</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">fault_type</span><span class="p">,</span> <span class="p">[])</span>
+
+        <span class="k">for</span> <span class="n">strategy</span> <span class="ow">in</span> <span class="n">strategies</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attempting recovery: </span><span class="si">{</span><span class="n">strategy</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">success</span> <span class="o">=</span> <span class="n">strategy</span><span class="p">(</span><span class="n">context</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recovery successful: </span><span class="si">{</span><span class="n">strategy</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Recovery failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+
+<h3 id="1644">16.4.4 故障隔离与降级</h3>
+<p>实现优雅降级机制：</p>
+<div class="codehilite"><pre><span></span><code>正常模式 (100% 功能)
+    │
+    ├─&gt; 性能降级模式 (80% 功能)
+    │   - 降低传感器采样率
+    │   - 简化路径规划算法
+    │   - 减少并发任务
+    │
+    ├─&gt; 安全模式 (50% 功能)
+    │   - 仅保留核心功能
+    │   - 限制运动速度
+    │   - 增加安全边界
+    │
+    └─&gt; 紧急停止模式 (0% 功能)
+
+        - 立即停止所有运动
+        - 保持通信链路
+        - 等待人工干预
+</code></pre></div>
+
+<h2 id="165-iso-13485">16.5 产业案例研究：医疗机器人 ISO 13485 合规</h2>
+<h3 id="1651">16.5.1 项目背景</h3>
+<p>某医疗科技公司开发手术辅助机器人系统，需要满足 ISO 13485 医疗器械质量管理体系和 IEC 62304 医疗器械软件生命周期过程标准。系统包括：</p>
+<ul>
+<li><strong>主控制器</strong>：处理手术规划和机器人控制</li>
+<li><strong>机械臂系统</strong>：7 自由度协作机械臂</li>
+<li><strong>视觉系统</strong>：立体相机和内窥镜集成</li>
+<li><strong>力反馈系统</strong>：6 轴力/力矩传感器</li>
+<li><strong>安全监控系统</strong>：独立的硬件安全回路</li>
+</ul>
+<h3 id="1652">16.5.2 安全需求分析</h3>
+<p>根据 ISO 14971 风险管理标准，识别关键安全需求：</p>
+<ol>
+<li>
+<p><strong>患者安全</strong>
+   - 位置精度：&lt; 0.5mm
+   - 力限制：&lt; 10N
+   - 紧急停止时间：&lt; 100ms</p>
+</li>
+<li>
+<p><strong>数据安全</strong>
+   - 患者数据加密存储
+   - 审计日志完整性
+   - 访问控制和身份认证</p>
+</li>
+<li>
+<p><strong>系统可靠性</strong>
+   - 平均故障间隔时间（MTBF）：&gt; 10000 小时
+   - 故障恢复时间（MTTR）：&lt; 30 分钟
+   - 系统可用性：&gt; 99.9%</p>
+</li>
+</ol>
+<h3 id="1653">16.5.3 安全架构实现</h3>
+<p>分层安全架构设计：</p>
+<div class="codehilite"><pre><span></span><code>┌─────────────────────────────────────────────┐
+│          应用层（手术规划软件）               │
+├─────────────────────────────────────────────┤
+│         安全中间件层（SROS2）                │
+│   - 认证与授权                              │
+│   - 数据加密                                │
+│   - 审计日志                                │
+├─────────────────────────────────────────────┤
+│        实时控制层（RT-PREEMPT）              │
+│   - 确定性调度                              │
+│   - 故障检测                                │
+│   - 安全状态机                              │
+├─────────────────────────────────────────────┤
+│       硬件安全层（Safety PLC）               │
+│   - 紧急停止                                │
+│   - 位置限制                                │
+│   - 力矩限制                                │
+└─────────────────────────────────────────────┘
+</code></pre></div>
+
+<h3 id="1654">16.5.4 诊断系统设计</h3>
+<p>多级诊断系统实现：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MedicalRobotDiagnostics</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># IEC 62304 软件安全分类</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">safety_class</span> <span class="o">=</span> <span class="s2">&quot;Class C&quot;</span>  <span class="c1"># 可能导致死亡或严重伤害</span>
+
+        <span class="c1"># 诊断检查项</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_checks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;critical&#39;</span><span class="p">:</span> <span class="p">[</span>  <span class="c1"># 关键检查，失败立即停止</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_emergency_stop</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_force_limits</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_position_accuracy</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;major&#39;</span><span class="p">:</span> <span class="p">[</span>  <span class="c1"># 主要检查，失败进入安全模式</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_sensor_redundancy</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_communication_integrity</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_power_supply</span>
+            <span class="p">],</span>
+            <span class="s1">&#39;minor&#39;</span><span class="p">:</span> <span class="p">[</span>  <span class="c1"># 次要检查，记录但继续运行</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_temperature</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_network_latency</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">check_log_storage</span>
+            <span class="p">]</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">perform_startup_diagnostics</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;启动时完整诊断检查&quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;passed&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="s1">&#39;critical_failures&#39;</span><span class="p">:</span> <span class="p">[],</span>
+            <span class="s1">&#39;warnings&#39;</span><span class="p">:</span> <span class="p">[]</span>
+        <span class="p">}</span>
+
+        <span class="c1"># 执行所有级别的检查</span>
+        <span class="k">for</span> <span class="n">level</span><span class="p">,</span> <span class="n">checks</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_checks</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">check</span> <span class="ow">in</span> <span class="n">checks</span><span class="p">:</span>
+                <span class="n">status</span> <span class="o">=</span> <span class="n">check</span><span class="p">()</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">status</span><span class="o">.</span><span class="n">ok</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s1">&#39;critical&#39;</span><span class="p">:</span>
+                        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;passed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;critical_failures&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">results</span><span class="p">[</span><span class="s1">&#39;warnings&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">status</span><span class="p">)</span>
+
+        <span class="c1"># 生成诊断报告</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_diagnostic_report</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">results</span>
+</code></pre></div>
+
+<h3 id="1655">16.5.5 审计日志系统</h3>
+<p>符合 21 CFR Part 11 的审计追踪：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">AuditLogger</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_encryption_key</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_encryption_key</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">log_database</span> <span class="o">=</span> <span class="s2">&quot;audit_logs.db&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">log_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event_type</span><span class="p">,</span> <span class="n">user_id</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">details</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;记录审计事件&quot;&quot;&quot;</span>
+        <span class="n">event</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span>
+            <span class="s1">&#39;event_id&#39;</span><span class="p">:</span> <span class="n">uuid</span><span class="o">.</span><span class="n">uuid4</span><span class="p">()</span><span class="o">.</span><span class="n">hex</span><span class="p">,</span>
+            <span class="s1">&#39;event_type&#39;</span><span class="p">:</span> <span class="n">event_type</span><span class="p">,</span>
+            <span class="s1">&#39;user_id&#39;</span><span class="p">:</span> <span class="n">user_id</span><span class="p">,</span>
+            <span class="s1">&#39;action&#39;</span><span class="p">:</span> <span class="n">action</span><span class="p">,</span>
+            <span class="s1">&#39;details&#39;</span><span class="p">:</span> <span class="n">details</span><span class="p">,</span>
+            <span class="s1">&#39;system_state&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">capture_system_state</span><span class="p">()</span>
+        <span class="p">}</span>
+
+        <span class="c1"># 计算事件哈希（防篡改）</span>
+        <span class="n">event</span><span class="p">[</span><span class="s1">&#39;hash&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_hash</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="c1"># 加密敏感信息</span>
+        <span class="n">encrypted_event</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encrypt_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+        <span class="c1"># 存储到防篡改数据库</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">store_event</span><span class="p">(</span><span class="n">encrypted_event</span><span class="p">)</span>
+
+        <span class="c1"># 实时同步到备份服务器</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">replicate_to_backup</span><span class="p">(</span><span class="n">encrypted_event</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1656">16.5.6 性能验证结果</h3>
+<p>系统验证测试结果：</p>
+<p>| 测试项目 | 要求 | 实测值 | 结果 |</p>
+<table>
+<thead>
+<tr>
+<th>测试项目</th>
+<th>要求</th>
+<th>实测值</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>位置精度</td>
+<td>&lt; 0.5mm</td>
+<td>0.3mm</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>力控制精度</td>
+<td>&lt; 10N</td>
+<td>8.5N</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>紧急停止时间</td>
+<td>&lt; 100ms</td>
+<td>85ms</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>加密延迟</td>
+<td>&lt; 5ms</td>
+<td>3.2ms</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>诊断检测时间</td>
+<td>&lt; 1s</td>
+<td>0.8s</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>系统启动时间</td>
+<td>&lt; 60s</td>
+<td>45s</td>
+<td>✓</td>
+</tr>
+<tr>
+<td>MTBF</td>
+<td>&gt; 10000h</td>
+<td>12500h</td>
+<td>✓</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1657">16.5.7 经验教训</h3>
+<ol>
+<li><strong>早期安全设计</strong>：安全不是事后添加的功能，需要从架构设计开始考虑</li>
+<li><strong>冗余设计</strong>：关键功能采用双重或三重冗余</li>
+<li><strong>独立验证</strong>：安全功能需要独立的验证和确认（V&amp;V）</li>
+<li><strong>持续监控</strong>：部署后的持续监控和维护同样重要</li>
+<li><strong>文档完整性</strong>：医疗认证需要完整的设计、测试和验证文档</li>
+</ol>
+<h2 id="166-sil">16.6 高级话题：功能安全与 SIL 认证</h2>
+<h3 id="1661">16.6.1 功能安全标准体系</h3>
+<p>机器人系统相关的功能安全标准：</p>
+<div class="codehilite"><pre><span></span><code><span class="nv">IEC</span><span class="w"> </span><span class="mi">61508</span><span class="w"> </span><span class="ss">(</span>基础标准<span class="ss">)</span>
+<span class="w">    </span>│
+<span class="w">    </span>├─<span class="o">&gt;</span><span class="w"> </span><span class="nv">ISO</span><span class="w"> </span><span class="mi">13849</span><span class="w"> </span><span class="ss">(</span>机械安全<span class="ss">)</span>
+<span class="w">    </span>│<span class="w">   </span>└─<span class="o">&gt;</span><span class="w"> </span><span class="nv">Performance</span><span class="w"> </span><span class="nv">Level</span><span class="w"> </span><span class="ss">(</span><span class="nv">PL</span><span class="ss">)</span>
+<span class="w">    </span>│
+<span class="w">    </span>├─<span class="o">&gt;</span><span class="w"> </span><span class="nv">IEC</span><span class="w"> </span><span class="mi">62061</span><span class="w"> </span><span class="ss">(</span>机械电气安全<span class="ss">)</span>
+<span class="w">    </span>│<span class="w">   </span>└─<span class="o">&gt;</span><span class="w"> </span><span class="nv">SIL</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="nv">machinery</span>
+<span class="w">    </span>│
+<span class="w">    </span>├─<span class="o">&gt;</span><span class="w"> </span><span class="nv">ISO</span><span class="w"> </span><span class="mi">26262</span><span class="w"> </span><span class="ss">(</span>汽车功能安全<span class="ss">)</span>
+<span class="w">    </span>│<span class="w">   </span>└─<span class="o">&gt;</span><span class="w"> </span><span class="nv">ASIL</span><span class="w"> </span><span class="nv">levels</span>
+<span class="w">    </span>│
+<span class="w">    </span>└─<span class="o">&gt;</span><span class="w"> </span><span class="nv">IEC</span><span class="w"> </span><span class="mi">62304</span><span class="w"> </span><span class="ss">(</span>医疗软件<span class="ss">)</span>
+<span class="w">        </span>└─<span class="o">&gt;</span><span class="w"> </span><span class="nv">Software</span><span class="w"> </span><span class="nv">Safety</span><span class="w"> </span><span class="nv">Classes</span>
+</code></pre></div>
+
+<h3 id="1662-sil">16.6.2 SIL 等级确定</h3>
+<p>安全完整性等级（Safety Integrity Level）评估：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_sil_level</span><span class="p">(</span><span class="n">severity</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">probability</span><span class="p">,</span> <span class="n">avoidance</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    根据风险参数计算 SIL 等级</span>
+<span class="sd">    severity: 严重程度 (S1-S4)</span>
+<span class="sd">    frequency: 暴露频率 (F1-F2)</span>
+<span class="sd">    probability: 危险概率 (P1-P2)</span>
+<span class="sd">    avoidance: 避免可能性 (A1-A2)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">risk_matrix</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="p">(</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL0&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL0&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL1&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S1&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL1&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL1&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL1&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL2&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S2&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL2&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL2&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P1&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL2&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL3&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S3&#39;</span><span class="p">,</span> <span class="s1">&#39;F1&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL3&#39;</span><span class="p">,</span>
+        <span class="p">(</span><span class="s1">&#39;S4&#39;</span><span class="p">,</span> <span class="s1">&#39;F2&#39;</span><span class="p">,</span> <span class="s1">&#39;P2&#39;</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">):</span> <span class="s1">&#39;SIL4&#39;</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">risk_matrix</span><span class="o">.</span><span class="n">get</span><span class="p">((</span><span class="n">severity</span><span class="p">,</span> <span class="n">frequency</span><span class="p">,</span> <span class="n">probability</span><span class="p">,</span> <span class="n">avoidance</span><span class="p">),</span> <span class="s1">&#39;SIL3&#39;</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1663">16.6.3 安全功能实现</h3>
+<p>SIL2 级别的安全功能实现示例：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SafetyFunction</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sil_level</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sil_level</span> <span class="o">=</span> <span class="n">sil_level</span>
+
+        <span class="c1"># 根据 SIL 级别配置冗余</span>
+        <span class="k">if</span> <span class="n">sil_level</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redundancy</span> <span class="o">=</span> <span class="mi">2</span>  <span class="c1"># 双通道</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">redundancy</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># 单通道</span>
+
+        <span class="c1"># 诊断覆盖率要求</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagnostic_coverage</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="mi">1</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>  <span class="c1"># SIL1: 60% 最小诊断覆盖率</span>
+            <span class="mi">2</span><span class="p">:</span> <span class="mi">90</span><span class="p">,</span>  <span class="c1"># SIL2: 90% </span>
+            <span class="mi">3</span><span class="p">:</span> <span class="mi">99</span><span class="p">,</span>  <span class="c1"># SIL3: 99%</span>
+            <span class="mi">4</span><span class="p">:</span> <span class="mi">99</span>   <span class="c1"># SIL4: 99%</span>
+        <span class="p">}[</span><span class="n">sil_level</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">execute_safety_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;执行安全功能，带冗余和诊断&quot;&quot;&quot;</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="c1"># 冗余执行</span>
+        <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">redundancy</span><span class="p">):</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">process_channel</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">channel</span><span class="p">)</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+        <span class="c1"># 结果比较（2oo2 或 1oo2 投票）</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">redundancy</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare_results</span><span class="p">(</span><span class="n">results</span><span class="p">):</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trigger_safe_state</span><span class="p">()</span>
+
+        <span class="c1"># 诊断检查</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">perform_diagnostics</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">trigger_safe_state</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</code></pre></div>
+
+<h3 id="1664">16.6.4 故障概率计算</h3>
+<p>计算危险故障概率（PFH - Probability of Dangerous Failure per Hour）：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calculate_pfh</span><span class="p">(</span><span class="n">lambda_d</span><span class="p">,</span> <span class="n">dc</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">t_proof</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    计算每小时危险故障概率</span>
+<span class="sd">    lambda_d: 危险故障率</span>
+<span class="sd">    dc: 诊断覆盖率 (0-1)</span>
+<span class="sd">    beta: 共因故障比例 (0-1)</span>
+<span class="sd">    t_proof: 验证测试间隔（小时）</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># 单通道 PFH</span>
+    <span class="n">pfh_single</span> <span class="o">=</span> <span class="n">lambda_d</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dc</span><span class="p">)</span> <span class="o">*</span> <span class="n">t_proof</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="c1"># 考虑共因故障的双通道 PFH</span>
+    <span class="n">pfh_dual</span> <span class="o">=</span> <span class="p">(</span><span class="n">beta</span> <span class="o">*</span> <span class="n">lambda_d</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">lambda_d</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">t_proof</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dc</span><span class="p">)</span>
+
+    <span class="c1"># SIL 等级对应的 PFH 限值</span>
+    <span class="n">sil_limits</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="mi">1</span><span class="p">:</span> <span class="mf">1e-5</span><span class="p">,</span>  <span class="c1"># SIL1: 10^-5 到 10^-6</span>
+        <span class="mi">2</span><span class="p">:</span> <span class="mf">1e-6</span><span class="p">,</span>  <span class="c1"># SIL2: 10^-6 到 10^-7</span>
+        <span class="mi">3</span><span class="p">:</span> <span class="mf">1e-7</span><span class="p">,</span>  <span class="c1"># SIL3: 10^-7 到 10^-8</span>
+        <span class="mi">4</span><span class="p">:</span> <span class="mf">1e-8</span>   <span class="c1"># SIL4: 10^-8 到 10^-9</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">pfh_dual</span>
+</code></pre></div>
+
+<h3 id="1665-v-model">16.6.5 软件开发生命周期（V-Model）</h3>
+<p>符合 IEC 61508-3 的软件开发流程：</p>
+<div class="codehilite"><pre><span></span><code>需求分析 ────────────────────&gt; 验收测试
+    │                              ↑
+    ↓                              │
+系统设计 ──────────────&gt; 系统集成测试
+    │                          ↑
+    ↓                          │
+模块设计 ────────────&gt; 模块测试
+    │                      ↑
+    ↓                      │
+编码实现 ──────────&gt; 单元测试
+
+每个阶段的安全活动：
+
+- 需求：HAZOP, FMEA
+- 设计：FTA, 安全分析
+- 实现：编码标准（MISRA）
+- 测试：覆盖率分析，故障注入
+- 验证：独立 V&amp;V
+</code></pre></div>
+
+<h3 id="1666">16.6.6 认证流程与文档</h3>
+<p>SIL 认证所需文档清单：</p>
+<ol>
+<li><strong>安全需求规范（SRS）</strong></li>
+<li><strong>安全验证计划（SVP）</strong></li>
+<li><strong>硬件故障容错分析</strong></li>
+<li><strong>软件安全分析报告</strong></li>
+<li><strong>测试报告与覆盖率分析</strong></li>
+<li><strong>功能安全管理计划</strong></li>
+<li><strong>安全案例（Safety Case）</strong></li>
+</ol>
+<p>认证机构评估要点：</p>
+<ul>
+<li>开发流程符合性</li>
+<li>技术措施充分性</li>
+<li>文档完整性和一致性</li>
+<li>独立评估和测试</li>
+<li>配置管理和变更控制</li>
+</ul>
+<h2 id="167">16.7 本章小结</h2>
+<p>本章系统介绍了 ROS2 的安全性和诊断系统，涵盖了从基础安全框架到高级功能安全认证的完整知识体系：</p>
+<h3 id="_1">关键概念总结</h3>
+<ol>
+<li>
+<p><strong>SROS2 安全框架</strong>
+   - 基于 DDS Security 规范，提供认证、授权、加密三重保护
+   - PKI 体系管理节点身份和访问权限
+   - 支持细粒度的话题、服务、参数访问控制</p>
+</li>
+<li>
+<p><strong>加密机制</strong>
+   - 对称加密保护数据传输：AES-GCM、ChaCha20-Poly1305
+   - 非对称加密进行密钥交换：RSA、ECDSA、EdDSA
+   - 消息认证码（MAC）确保完整性</p>
+</li>
+<li>
+<p><strong>诊断系统架构</strong>
+   - 标准化的诊断消息格式
+   - 分层的诊断聚合器设计
+   - 实时健康监控和故障检测</p>
+</li>
+<li>
+<p><strong>故障处理策略</strong>
+   - 多级故障恢复机制
+   - 优雅降级和故障隔离
+   - 紧急停止和安全状态转换</p>
+</li>
+<li>
+<p><strong>功能安全认证</strong>
+   - SIL 等级评估：$\text{SIL} = f(\text{Severity}, \text{Frequency}, \text{Probability}, \text{Avoidance})$
+   - 危险故障概率计算：$\text{PFH} = \beta \lambda_d + (1-\beta)\lambda_d^2 t_{proof}(1-DC)$
+   - V-Model 开发流程和独立验证</p>
+</li>
+</ol>
+<h3 id="_2">关键公式回顾</h3>
+<ol>
+<li>
+<p><strong>诊断覆盖率（DC）</strong>：
+   $$DC = \frac{\lambda_{dd}}{\lambda_{d}} = \frac{\text{检测到的危险故障率}}{\text{总危险故障率}}$$</p>
+</li>
+<li>
+<p><strong>平均危险故障时间（MTTF_d）</strong>：
+$$MTTF_d = \frac{1}{\lambda_d \cdot (1 - DC)}$$</p>
+</li>
+<li>
+<p><strong>系统可用性（A）</strong>：
+$$A = \frac{MTBF}{MTBF + MTTR} = \frac{\text{平均故障间隔时间}}{\text{平均故障间隔时间} + \text{平均修复时间}}$$</p>
+</li>
+<li>
+<p><strong>冗余系统可靠性（并联）</strong>：
+$$R_{system} = 1 - \prod_{i=1}^{n}(1 - R_i)$$</p>
+</li>
+<li>
+<p><strong>共因故障因子（β）影响</strong>：
+$$\lambda_{sys} = \beta \cdot \lambda + (1-\beta) \cdot \frac{\lambda^2}{2 \cdot \mu}$$</p>
+</li>
+</ol>
+<h2 id="168">16.8 练习题</h2>
+<h3 id="_3">基础题</h3>
+<p><strong>练习 16.1</strong>：设计一个 SROS2 权限配置文件，实现以下访问控制要求：</p>
+<ul>
+<li>navigation 节点可以发布 /cmd_vel，订阅 /scan 和 /map</li>
+<li>perception 节点可以发布 /scan，但不能控制机器人运动</li>
+<li>monitor 节点只能订阅所有话题，不能发布</li>
+</ul>
+<details>
+<summary>提示（Hint）</summary>
+<p>考虑使用 XML 格式的 permissions 文件，为每个节点创建独立的 grant 规则。注意区分 publish 和 subscribe 权限。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>创建三个独立的 grant 规则，每个节点对应一个。navigation 节点同时具有发布和订阅权限，perception 只有特定发布权限，monitor 使用通配符订阅所有话题。关键是正确设置 subject_name 和 allow_rule。</p>
+</details>
+<p><strong>练习 16.2</strong>：实现一个诊断更新器，监控机器人电池状态，包括电压、电流、温度和剩余容量。当电压低于 20% 时报警，低于 10% 时触发紧急模式。</p>
+<details>
+<summary>提示（Hint）</summary>
+<p>使用 diagnostic_updater 包，创建多个诊断任务函数。根据不同阈值设置 DiagnosticStatus 的级别（OK、WARN、ERROR）。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>创建 BatteryDiagnostics 类，包含 check_voltage、check_current、check_temperature 和 check_capacity 四个诊断函数。使用阈值判断设置不同的诊断级别，并在 summary 中提供清晰的状态描述。</p>
+</details>
+<p><strong>练习 16.3</strong>：计算一个安全功能的 SIL 等级，给定条件：可能造成永久性伤害（S3），频繁暴露（F2），危险发生概率高（P2），几乎不可能避免（A2）。</p>
+<details>
+<summary>提示（Hint）</summary>
+<p>使用 IEC 61508 的风险图方法，根据四个参数查找对应的 SIL 等级。S3 表示严重伤害，需要较高的安全完整性。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>根据风险矩阵，S3 + F2 + P2 + A2 的组合对应 SIL3 级别。这意味着该安全功能的危险故障概率必须低于 10^-7 到 10^-8 每小时。</p>
+</details>
+<h3 id="_4">挑战题</h3>
+<p><strong>练习 16.4</strong>：设计一个分布式故障检测系统，能够检测以下异常：</p>
+<ul>
+<li>节点崩溃（3 秒内无心跳）</li>
+<li>网络分区（节点间通信中断）</li>
+<li>时钟不同步（时间偏差 &gt; 100ms）</li>
+<li>Byzantine 故障（节点发送矛盾信息）</li>
+</ul>
+<details>
+<summary>提示（Hint）</summary>
+<p>考虑使用心跳机制、双向通信检查、NTP 时间同步监控，以及消息一致性验证。可能需要实现投票机制处理 Byzantine 故障。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>实现包含四个子系统：1) 心跳监控器使用定时器和超时检测；2) 网络拓扑监控通过全连接测试检测分区；3) 时间同步监控比较各节点时间戳；4) Byzantine 检测通过 2f+1 投票机制，其中 f 是可容忍的故障节点数。整体采用事件驱动架构，异常触发相应的恢复策略。</p>
+</details>
+<p><strong>练习 16.5</strong>：为一个协作机器人设计符合 ISO 10218 标准的安全系统，包括：</p>
+<ul>
+<li>速度和分离监控（SSM）</li>
+<li>功率和力限制（PFL）  </li>
+<li>安全额定监控停止（SOS）</li>
+<li>紧急停止（Category 0 和 Category 1）</li>
+</ul>
+<details>
+<summary>提示（Hint）</summary>
+<p>ISO 10218 定义了工业机器人的安全要求。考虑传感器冗余、安全控制器、独立的安全回路。Category 0 是立即断电，Category 1 是受控停止后断电。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>设计包括：1) SSM 使用激光扫描仪和视觉系统监控人机距离，动态调整速度；2) PFL 通过力/力矩传感器和电流监控限制接触力在 150N 以下；3) SOS 保持位置伺服但禁止运动命令；4) 紧急停止采用硬件安全继电器，Category 0 直接切断动力，Category 1 先减速到零再断电。所有安全功能通过独立的安全 PLC 实现，满足 PLd 性能等级。</p>
+</details>
+<p><strong>练习 16.6</strong>：实现一个符合 21 CFR Part 11 的审计日志系统，要求：</p>
+<ul>
+<li>电子签名和时间戳</li>
+<li>防篡改（使用哈希链）</li>
+<li>自动备份和归档</li>
+<li>审计追踪报告生成</li>
+</ul>
+<details>
+<summary>提示（Hint）</summary>
+<p>21 CFR Part 11 是 FDA 对电子记录和电子签名的规定。需要考虑数据完整性、可追溯性和长期保存。哈希链确保记录顺序不可更改。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>实现包括：1) 每条记录包含 UUID、时间戳、用户 ID、操作描述和数字签名；2) 使用 SHA-256 哈希链，每条记录包含前一条的哈希值；3) 实时复制到远程服务器，定期归档到不可更改介质；4) 提供查询接口生成合规报告，包括用户活动、系统变更、数据访问等。所有敏感数据使用 AES-256 加密存储。</p>
+</details>
+<p><strong>练习 16.7</strong>：分析一个 SIL2 安全功能的硬件架构，给定组件故障率：</p>
+<ul>
+<li>传感器：λ = 10^-6 /h，诊断覆盖率 90%</li>
+<li>逻辑控制器：λ = 5×10^-7 /h，诊断覆盖率 95%</li>
+<li>执行器：λ = 2×10^-6 /h，诊断覆盖率 85%
+计算系统的 PFH 值，并判断是否满足 SIL2 要求。</li>
+</ul>
+<details>
+<summary>提示（Hint）</summary>
+<p>SIL2 要求 PFH 在 10^-6 到 10^-7 之间。考虑使用 1oo2（二选一）或 2oo3（三选二）架构提高可靠性。共因故障因子 β 通常取 0.02-0.1。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>单通道 PFH = (10^-6 × 0.1) + (5×10^-7 × 0.05) + (2×10^-6 × 0.15) = 4.25×10^-7 /h，满足 SIL2 但接近上限。采用 1oo2 架构并考虑 β=0.05 的共因故障，双通道 PFH ≈ 0.05×4.25×10^-7 + 0.95×(4.25×10^-7)^2×8760×0.5 ≈ 2.13×10^-8 /h，充分满足 SIL2 要求并接近 SIL3。</p>
+</details>
+<p><strong>练习 16.8</strong>：设计一个机器人系统的优雅降级策略，系统包含激光雷达、相机、IMU、编码器四个传感器。定义在不同传感器失效组合下的降级模式和功能限制。</p>
+<details>
+<summary>提示（Hint）</summary>
+<p>考虑传感器的互补性和冗余性。激光雷达和相机可以互为备份进行障碍检测，IMU 和编码器可以融合进行定位。定义清晰的降级级别和触发条件。</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>降级策略分为四级：</p>
+<ol>
+<li><strong>正常模式</strong>（所有传感器正常）：全功能，最高速度 2m/s</li>
+<li><strong>降级 1</strong>（相机或激光雷达之一失效）：降速至 1m/s，增加安全距离，使用剩余传感器</li>
+<li><strong>降级 2</strong>（IMU 或编码器失效，或感知传感器都失效）：仅限已知环境导航，速度 0.5m/s，禁止自主探索</li>
+<li><strong>安全模式</strong>（多重传感器失效）：立即停止，仅允许远程遥控，等待维护</li>
+</ol>
+<p>每级转换包含状态验证、参数调整和操作员通知。实现自动恢复检测，传感器恢复后可以升级运行模式。</p>
+</details>
+<h2 id="169">16.9 常见陷阱与错误</h2>
+<h3 id="_5">安全配置错误</h3>
+<ol>
+<li>
+<p><strong>过度信任默认配置</strong>
+   - ❌ 错误：直接使用 DDS 默认配置投入生产
+   - ✅ 正确：明确配置安全策略，禁用不必要的功能</p>
+</li>
+<li>
+<p><strong>密钥管理不当</strong>
+   - ❌ 错误：将私钥存储在代码仓库中
+   - ✅ 正确：使用密钥管理服务，定期轮换密钥</p>
+</li>
+<li>
+<p><strong>权限过度授予</strong>
+   - ❌ 错误：为方便起见给节点授予所有权限
+   - ✅ 正确：遵循最小权限原则，仅授予必要权限</p>
+</li>
+</ol>
+<h3 id="_6">诊断系统陷阱</h3>
+<ol start="4">
+<li>
+<p><strong>诊断频率不当</strong>
+   - ❌ 错误：诊断检查频率过高导致系统负载过重
+   - ✅ 正确：根据故障模式合理设置检查频率</p>
+</li>
+<li>
+<p><strong>忽略诊断级联</strong>
+   - ❌ 错误：独立处理每个诊断信息
+   - ✅ 正确：识别故障传播路径，避免误报风暴</p>
+</li>
+<li>
+<p><strong>缺少诊断自检</strong>
+   - ❌ 错误：假设诊断系统本身不会失效
+   - ✅ 正确：实现诊断系统的自检机制</p>
+</li>
+</ol>
+<h3 id="_7">故障处理误区</h3>
+<ol start="7">
+<li>
+<p><strong>恢复策略过于激进</strong>
+   - ❌ 错误：检测到故障立即重启所有服务
+   - ✅ 正确：分级恢复，从最小干预开始</p>
+</li>
+<li>
+<p><strong>忽略故障关联性</strong>
+   - ❌ 错误：独立处理每个故障
+   - ✅ 正确：分析根因，避免处理症状而非原因</p>
+</li>
+<li>
+<p><strong>缺少故障隔离</strong>
+   - ❌ 错误：一个模块故障导致整个系统崩溃
+   - ✅ 正确：实现故障域隔离，限制故障传播</p>
+</li>
+</ol>
+<h3 id="_8">功能安全误解</h3>
+<ol start="10">
+<li>
+<p><strong>混淆 SIL 和 PL</strong></p>
+<ul>
+<li>❌ 错误：将 IEC 61508 的 SIL 和 ISO 13849 的 PL 互换使用</li>
+<li>✅ 正确：根据应用领域选择正确的标准</li>
+</ul>
+</li>
+<li>
+<p><strong>忽视共因故障</strong></p>
+<ul>
+<li>❌ 错误：简单复制组件认为就实现了冗余</li>
+<li>✅ 正确：考虑共因故障，实现多样性设计</li>
+</ul>
+</li>
+<li>
+<p><strong>过度依赖软件安全</strong></p>
+<ul>
+<li>❌ 错误：仅通过软件实现所有安全功能</li>
+<li>✅ 正确：关键安全功能需要独立的硬件回路</li>
+</ul>
+</li>
+</ol>
+<h2 id="1610">16.10 最佳实践检查清单</h2>
+<h3 id="_9">安全架构设计</h3>
+<ul>
+<li>[ ] <strong>威胁建模</strong>：完成 STRIDE 或 DREAD 威胁分析</li>
+<li>[ ] <strong>安全边界</strong>：明确定义可信区域和攻击面</li>
+<li>[ ] <strong>深度防御</strong>：实现多层安全控制</li>
+<li>[ ] <strong>最小权限</strong>：每个组件仅获得必要权限</li>
+<li>[ ] <strong>安全默认</strong>：默认配置即为安全配置</li>
+</ul>
+<h3 id="_10">加密与认证</h3>
+<ul>
+<li>[ ] <strong>算法选择</strong>：使用标准加密算法，避免自创算法</li>
+<li>[ ] <strong>密钥长度</strong>：RSA ≥ 2048 位，AES ≥ 128 位</li>
+<li>[ ] <strong>密钥轮换</strong>：建立定期密钥更新机制</li>
+<li>[ ] <strong>证书管理</strong>：实现证书过期和撤销处理</li>
+<li>[ ] <strong>安全存储</strong>：使用 HSM 或 TPM 保护密钥</li>
+</ul>
+<h3 id="_11">诊断系统</h3>
+<ul>
+<li>[ ] <strong>覆盖完整</strong>：所有关键组件都有诊断监控</li>
+<li>[ ] <strong>分级告警</strong>：区分信息、警告、错误、严重级别</li>
+<li>[ ] <strong>可操作性</strong>：诊断信息包含问题描述和建议操作</li>
+<li>[ ] <strong>历史记录</strong>：保存诊断历史用于趋势分析</li>
+<li>[ ] <strong>性能影响</strong>：诊断开销 &lt; 5% CPU 使用率</li>
+</ul>
+<h3 id="_12">故障处理</h3>
+<ul>
+<li>[ ] <strong>故障检测</strong>：检测时间满足安全需求</li>
+<li>[ ] <strong>故障隔离</strong>：防止故障级联传播</li>
+<li>[ ] <strong>故障恢复</strong>：定义清晰的恢复策略和优先级</li>
+<li>[ ] <strong>故障记录</strong>：详细记录故障信息用于分析</li>
+<li>[ ] <strong>故障测试</strong>：通过故障注入验证处理机制</li>
+</ul>
+<h3 id="_13">功能安全合规</h3>
+<ul>
+<li>[ ] <strong>标准选择</strong>：选择适用的功能安全标准</li>
+<li>[ ] <strong>危害分析</strong>：完成 HAZOP 或 FMEA 分析</li>
+<li>[ ] <strong>安全需求</strong>：明确定义安全功能和性能</li>
+<li>[ ] <strong>验证计划</strong>：制定全面的验证和确认计划</li>
+<li>[ ] <strong>文档完整</strong>：维护完整的安全生命周期文档</li>
+</ul>
+<h3 id="_14">运维和维护</h3>
+<ul>
+<li>[ ] <strong>监控告警</strong>：7×24 小时系统监控</li>
+<li>[ ] <strong>应急响应</strong>：建立安全事件响应流程</li>
+<li>[ ] <strong>定期审计</strong>：定期安全审计和渗透测试</li>
+<li>[ ] <strong>补丁管理</strong>：及时应用安全补丁</li>
+<li>[ ] <strong>备份恢复</strong>：定期测试备份和恢复流程</li>
+</ul>
+<h3 id="_15">培训和意识</h3>
+<ul>
+<li>[ ] <strong>安全培训</strong>：团队成员接受安全培训</li>
+<li>[ ] <strong>操作手册</strong>：提供清晰的安全操作指南</li>
+<li>[ ] <strong>事故学习</strong>：从事故中学习并改进</li>
+<li>[ ] <strong>安全文化</strong>：建立安全优先的团队文化</li>
+<li>[ ] <strong>持续改进</strong>：定期评审和改进安全措施</li>
+</ul>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter15.html" class="nav-link prev">← 第 15 章：实时系统与性能优化</a><a href="chapter17.html" class="nav-link next">第 17 章：仿真集成（Gazebo/Ignition） →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 15 章：实时系统与性能优化</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="15">第 15 章：实时系统与性能优化</h1>
+<p>本章深入探讨 ROS2 的实时性能优化技术，涵盖从内核配置到 DDS 调优的全栈优化策略。我们将学习如何构建满足硬实时要求的机器人控制系统，实现微秒级延迟和确定性行为。对于需要高频控制循环的应用（如手术机器人、高速机械臂），这些技术至关重要。</p>
+<h2 id="151">15.1 实时内核配置</h2>
+<h3 id="1511-linux">15.1.1 Linux 实时性基础</h3>
+<p>标准 Linux 内核采用分时调度策略，无法保证任务的确定性执行时间。实时性要求系统能够在规定的时间约束内响应外部事件，这对机器人控制至关重要。</p>
+<p>实时系统分为两类：</p>
+<ul>
+<li><strong>硬实时（Hard Real-time）</strong>：必须在截止时间内完成任务，否则会导致系统失败</li>
+<li><strong>软实时（Soft Real-time）</strong>：偶尔错过截止时间可以接受，但会降低系统性能</li>
+</ul>
+<p>实时性的关键指标：</p>
+<ul>
+<li><strong>延迟（Latency）</strong>：从事件发生到系统响应的时间</li>
+<li><strong>抖动（Jitter）</strong>：延迟的变化范围</li>
+<li><strong>确定性（Determinism）</strong>：系统行为的可预测性</li>
+</ul>
+<h3 id="1512-preempt-rt">15.1.2 PREEMPT-RT 补丁</h3>
+<p>PREEMPT-RT 是 Linux 内核的实时补丁，将标准内核转换为完全可抢占的实时内核。</p>
+<p>主要特性：</p>
+<ol>
+<li><strong>完全内核抢占</strong>：除了少数关键区域，内核代码可以被高优先级任务抢占</li>
+<li><strong>中断线程化</strong>：将硬中断处理程序转换为内核线程</li>
+<li><strong>优先级继承</strong>：解决优先级反转问题</li>
+<li><strong>高精度定时器</strong>：提供纳秒级定时精度</li>
+</ol>
+<p>安装配置步骤：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 下载内核源码和 RT 补丁</span>
+wget<span class="w"> </span>https://kernel.org/pub/linux/kernel/v5.x/linux-5.15.tar.xz
+wget<span class="w"> </span>https://kernel.org/pub/linux/kernel/projects/rt/5.15/patch-5.15-rt.patch.xz
+
+<span class="c1"># 应用补丁</span>
+<span class="nb">cd</span><span class="w"> </span>linux-5.15
+xzcat<span class="w"> </span>../patch-5.15-rt.patch.xz<span class="w"> </span><span class="p">|</span><span class="w"> </span>patch<span class="w"> </span>-p1
+
+<span class="c1"># 配置内核</span>
+make<span class="w"> </span>menuconfig
+<span class="c1"># 启用: Processor type -&gt; Preemption Model -&gt; Fully Preemptible Kernel (RT)</span>
+<span class="c1"># 禁用: Processor type -&gt; CPU Frequency scaling</span>
+<span class="c1"># 禁用: Power management options</span>
+</code></pre></div>
+
+<h3 id="1513">15.1.3 实时调度策略</h3>
+<p>Linux 提供多种调度策略，ROS2 节点可以根据需求选择：</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;sched.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">RealtimeNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">RealtimeNode</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;realtime_node&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置实时调度策略</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">sched_param</span><span class="w"> </span><span class="n">param</span><span class="p">;</span>
+<span class="w">        </span><span class="n">param</span><span class="p">.</span><span class="n">sched_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">80</span><span class="p">;</span><span class="w">  </span><span class="c1">// 优先级范围 1-99</span>
+
+<span class="w">        </span><span class="c1">// SCHED_FIFO: 先进先出实时调度</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pthread_setschedparam</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">(),</span><span class="w"> </span><span class="n">SCHED_FIFO</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">RCLCPP_WARN</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;Failed to set realtime priority&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 锁定内存，防止页面交换</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">mlockall</span><span class="p">(</span><span class="n">MCL_CURRENT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MCL_FUTURE</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">RCLCPP_WARN</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="s">&quot;Failed to lock memory&quot;</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>调度策略对比：</p>
+<ul>
+<li><strong>SCHED_OTHER</strong>：默认分时调度，适合普通任务</li>
+<li><strong>SCHED_FIFO</strong>：实时先进先出，同优先级任务按顺序执行</li>
+<li><strong>SCHED_RR</strong>：实时轮转，同优先级任务时间片轮转</li>
+<li><strong>SCHED_DEADLINE</strong>：基于截止时间的调度，保证任务在截止时间前完成</li>
+</ul>
+<h3 id="1514-cpu">15.1.4 CPU 隔离与亲和性</h3>
+<p>将特定 CPU 核心专门用于实时任务，避免系统任务干扰：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 内核启动参数，隔离 CPU 2-3</span>
+<span class="nv">isolcpus</span><span class="o">=</span><span class="m">2</span>,3<span class="w"> </span><span class="nv">nohz_full</span><span class="o">=</span><span class="m">2</span>,3<span class="w"> </span><span class="nv">rcu_nocbs</span><span class="o">=</span><span class="m">2</span>,3
+
+<span class="c1"># 设置 CPU 亲和性</span>
+taskset<span class="w"> </span>-c<span class="w"> </span><span class="m">2</span><span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>realtime_node
+</code></pre></div>
+
+<p>C++ 代码中设置 CPU 亲和性：</p>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">setCPUAffinity</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">cpu_id</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">cpu_set_t</span><span class="w"> </span><span class="n">cpuset</span><span class="p">;</span>
+<span class="w">    </span><span class="n">CPU_ZERO</span><span class="p">(</span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">);</span>
+<span class="w">    </span><span class="n">CPU_SET</span><span class="p">(</span><span class="n">cpu_id</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">);</span>
+
+<span class="w">    </span><span class="n">pthread_t</span><span class="w"> </span><span class="kr">thread</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">pthread_self</span><span class="p">();</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">pthread_setaffinity_np</span><span class="p">(</span><span class="kr">thread</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="kt">cpu_set_t</span><span class="p">),</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cpuset</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">cerr</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;Error setting CPU affinity&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="152">15.2 内存管理与零拷贝</h2>
+<h3 id="1521">15.2.1 内存分配策略</h3>
+<p>动态内存分配是实时系统的主要延迟源。ROS2 提供多种策略避免运行时分配：</p>
+<p><strong>预分配内存池</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;rclcpp/strategies/allocator_memory_strategy.hpp&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PreallocatedNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// 预分配消息池</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">MessageAllocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">allocator</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">MessageDeleter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">allocator</span><span class="o">::</span><span class="n">Deleter</span><span class="o">&lt;</span><span class="n">MessageAllocator</span><span class="p">,</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">    </span><span class="k">using</span><span class="w"> </span><span class="n">MessageUniquePtr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PointCloud2</span><span class="p">,</span><span class="w"> </span><span class="n">MessageDeleter</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="w">    </span><span class="n">MessageAllocator</span><span class="w"> </span><span class="n">message_allocator_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">LoanedMessage</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">PointCloud2</span><span class="o">&gt;</span><span class="w"> </span><span class="n">loaned_msg_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">PreallocatedNode</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;preallocated_node&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 使用自定义内存策略</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">allocator</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">CustomAllocator</span><span class="o">&lt;</span><span class="kt">void</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">memory_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_shared</span><span class="o">&lt;</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">memory_strategies</span><span class="o">::</span><span class="n">allocator_memory_strategy</span><span class="o">::</span><span class="n">AllocatorMemoryStrategy</span><span class="o">&lt;&gt;&gt;</span><span class="p">(</span><span class="n">allocator</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">ExecutorOptions</span><span class="w"> </span><span class="n">options</span><span class="p">;</span>
+<span class="w">        </span><span class="n">options</span><span class="p">.</span><span class="n">memory_strategy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">memory_strategy</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><strong>自定义分配器</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PoolAllocator</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">pool_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">queue</span><span class="o">&lt;</span><span class="n">T</span><span class="o">*&gt;</span><span class="w"> </span><span class="n">available_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="w"> </span><span class="n">mutex_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">PoolAllocator</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">pool_size</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">pool_</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">pool_size</span><span class="p">);</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">pool_size</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">pool_</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">();</span>
+<span class="w">            </span><span class="n">available_</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="o">&amp;</span><span class="n">pool_</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">allocate</span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">mutex_</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">available_</span><span class="p">.</span><span class="n">empty</span><span class="p">()</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">throw</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">bad_alloc</span><span class="p">();</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">available_</span><span class="p">.</span><span class="n">front</span><span class="p">();</span>
+<span class="w">        </span><span class="n">available_</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+<span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">ptr</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">deallocate</span><span class="p">(</span><span class="n">T</span><span class="o">*</span><span class="w"> </span><span class="n">ptr</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">lock_guard</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">mutex</span><span class="o">&gt;</span><span class="w"> </span><span class="n">lock</span><span class="p">(</span><span class="n">mutex_</span><span class="p">);</span>
+<span class="w">        </span><span class="n">available_</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">ptr</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="1522">15.2.2 零拷贝通信</h3>
+<p>零拷贝通信避免了消息在发布者和订阅者之间的内存复制，显著降低延迟和 CPU 使用。</p>
+<p><strong>Loaned Messages（借用消息）</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ZeroCopyPublisher</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Publisher</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Image</span><span class="o">&gt;::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">publisher_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">ZeroCopyPublisher</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;zero_copy_publisher&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 启用零拷贝</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">QoS</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<span class="w">        </span><span class="n">publisher_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Image</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;image&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">publishImage</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 从 DDS 层借用消息缓冲区</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">loaned_msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">publisher_</span><span class="o">-&gt;</span><span class="n">borrow_loaned_message</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// 直接在借用的内存中填充数据</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loaned_msg</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1920</span><span class="p">;</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">height</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1080</span><span class="p">;</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">encoding</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;rgb8&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="n">msg</span><span class="p">.</span><span class="n">data</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">1920</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">1080</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+<span class="w">        </span><span class="c1">// 填充图像数据...</span>
+
+<span class="w">        </span><span class="c1">// 发布时不需要拷贝</span>
+<span class="w">        </span><span class="n">publisher_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">loaned_msg</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="1523">15.2.3 共享内存传输</h3>
+<p>使用共享内存在同一主机上的节点间传输大数据：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 配置 Cyclone DDS 使用共享内存</span>
+<span class="c1">// cyclone_dds.xml</span>
+<span class="o">&lt;</span><span class="n">Domain</span><span class="w"> </span><span class="n">id</span><span class="o">=</span><span class="s">&quot;any&quot;</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">SharedMemory</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="n">Enable</span><span class="o">&gt;</span><span class="nb">true</span><span class="o">&lt;/</span><span class="n">Enable</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="n">LogLevel</span><span class="o">&gt;</span><span class="n">info</span><span class="o">&lt;/</span><span class="n">LogLevel</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;/</span><span class="n">SharedMemory</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">Domain</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<p><strong>Iceoryx 集成</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 rmw_iceoryx_cpp 实现真正的零拷贝</span>
+<span class="k">export</span><span class="w"> </span><span class="n">RMW_IMPLEMENTATION</span><span class="o">=</span><span class="n">rmw_iceoryx_cpp</span>
+
+<span class="c1">// 启动 RouDi (Iceoryx 守护进程)</span>
+<span class="n">iox</span><span class="o">-</span><span class="n">roudi</span>
+
+<span class="c1">// 运行节点</span>
+<span class="n">ros2</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">my_package</span><span class="w"> </span><span class="n">zero_copy_node</span>
+</code></pre></div>
+
+<h3 id="1524">15.2.4 内存布局优化</h3>
+<p>优化数据结构以提高缓存命中率：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 缓存友好的数据结构</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">alignas</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="w"> </span><span class="n">CacheAlignedData</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 64 字节缓存行对齐</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">float</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="o">&gt;</span><span class="w"> </span><span class="n">values</span><span class="p">;</span><span class="w">      </span><span class="c1">// 热数据放在一起</span>
+
+<span class="w">    </span><span class="c1">// 填充以避免伪共享</span>
+<span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="n">padding</span><span class="p">[</span><span class="mi">64</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">values</span><span class="p">)];</span>
+<span class="p">};</span>
+
+<span class="c1">// Structure of Arrays (SoA) vs Array of Structures (AoS)</span>
+<span class="c1">// SoA 更适合 SIMD 优化</span>
+<span class="k">struct</span><span class="w"> </span><span class="nc">PointCloudSoA</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="w"> </span><span class="n">z</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">uint8_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">intensity</span><span class="p">;</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="nf">processPoints</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// SIMD 友好的内存访问模式</span>
+<span class="w">        </span><span class="cp">#pragma omp simd</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">size_t</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">x</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span>
+<span class="w">            </span><span class="n">y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span>
+<span class="w">            </span><span class="n">z</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*=</span><span class="w"> </span><span class="mf">2.0f</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2 id="153-dds">15.3 DDS 调优</h2>
+<h3 id="1531-qos">15.3.1 QoS 策略优化</h3>
+<p>Quality of Service (QoS) 配置直接影响通信性能：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">OptimizedNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">OptimizedNode</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;optimized_node&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 实时性优化的 QoS 配置</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">QoS</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">KeepLast</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="w">            </span><span class="p">.</span><span class="n">reliability</span><span class="p">(</span><span class="n">RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT</span><span class="p">)</span><span class="w">  </span><span class="c1">// 低延迟</span>
+<span class="w">            </span><span class="p">.</span><span class="n">durability</span><span class="p">(</span><span class="n">RMW_QOS_POLICY_DURABILITY_VOLATILE</span><span class="p">)</span><span class="w">       </span><span class="c1">// 不持久化</span>
+<span class="w">            </span><span class="p">.</span><span class="n">deadline</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span><span class="w">              </span><span class="c1">// 截止时间</span>
+<span class="w">            </span><span class="p">.</span><span class="n">lifespan</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">100</span><span class="p">));</span><span class="w">            </span><span class="c1">// 消息生存期</span>
+
+<span class="w">        </span><span class="c1">// 历史深度为 1，减少内存使用</span>
+<span class="w">        </span><span class="n">qos</span><span class="p">.</span><span class="n">keep_last</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 创建发布者</span>
+<span class="w">        </span><span class="n">publisher_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Float64</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;data&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p>QoS 策略选择指南：</p>
+<ul>
+<li><strong>Reliability</strong>：</li>
+<li>BEST_EFFORT：最低延迟，允许丢包</li>
+<li>RELIABLE：保证送达，延迟较高</li>
+<li><strong>History</strong>：</li>
+<li>KEEP_LAST(1)：只保留最新消息，适合实时控制</li>
+<li>KEEP_ALL：保留所有消息，适合数据记录</li>
+<li><strong>Durability</strong>：</li>
+<li>VOLATILE：不保存历史消息</li>
+<li>TRANSIENT_LOCAL：为后加入的订阅者保留消息</li>
+</ul>
+<h3 id="1532-dds">15.3.2 DDS 实现选择与配置</h3>
+<p>不同 DDS 实现有不同的性能特点：</p>
+<p><strong>Fast DDS (默认)</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- fastrtps.xml --&gt;</span>
+<span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;</span>
+<span class="nt">&lt;profiles</span><span class="w"> </span><span class="na">xmlns=</span><span class="s">&quot;http://www.eprosima.com/XMLSchemas/fastRTPS_Profiles&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;participant</span><span class="w"> </span><span class="na">profile_name=</span><span class="s">&quot;participant_profile&quot;</span><span class="w"> </span><span class="na">is_default_profile=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;rtps&gt;</span>
+<span class="w">            </span><span class="nt">&lt;builtin&gt;</span>
+<span class="w">                </span><span class="nt">&lt;discovery_config&gt;</span>
+<span class="w">                    </span><span class="nt">&lt;leaseDuration&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;sec&gt;</span>1<span class="nt">&lt;/sec&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;nanosec&gt;</span>0<span class="nt">&lt;/nanosec&gt;</span>
+<span class="w">                    </span><span class="nt">&lt;/leaseDuration&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/discovery_config&gt;</span>
+<span class="w">                </span><span class="nt">&lt;metatrafficUnicastLocatorList&gt;</span>
+<span class="w">                    </span><span class="nt">&lt;locator&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;udpv4&gt;</span>
+<span class="w">                            </span><span class="nt">&lt;address&gt;</span>127.0.0.1<span class="nt">&lt;/address&gt;</span>
+<span class="w">                        </span><span class="nt">&lt;/udpv4&gt;</span>
+<span class="w">                    </span><span class="nt">&lt;/locator&gt;</span>
+<span class="w">                </span><span class="nt">&lt;/metatrafficUnicastLocatorList&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/builtin&gt;</span>
+<span class="w">            </span><span class="nt">&lt;sendSocketBufferSize&gt;</span>1048576<span class="nt">&lt;/sendSocketBufferSize&gt;</span>
+<span class="w">            </span><span class="nt">&lt;receiveSocketBufferSize&gt;</span>4194304<span class="nt">&lt;/receiveSocketBufferSize&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/rtps&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/participant&gt;</span>
+
+<span class="w">    </span><span class="nt">&lt;data_writer</span><span class="w"> </span><span class="na">profile_name=</span><span class="s">&quot;datawriter_profile&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;historyMemoryPolicy&gt;</span>PREALLOCATED_WITH_REALLOC<span class="nt">&lt;/historyMemoryPolicy&gt;</span>
+<span class="w">        </span><span class="nt">&lt;qos&gt;</span>
+<span class="w">            </span><span class="nt">&lt;publishMode&gt;</span>
+<span class="w">                </span><span class="nt">&lt;kind&gt;</span>ASYNCHRONOUS<span class="nt">&lt;/kind&gt;</span>
+<span class="w">            </span><span class="nt">&lt;/publishMode&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/qos&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/data_writer&gt;</span>
+<span class="nt">&lt;/profiles&gt;</span>
+</code></pre></div>
+
+<p><strong>Cyclone DDS (低延迟优化)</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="cm">&lt;!-- cyclonedds.xml --&gt;</span>
+<span class="nt">&lt;CycloneDDS&gt;</span>
+<span class="w">    </span><span class="nt">&lt;Domain</span><span class="w"> </span><span class="na">id=</span><span class="s">&quot;any&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="nt">&lt;General&gt;</span>
+<span class="w">            </span><span class="nt">&lt;NetworkInterfaceAddress&gt;</span>auto<span class="nt">&lt;/NetworkInterfaceAddress&gt;</span>
+<span class="w">            </span><span class="nt">&lt;MaxMessageSize&gt;</span>65500B<span class="nt">&lt;/MaxMessageSize&gt;</span>
+<span class="w">            </span><span class="nt">&lt;FragmentSize&gt;</span>4000B<span class="nt">&lt;/FragmentSize&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/General&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Tracing&gt;</span>
+<span class="w">            </span><span class="nt">&lt;Verbosity&gt;</span>warning<span class="nt">&lt;/Verbosity&gt;</span>
+<span class="w">            </span><span class="nt">&lt;OutputFile&gt;</span>stdout<span class="nt">&lt;/OutputFile&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Tracing&gt;</span>
+<span class="w">        </span><span class="nt">&lt;Internal&gt;</span>
+<span class="w">            </span><span class="nt">&lt;SocketReceiveBufferSize&gt;</span>4MB<span class="nt">&lt;/SocketReceiveBufferSize&gt;</span>
+<span class="w">            </span><span class="nt">&lt;SocketSendBufferSize&gt;</span>1MB<span class="nt">&lt;/SocketSendBufferSize&gt;</span>
+<span class="w">            </span><span class="nt">&lt;MaxQueuedMessages&gt;</span>500<span class="nt">&lt;/MaxQueuedMessages&gt;</span>
+<span class="w">        </span><span class="nt">&lt;/Internal&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/Domain&gt;</span>
+<span class="nt">&lt;/CycloneDDS&gt;</span>
+</code></pre></div>
+
+<p>性能对比测试：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 测试不同 DDS 实现</span>
+<span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_fastrtps_cpp
+ros2<span class="w"> </span>run<span class="w"> </span>performance_test<span class="w"> </span>perf_test<span class="w"> </span>-c<span class="w"> </span>ROS2<span class="w"> </span>-t<span class="w"> </span>Array1k
+
+<span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_cyclonedds_cpp<span class="w">  </span>
+ros2<span class="w"> </span>run<span class="w"> </span>performance_test<span class="w"> </span>perf_test<span class="w"> </span>-c<span class="w"> </span>ROS2<span class="w"> </span>-t<span class="w"> </span>Array1k
+</code></pre></div>
+
+<h3 id="1533">15.3.3 网络优化</h3>
+<p><strong>UDP 缓冲区调优</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 增加系统 UDP 缓冲区大小</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.rmem_max<span class="o">=</span><span class="m">134217728</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.wmem_max<span class="o">=</span><span class="m">134217728</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.ipv4.udp_mem<span class="o">=</span><span class="s2">&quot;102400 873800 16777216&quot;</span>
+sudo<span class="w"> </span>sysctl<span class="w"> </span>-w<span class="w"> </span>net.core.netdev_max_backlog<span class="o">=</span><span class="m">30000</span>
+
+<span class="c1"># 永久生效</span>
+<span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;net.core.rmem_max=134217728&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/sysctl.conf
+</code></pre></div>
+
+<p><strong>多播配置优化</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 禁用多播发现，使用单播</span>
+<span class="k">export</span><span class="w"> </span><span class="n">ROS_DISCOVERY_SERVER</span><span class="o">=</span><span class="mf">127.0.0.1</span><span class="o">:</span><span class="mi">11811</span>
+
+<span class="c1">// 或配置静态节点</span>
+<span class="o">&lt;</span><span class="n">participant</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;</span><span class="n">rtps</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;</span><span class="n">builtin</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">&lt;</span><span class="n">initialPeersList</span><span class="o">&gt;</span>
+<span class="w">                </span><span class="o">&lt;</span><span class="n">locator</span><span class="o">&gt;</span>
+<span class="w">                    </span><span class="o">&lt;</span><span class="n">udpv4</span><span class="o">&gt;</span>
+<span class="w">                        </span><span class="o">&lt;</span><span class="n">address</span><span class="o">&gt;</span><span class="mf">192.168.1.100</span><span class="o">&lt;/</span><span class="n">address</span><span class="o">&gt;</span>
+<span class="w">                    </span><span class="o">&lt;/</span><span class="n">udpv4</span><span class="o">&gt;</span>
+<span class="w">                </span><span class="o">&lt;/</span><span class="n">locator</span><span class="o">&gt;</span>
+<span class="w">            </span><span class="o">&lt;/</span><span class="n">initialPeersList</span><span class="o">&gt;</span>
+<span class="w">        </span><span class="o">&lt;/</span><span class="n">builtin</span><span class="o">&gt;</span>
+<span class="w">    </span><span class="o">&lt;/</span><span class="n">rtps</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="n">participant</span><span class="o">&gt;</span>
+</code></pre></div>
+
+<h3 id="1534">15.3.4 分区与域隔离</h3>
+<p>使用分区隔离不同子系统的通信：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">PartitionedNode</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">PartitionedNode</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;partitioned_node&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置分区</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">QoS</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 使用 rmw 特定的 QoS 设置分区</span>
+<span class="w">        </span><span class="n">rmw_qos_profile_t</span><span class="w"> </span><span class="n">rmw_qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">qos</span><span class="p">.</span><span class="n">get_rmw_qos_profile</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// 控制系统分区</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">control_pub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Float64</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="s">&quot;control_command&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 感知系统分区  </span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">sensor_sub</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">LaserScan</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="s">&quot;scan&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">,</span>
+<span class="w">            </span><span class="p">[](</span><span class="k">const</span><span class="w"> </span><span class="n">sensor_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">LaserScan</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="c1">// 处理激光数据</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h2 id="154">15.4 性能分析工具</h2>
+<h3 id="1541">15.4.1 系统级性能分析</h3>
+<p><strong>perf 工具</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># CPU 性能分析</span>
+sudo<span class="w"> </span>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>my_node
+sudo<span class="w"> </span>perf<span class="w"> </span>report
+
+<span class="c1"># 缓存命中率分析</span>
+sudo<span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>cache-references,cache-misses<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>my_node
+
+<span class="c1"># 调度延迟分析</span>
+sudo<span class="w"> </span>perf<span class="w"> </span>sched<span class="w"> </span>record<span class="w"> </span>ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>my_node
+sudo<span class="w"> </span>perf<span class="w"> </span>sched<span class="w"> </span>latency
+</code></pre></div>
+
+<p><strong>ftrace 内核跟踪</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 启用函数跟踪</span>
+<span class="nb">echo</span><span class="w"> </span><span class="k">function</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/kernel/debug/tracing/current_tracer
+<span class="nb">echo</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/kernel/debug/tracing/tracing_on
+
+<span class="c1"># 运行节点</span>
+ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>my_node
+
+<span class="c1"># 查看跟踪结果</span>
+cat<span class="w"> </span>/sys/kernel/debug/tracing/trace
+</code></pre></div>
+
+<h3 id="1542-ros2">15.4.2 ROS2 专用工具</h3>
+<p><strong>ros2_tracing (LTTng)</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 在代码中添加跟踪点</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;tracetools/tracetools.h&gt;</span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">myCallback</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">TRACEPOINT</span><span class="p">(</span><span class="n">callback_start</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="k">this</span><span class="p">);</span>
+<span class="w">    </span><span class="c1">// 处理逻辑</span>
+<span class="w">    </span><span class="n">TRACEPOINT</span><span class="p">(</span><span class="n">callback_end</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="k">this</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="c1"># 启动跟踪会话</span>
+ros2<span class="w"> </span>trace<span class="w"> </span>start<span class="w"> </span>my_session
+
+<span class="c1"># 运行节点</span>
+ros2<span class="w"> </span>run<span class="w"> </span>my_package<span class="w"> </span>my_node
+
+<span class="c1"># 停止跟踪</span>
+ros2<span class="w"> </span>trace<span class="w"> </span>stop
+
+<span class="c1"># 分析结果</span>
+babeltrace<span class="w"> </span>~/ros2_tracing/my_session
+</code></pre></div>
+
+<p><strong>ros2 topic延迟测量</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 测量话题延迟</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>delay<span class="w"> </span>/scan
+
+<span class="c1"># 带宽测量</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>bw<span class="w"> </span>/image
+
+<span class="c1"># 频率测量</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>hz<span class="w"> </span>/cmd_vel
+</code></pre></div>
+
+<h3 id="1543">15.4.3 自定义性能监控</h3>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;chrono&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;rclcpp/rclcpp.hpp&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">PerformanceMonitor</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">Metrics</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">message_count</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">total_latency_us</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">max_latency_us</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">uint64_t</span><span class="o">&gt;</span><span class="w"> </span><span class="n">min_latency_us</span><span class="p">{</span><span class="n">UINT64_MAX</span><span class="p">};</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unordered_map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span><span class="w"> </span><span class="n">Metrics</span><span class="o">&gt;</span><span class="w"> </span><span class="n">metrics_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">TimerBase</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">report_timer_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">recordLatency</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="o">&amp;</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">latency_us</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">metrics_</span><span class="p">[</span><span class="n">name</span><span class="p">];</span>
+<span class="w">        </span><span class="n">m</span><span class="p">.</span><span class="n">message_count</span><span class="o">++</span><span class="p">;</span>
+<span class="w">        </span><span class="n">m</span><span class="p">.</span><span class="n">total_latency_us</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">latency_us</span><span class="p">;</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">old_max</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">max_latency_us</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">latency_us</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">old_max</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">               </span><span class="o">!</span><span class="n">m</span><span class="p">.</span><span class="n">max_latency_us</span><span class="p">.</span><span class="n">compare_exchange_weak</span><span class="p">(</span><span class="n">old_max</span><span class="p">,</span><span class="w"> </span><span class="n">latency_us</span><span class="p">));</span>
+
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">old_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">min_latency_us</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="w">        </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">latency_us</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">old_min</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<span class="w">               </span><span class="o">!</span><span class="n">m</span><span class="p">.</span><span class="n">min_latency_us</span><span class="p">.</span><span class="n">compare_exchange_weak</span><span class="p">(</span><span class="n">old_min</span><span class="p">,</span><span class="w"> </span><span class="n">latency_us</span><span class="p">));</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">printReport</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="p">[</span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">metrics_</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">message_count</span><span class="p">.</span><span class="n">load</span><span class="p">();</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">count</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="kt">double</span><span class="w"> </span><span class="n">avg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">m</span><span class="p">.</span><span class="n">total_latency_us</span><span class="p">.</span><span class="n">load</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="p">)</span><span class="n">count</span><span class="p">;</span>
+<span class="w">                </span><span class="n">RCLCPP_INFO</span><span class="p">(</span><span class="n">rclcpp</span><span class="o">::</span><span class="n">get_logger</span><span class="p">(</span><span class="s">&quot;performance&quot;</span><span class="p">),</span>
+<span class="w">                    </span><span class="s">&quot;%s: avg=%.2fus, max=%ldus, min=%ldus, count=%ld&quot;</span><span class="p">,</span>
+<span class="w">                    </span><span class="n">name</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span><span class="w"> </span><span class="n">avg</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">m</span><span class="p">.</span><span class="n">max_latency_us</span><span class="p">.</span><span class="n">load</span><span class="p">(),</span>
+<span class="w">                    </span><span class="n">m</span><span class="p">.</span><span class="n">min_latency_us</span><span class="p">.</span><span class="n">load</span><span class="p">(),</span><span class="w"> </span>
+<span class="w">                    </span><span class="n">count</span><span class="p">);</span>
+<span class="w">            </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="1544">15.4.4 可视化工具</h3>
+<p><strong>PlotJuggler 实时绘图</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 安装</span>
+sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>ros-humble-plotjuggler-ros
+
+<span class="c1"># 启动</span>
+ros2<span class="w"> </span>run<span class="w"> </span>plotjuggler<span class="w"> </span>plotjuggler
+
+<span class="c1"># 发布性能数据</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/performance<span class="w"> </span>std_msgs/Float64MultiArray<span class="w"> </span><span class="s2">&quot;{data: [1.2, 3.4, 5.6]}&quot;</span>
+</code></pre></div>
+
+<p><strong>Trace Compass 分析</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 导入 LTTng 跟踪数据到 Trace Compass</span>
+<span class="c1"># 可视化时间线、延迟分布、CPU 使用率等</span>
+</code></pre></div>
+
+<h2 id="155-1khz">15.5 产业案例研究：手术机器人 1kHz 控制循环实现</h2>
+<h3 id="1551">15.5.1 项目背景</h3>
+<p>某医疗科技公司开发的神经外科手术机器人系统需要实现 1kHz 的控制频率，以确保手术器械的精确定位和稳定控制。系统要求：</p>
+<ul>
+<li><strong>控制周期</strong>：1ms ± 50μs</li>
+<li><strong>端到端延迟</strong>：&lt; 500μs</li>
+<li><strong>位置精度</strong>：&lt; 0.1mm</li>
+<li><strong>力反馈延迟</strong>：&lt; 2ms</li>
+<li><strong>安全认证</strong>：IEC 60601-1 医疗设备标准</li>
+</ul>
+<h3 id="1552">15.5.2 系统架构</h3>
+<div class="codehilite"><pre><span></span><code><span class="w">                    </span>┌─────────────────┐
+<span class="w">                    </span>│<span class="w">  </span>主控制器节点<span class="w">    </span>│
+<span class="w">                    </span>│<span class="w">   </span><span class="ss">(</span><span class="mi">1</span><span class="nv">kHz</span><span class="w"> </span><span class="k">Loop</span><span class="ss">)</span><span class="w">   </span>│
+<span class="w">                    </span>└────────┬────────┘
+<span class="w">                             </span>│
+<span class="w">                 </span>┌───────────┼───────────┐
+<span class="w">                 </span>│<span class="w">           </span>│<span class="w">           </span>│
+<span class="w">         </span>┌───────▼──────┐<span class="w"> </span>┌─▼──┐<span class="w"> </span>┌──────▼──────┐
+<span class="w">         </span>│<span class="w"> </span>运动规划节点<span class="w">  </span>│<span class="w"> </span>│力控│<span class="w"> </span>│<span class="w"> </span>安全监控节点<span class="w"> </span>│
+<span class="w">         </span>│<span class="w">   </span><span class="ss">(</span><span class="mi">100</span><span class="nv">Hz</span><span class="ss">)</span><span class="w">    </span>│<span class="w"> </span>│节点│<span class="w"> </span>│<span class="w">   </span><span class="ss">(</span><span class="mi">1</span><span class="nv">kHz</span><span class="ss">)</span><span class="w">    </span>│
+<span class="w">         </span>└──────────────┘<span class="w"> </span>└────┘<span class="w"> </span>└─────────────┘
+<span class="w">                             </span>│
+<span class="w">                    </span>┌────────▼────────┐
+<span class="w">                    </span>│<span class="w">  </span><span class="nv">EtherCAT</span><span class="w"> </span>总线<span class="w">   </span>│
+<span class="w">                    </span>│<span class="w">     </span><span class="ss">(</span><span class="o">&lt;</span><span class="mi">100</span>μ<span class="nv">s</span><span class="ss">)</span><span class="w">    </span>│
+<span class="w">                    </span>└────────┬────────┘
+<span class="w">                             </span>│
+<span class="w">                 </span>┌───────────┼───────────┐
+<span class="w">                 </span>│<span class="w">           </span>│<span class="w">           </span>│
+<span class="w">            </span>┌────▼───┐<span class="w"> </span>┌────▼───┐<span class="w"> </span>┌────▼───┐
+<span class="w">            </span>│电机驱动│<span class="w"> </span>│电机驱动│<span class="w"> </span>│力传感器│
+<span class="w">            </span>└────────┘<span class="w"> </span>└────────┘<span class="w"> </span>└────────┘
+</code></pre></div>
+
+<h3 id="1553">15.5.3 实现细节</h3>
+<ol>
+<li><strong>实时内核配置</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 使用 Ubuntu 22.04 + PREEMPT-RT</span>
+uname<span class="w"> </span>-a
+<span class="c1"># Linux surgical-robot 5.15.0-rt17 #1 SMP PREEMPT_RT</span>
+
+<span class="c1"># CPU 隔离配置</span>
+<span class="c1"># /etc/default/grub</span>
+<span class="nv">GRUB_CMDLINE_LINUX</span><span class="o">=</span><span class="s2">&quot;isolcpus=2,3,4,5 nohz_full=2,3,4,5 rcu_nocbs=2,3,4,5&quot;</span>
+
+<span class="c1"># IRQ 亲和性设置</span>
+<span class="nb">echo</span><span class="w"> </span><span class="m">2</span><span class="w"> </span>&gt;<span class="w"> </span>/proc/irq/24/smp_affinity<span class="w">  </span><span class="c1"># EtherCAT 中断绑定到 CPU2</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>控制节点实现</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SurgicalRobotController</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="c1">// EtherCAT 主站</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">unique_ptr</span><span class="o">&lt;</span><span class="n">EthercatMaster</span><span class="o">&gt;</span><span class="w"> </span><span class="n">ethercat_master_</span><span class="p">;</span>
+
+<span class="w">    </span><span class="c1">// 实时缓冲区</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">RealtimeBuffer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="o">&gt;</span><span class="w"> </span><span class="n">joint_positions</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="o">&gt;</span><span class="w"> </span><span class="n">joint_velocities</span><span class="p">;</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="mi">6</span><span class="o">&gt;</span><span class="w"> </span><span class="n">wrench</span><span class="p">;</span>
+<span class="w">        </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">timestamp</span><span class="p">;</span>
+<span class="w">    </span><span class="p">};</span>
+
+<span class="w">    </span><span class="n">RealtimeBuffer</span><span class="w"> </span><span class="n">rt_buffer_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">std</span><span class="o">::</span><span class="n">atomic</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="n">emergency_stop_</span><span class="p">{</span><span class="nb">false</span><span class="p">};</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">SurgicalRobotController</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;surgical_controller&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 设置实时优先级</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">sched_param</span><span class="w"> </span><span class="n">param</span><span class="p">;</span>
+<span class="w">        </span><span class="n">param</span><span class="p">.</span><span class="n">sched_priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">95</span><span class="p">;</span>
+<span class="w">        </span><span class="n">pthread_setschedparam</span><span class="p">(</span><span class="n">pthread_self</span><span class="p">(),</span><span class="w"> </span><span class="n">SCHED_FIFO</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 锁定所有内存页</span>
+<span class="w">        </span><span class="n">mlockall</span><span class="p">(</span><span class="n">MCL_CURRENT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MCL_FUTURE</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 预分配内存</span>
+<span class="w">        </span><span class="n">rt_buffer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+
+<span class="w">        </span><span class="c1">// 初始化 EtherCAT</span>
+<span class="w">        </span><span class="n">ethercat_master_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span><span class="n">EthercatMaster</span><span class="o">&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="n">ethercat_master_</span><span class="o">-&gt;</span><span class="n">init</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// 创建 1kHz 定时器</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">timer_callback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="k">this</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">controlLoop</span><span class="p">();</span><span class="w"> </span><span class="p">};</span>
+<span class="w">        </span><span class="n">timer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_wall_timer</span><span class="p">(</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">microseconds</span><span class="p">(</span><span class="mi">1000</span><span class="p">),</span><span class="w"> </span>
+<span class="w">            </span><span class="n">timer_callback</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">controlLoop</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">start</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+
+<span class="w">        </span><span class="c1">// 1. 读取传感器数据 (&lt; 50μs)</span>
+<span class="w">        </span><span class="n">ethercat_master_</span><span class="o">-&gt;</span><span class="n">readInputs</span><span class="p">(</span><span class="n">rt_buffer_</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 2. 安全检查 (&lt; 10μs)</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">checkSafetyLimits</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">emergency_stop_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">true</span><span class="p">;</span>
+<span class="w">            </span><span class="n">stopAllMotors</span><span class="p">();</span>
+<span class="w">            </span><span class="k">return</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 3. 控制计算 (&lt; 200μs)</span>
+<span class="w">        </span><span class="n">std</span><span class="o">::</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">double</span><span class="p">,</span><span class="w"> </span><span class="mi">7</span><span class="o">&gt;</span><span class="w"> </span><span class="n">torques</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">computeControl</span><span class="p">(</span><span class="n">rt_buffer_</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 4. 发送控制命令 (&lt; 50μs)</span>
+<span class="w">        </span><span class="n">ethercat_master_</span><span class="o">-&gt;</span><span class="n">writeOutputs</span><span class="p">(</span><span class="n">torques</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 5. 性能监控</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">high_resolution_clock</span><span class="o">::</span><span class="n">now</span><span class="p">();</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">duration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">duration_cast</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">microseconds</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="p">).</span><span class="n">count</span><span class="p">();</span>
+
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">duration</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1100</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w">  </span><span class="c1">// 超过 1.1ms 警告</span>
+<span class="w">            </span><span class="n">RCLCPP_WARN_THROTTLE</span><span class="p">(</span><span class="n">get_logger</span><span class="p">(),</span><span class="w"> </span><span class="o">*</span><span class="n">get_clock</span><span class="p">(),</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span>
+<span class="w">                </span><span class="s">&quot;Control loop took %ld us&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">duration</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<ol start="3">
+<li><strong>零拷贝数据传输</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 Iceoryx 实现进程间零拷贝</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ZeroCopyDataExchange</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="n">iox</span><span class="o">::</span><span class="n">popo</span><span class="o">::</span><span class="n">Publisher</span><span class="o">&lt;</span><span class="n">SensorData</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sensor_publisher_</span><span class="p">;</span>
+<span class="w">    </span><span class="n">iox</span><span class="o">::</span><span class="n">popo</span><span class="o">::</span><span class="n">Subscriber</span><span class="o">&lt;</span><span class="n">ControlCommand</span><span class="o">&gt;</span><span class="w"> </span><span class="n">command_subscriber_</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">publishSensorData</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">SensorData</span><span class="o">&amp;</span><span class="w"> </span><span class="n">data</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">sensor_publisher_</span><span class="p">.</span><span class="n">loan</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">and_then</span><span class="p">([</span><span class="o">&amp;</span><span class="p">](</span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sample</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="o">*</span><span class="n">sample</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">data</span><span class="p">;</span>
+<span class="w">                </span><span class="n">sample</span><span class="p">.</span><span class="n">publish</span><span class="p">();</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">receiveCommand</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">command_subscriber_</span><span class="p">.</span><span class="n">take</span><span class="p">()</span>
+<span class="w">            </span><span class="p">.</span><span class="n">and_then</span><span class="p">([</span><span class="k">this</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">sample</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="n">processCommand</span><span class="p">(</span><span class="o">*</span><span class="n">sample</span><span class="p">);</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="1554">15.5.4 性能优化措施</h3>
+<ol>
+<li>
+<p><strong>CPU 核心分配</strong>：
+   - CPU 0-1：系统任务
+   - CPU 2：EtherCAT 主站
+   - CPU 3：控制算法
+   - CPU 4：运动规划
+   - CPU 5：安全监控</p>
+</li>
+<li>
+<p><strong>内存优化</strong>：
+   - 使用大页内存减少 TLB miss
+   - 预分配所有动态内存
+   - 禁用内存交换</p>
+</li>
+<li>
+<p><strong>DDS 配置</strong>：
+   - 使用 Cyclone DDS 的实时配置
+   - 禁用多播，使用点对点通信
+   - QoS：BEST_EFFORT + VOLATILE</p>
+</li>
+</ol>
+<h3 id="1555">15.5.5 测试结果</h3>
+<div class="codehilite"><pre><span></span><code>性能指标测试结果：
+┌─────────────────────┬──────────┬──────────┬──────────┐
+│ 指标                │ 要求     │ 实测平均  │ 最差情况  │
+├─────────────────────┼──────────┼──────────┼──────────┤
+│ 控制周期            │ 1ms±50μs │ 1.002ms  │ 1.048ms  │
+│ 端到端延迟          │ &lt;500μs   │ 380μs    │ 495μs    │
+│ 抖动 (Jitter)       │ &lt;50μs    │ 12μs     │ 48μs     │
+│ CPU 使用率          │ &lt;50%     │ 35%      │ 42%      │
+│ 内存使用            │ &lt;2GB     │ 1.2GB    │ 1.2GB    │
+└─────────────────────┴──────────┴──────────┴──────────┘
+</code></pre></div>
+
+<h3 id="1556">15.5.6 经验教训</h3>
+<ol>
+<li><strong>硬件选择至关重要</strong>：使用支持 TSN 的网络硬件和低延迟 EtherCAT 从站</li>
+<li><strong>渐进式优化</strong>：先实现功能，再逐步优化性能</li>
+<li><strong>全面测试</strong>：包括长时间稳定性测试和极端情况测试</li>
+<li><strong>冗余设计</strong>：关键组件采用双重冗余，确保安全</li>
+</ol>
+<h2 id="156">15.6 高级话题</h2>
+<h3 id="1561-cyclone-dds-vs-fast-dds">15.6.1 Cyclone DDS vs Fast DDS 性能对比</h3>
+<p><strong>测试环境</strong>：</p>
+<ul>
+<li>Intel i7-10700K, 32GB RAM</li>
+<li>Ubuntu 22.04 + PREEMPT-RT</li>
+<li>隔离 CPU 核心，禁用超线程</li>
+</ul>
+<p><strong>测试方法</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 性能测试节点</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DdsPerformanceTest</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">Node</span><span class="w"> </span><span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">DdsPerformanceTest</span><span class="p">()</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">Node</span><span class="p">(</span><span class="s">&quot;dds_test&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 配置 QoS</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">qos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rclcpp</span><span class="o">::</span><span class="n">QoS</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">reliability</span><span class="p">(</span><span class="n">RMW_QOS_POLICY_RELIABILITY_BEST_EFFORT</span><span class="p">)</span>
+<span class="w">            </span><span class="p">.</span><span class="n">durability</span><span class="p">(</span><span class="n">RMW_QOS_POLICY_DURABILITY_VOLATILE</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 创建发布者和订阅者</span>
+<span class="w">        </span><span class="n">publisher_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_publisher</span><span class="o">&lt;</span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Header</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">);</span>
+
+<span class="w">        </span><span class="n">subscription_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_subscription</span><span class="o">&lt;</span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Header</span><span class="o">&gt;</span><span class="p">(</span>
+<span class="w">            </span><span class="s">&quot;test&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">qos</span><span class="p">,</span>
+<span class="w">            </span><span class="p">[</span><span class="k">this</span><span class="p">](</span><span class="k">const</span><span class="w"> </span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Header</span><span class="o">::</span><span class="n">SharedPtr</span><span class="w"> </span><span class="n">msg</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">latency</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">now</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">msg</span><span class="o">-&gt;</span><span class="n">stamp</span><span class="p">).</span><span class="n">nanoseconds</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1000.0</span><span class="p">;</span>
+<span class="w">                </span><span class="n">latencies_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">latency</span><span class="p">);</span>
+<span class="w">            </span><span class="p">});</span>
+
+<span class="w">        </span><span class="c1">// 1kHz 发布定时器</span>
+<span class="w">        </span><span class="n">timer_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_wall_timer</span><span class="p">(</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">chrono</span><span class="o">::</span><span class="n">milliseconds</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span>
+<span class="w">            </span><span class="p">[</span><span class="k">this</span><span class="p">]()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                </span><span class="k">auto</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std_msgs</span><span class="o">::</span><span class="n">msg</span><span class="o">::</span><span class="n">Header</span><span class="p">();</span>
+<span class="w">                </span><span class="n">msg</span><span class="p">.</span><span class="n">stamp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">this</span><span class="o">-&gt;</span><span class="n">now</span><span class="p">();</span>
+<span class="w">                </span><span class="n">publisher_</span><span class="o">-&gt;</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">);</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<p><strong>测试结果</strong>：</p>
+<p>| 指标 | Cyclone DDS | Fast DDS | Connext DDS |</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>Cyclone DDS</th>
+<th>Fast DDS</th>
+<th>Connext DDS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>平均延迟</strong></td>
+<td>45μs</td>
+<td>62μs</td>
+<td>38μs</td>
+</tr>
+<tr>
+<td><strong>P99 延迟</strong></td>
+<td>89μs</td>
+<td>145μs</td>
+<td>72μs</td>
+</tr>
+<tr>
+<td><strong>最大延迟</strong></td>
+<td>210μs</td>
+<td>520μs</td>
+<td>180μs</td>
+</tr>
+<tr>
+<td><strong>CPU 使用率</strong></td>
+<td>8%</td>
+<td>12%</td>
+<td>10%</td>
+</tr>
+<tr>
+<td><strong>内存占用</strong></td>
+<td>45MB</td>
+<td>78MB</td>
+<td>95MB</td>
+</tr>
+<tr>
+<td><strong>启动时间</strong></td>
+<td>0.8s</td>
+<td>1.2s</td>
+<td>2.1s</td>
+</tr>
+</tbody>
+</table>
+<p><strong>不同消息大小的对比</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">消息大小</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="n">KB</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Cyclone</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">48</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">12</span><span class="n">Mbps</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Fast</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">65</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">11</span><span class="n">Mbps</span>
+<span class="err">└─</span><span class="w"> </span><span class="n">Connext</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">41</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">13</span><span class="n">Mbps</span>
+
+<span class="err">消息大小</span><span class="o">:</span><span class="w"> </span><span class="mi">1</span><span class="n">MB</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Cyclone</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">820</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">980</span><span class="n">Mbps</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Fast</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">1100</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">890</span><span class="n">Mbps</span>
+<span class="err">└─</span><span class="w"> </span><span class="n">Connext</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">750</span><span class="err">μ</span><span class="n">s</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">1050</span><span class="n">Mbps</span>
+
+<span class="err">消息大小</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="n">MB</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Cyclone</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">12</span><span class="n">ms</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">820</span><span class="n">Mbps</span>
+<span class="err">├─</span><span class="w"> </span><span class="n">Fast</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">18</span><span class="n">ms</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">680</span><span class="n">Mbps</span>
+<span class="err">└─</span><span class="w"> </span><span class="n">Connext</span><span class="w"> </span><span class="n">DDS</span><span class="o">:</span><span class="w"> </span><span class="mi">10</span><span class="n">ms</span><span class="w"> </span><span class="o">(</span><span class="n">avg</span><span class="o">),</span><span class="w"> </span><span class="mi">920</span><span class="n">Mbps</span>
+</code></pre></div>
+
+<h3 id="1562-dpdk">15.6.2 硬件加速与 DPDK 集成</h3>
+<p><strong>DPDK (Data Plane Development Kit) 集成</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用 DPDK 加速网络通信</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DpdkAcceleratedNode</span><span class="w"> </span><span class="p">{</span>
+<span class="k">private</span><span class="o">:</span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">rte_mempool</span><span class="o">*</span><span class="w"> </span><span class="n">mbuf_pool_</span><span class="p">;</span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">port_id_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="n">DpdkAcceleratedNode</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 初始化 DPDK</span>
+<span class="w">        </span><span class="n">rte_eal_init</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="n">argv</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 创建内存池</span>
+<span class="w">        </span><span class="n">mbuf_pool_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rte_pktmbuf_pool_create</span><span class="p">(</span>
+<span class="w">            </span><span class="s">&quot;MBUF_POOL&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">8192</span><span class="p">,</span>
+<span class="w">            </span><span class="n">MBUF_CACHE_SIZE</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="n">RTE_MBUF_DEFAULT_BUF_SIZE</span><span class="p">,</span>
+<span class="w">            </span><span class="n">rte_socket_id</span><span class="p">());</span>
+
+<span class="w">        </span><span class="c1">// 配置端口</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">rte_eth_conf</span><span class="w"> </span><span class="n">port_conf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{};</span>
+<span class="w">        </span><span class="n">rte_eth_dev_configure</span><span class="p">(</span><span class="n">port_id_</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">port_conf</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">sendPacket</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="o">*</span><span class="w"> </span><span class="n">data</span><span class="p">,</span><span class="w"> </span><span class="kt">size_t</span><span class="w"> </span><span class="n">len</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">struct</span><span class="w"> </span><span class="nc">rte_mbuf</span><span class="o">*</span><span class="w"> </span><span class="n">mbuf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">rte_pktmbuf_alloc</span><span class="p">(</span><span class="n">mbuf_pool_</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 零拷贝数据传输</span>
+<span class="w">        </span><span class="n">rte_pktmbuf_attach_extbuf</span><span class="p">(</span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span><span class="n">data</span><span class="p">,</span><span class="w"> </span>
+<span class="w">            </span><span class="n">rte_malloc_virt2iova</span><span class="p">(</span><span class="n">data</span><span class="p">),</span><span class="w"> </span><span class="n">len</span><span class="p">,</span><span class="w"> </span><span class="k">nullptr</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 发送数据包</span>
+<span class="w">        </span><span class="n">rte_eth_tx_burst</span><span class="p">(</span><span class="n">port_id_</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mbuf</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="1563-paper-reading-guide">15.6.3 Paper Reading Guide</h3>
+<p><strong>必读论文</strong>：</p>
+<ol>
+<li>
+<p><strong>"Design and Performance Evaluation of a ROS2 Compliant Real-time Control Architecture"</strong> (2021)
+   - 作者：Puck et al.
+   - 贡献：提出了 ROS2 实时控制架构设计模式
+   - 关键点：执行器设计、内存管理、调度策略</p>
+</li>
+<li>
+<p><strong>"Towards Real-time Robot Control with ROS2: A Comparative Study"</strong> (2020)
+   - 作者：Kronauer et al.
+   - 贡献：不同 DDS 实现的系统性对比
+   - 关键点：延迟测量方法、QoS 配置影响</p>
+</li>
+<li>
+<p><strong>"Deterministic Memory Allocation for Real-time Robot Control"</strong> (2022)
+   - 作者：Wei et al.
+   - 贡献：实时内存分配器设计
+   - 关键点：内存池管理、碎片化避免</p>
+</li>
+</ol>
+<h3 id="1564">15.6.4 开源项目推荐</h3>
+<ol>
+<li><strong>realtime_tools</strong>：ROS2 实时工具集</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ros-controls/realtime_tools
+</code></pre></div>
+
+<ol start="2">
+<li><strong>ros2_control</strong>：实时控制框架</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ros-controls/ros2_control
+</code></pre></div>
+
+<ol start="3">
+<li><strong>performance_test</strong>：性能测试工具</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/ApexAI/performance_test
+</code></pre></div>
+
+<h2 id="157">15.7 本章小结</h2>
+<p>本章深入探讨了 ROS2 实时系统优化的关键技术：</p>
+<p><strong>核心概念</strong>：</p>
+<ul>
+<li>硬实时 vs 软实时的区别与应用场景</li>
+<li>PREEMPT-RT 内核的配置与调优</li>
+<li>实时调度策略（SCHED_FIFO、SCHED_RR、SCHED_DEADLINE）</li>
+</ul>
+<p><strong>关键公式</strong>：</p>
+<ol>
+<li>
+<p><strong>延迟计算</strong>：
+   $$L_{total} = L_{kernel} + L_{scheduler} + L_{network} + L_{application}$$</p>
+</li>
+<li>
+<p><strong>抖动（Jitter）</strong>：
+$$J = \max(T_i) - \min(T_i), \quad i \in [1, n]$$</p>
+</li>
+<li>
+<p><strong>CPU 利用率界限（Rate Monotonic）</strong>：
+$$U = \sum_{i=1}^{n} \frac{C_i}{T_i} \leq n(2^{1/n} - 1)$$
+其中 $C_i$ 是任务执行时间，$T_i$ 是任务周期</p>
+</li>
+<li>
+<p><strong>内存带宽需求</strong>：
+$$BW = \frac{Message_Size \times Frequency}{Zero_Copy_Factor}$$</p>
+</li>
+</ol>
+<p><strong>性能优化要点</strong>：</p>
+<ul>
+<li>内存预分配和零拷贝通信</li>
+<li>DDS QoS 策略优化</li>
+<li>CPU 隔离与亲和性设置</li>
+<li>系统级性能分析工具使用</li>
+</ul>
+<h2 id="158">15.8 练习题</h2>
+<h3 id="_1">基础题</h3>
+<p><strong>练习 15.1</strong>：配置实时内核
+设计一个 bash 脚本，自动检测系统是否安装了 PREEMPT-RT 内核，并报告当前的实时性配置状态。</p>
+<details>
+<summary>答案</summary>
+<p>脚本应检查：</p>
+<ol>
+<li><code>uname -v</code> 输出中是否包含 "PREEMPT_RT"</li>
+<li><code>/proc/sys/kernel/sched_rt_runtime_us</code> 的值</li>
+<li>CPU 隔离配置（/proc/cmdline 中的 isolcpus）</li>
+<li>内存锁定限制（ulimit -l）</li>
+</ol>
+<p>关键检查点：</p>
+<ul>
+<li>RT 内核版本</li>
+<li>实时调度器配置</li>
+<li>CPU 核心分配</li>
+<li>内存限制设置</li>
+</ul>
+</details>
+<p><strong>练习 15.2</strong>：QoS 策略选择
+给定以下场景，选择合适的 QoS 配置：
+a) 机械臂力控制（1kHz）
+b) 视觉数据流（30Hz，每帧 2MB）
+c) 状态监控（1Hz）</p>
+<details>
+<summary>答案</summary>
+<p>a) 机械臂力控制：</p>
+<ul>
+<li>Reliability: BEST_EFFORT</li>
+<li>Durability: VOLATILE</li>
+<li>History: KEEP_LAST(1)</li>
+<li>Deadline: 1ms</li>
+</ul>
+<p>b) 视觉数据流：</p>
+<ul>
+<li>Reliability: BEST_EFFORT</li>
+<li>Durability: VOLATILE</li>
+<li>History: KEEP_LAST(2)</li>
+<li>使用零拷贝传输</li>
+</ul>
+<p>c) 状态监控：</p>
+<ul>
+<li>Reliability: RELIABLE</li>
+<li>Durability: TRANSIENT_LOCAL</li>
+<li>History: KEEP_LAST(10)</li>
+</ul>
+</details>
+<p><strong>练习 15.3</strong>：延迟测量
+编写一个 ROS2 节点，测量话题通信的往返延迟（RTT），并计算平均值、最大值、最小值和标准差。</p>
+<details>
+<summary>答案</summary>
+<p>关键实现要点：</p>
+<ol>
+<li>使用高精度时钟（std::chrono::high_resolution_clock）</li>
+<li>在消息中嵌入时间戳</li>
+<li>计算接收时间与发送时间的差值</li>
+<li>使用循环缓冲区存储最近 N 个测量值</li>
+<li>实时计算统计指标</li>
+<li>考虑时钟同步问题</li>
+</ol>
+</details>
+<p><strong>练习 15.4</strong>：内存池设计
+设计一个固定大小的内存池分配器，支持 O(1) 的分配和释放操作。</p>
+<details>
+<summary>答案</summary>
+<p>设计要点：</p>
+<ol>
+<li>使用自由链表管理空闲块</li>
+<li>预分配连续内存区域</li>
+<li>每个块包含指向下一个空闲块的指针</li>
+<li>分配：从链表头取出</li>
+<li>释放：插入链表头</li>
+<li>线程安全：使用无锁队列或互斥锁</li>
+</ol>
+</details>
+<h3 id="_2">挑战题</h3>
+<p><strong>练习 15.5</strong>：多核优化
+设计一个多生产者-多消费者系统，使用无锁队列在 4 个 CPU 核心间传递数据，实现最小延迟。</p>
+<p><em>提示</em>：考虑 SPSC 队列组合、缓存行对齐、NUMA 亲和性</p>
+<details>
+<summary>答案</summary>
+<p>优化策略：</p>
+<ol>
+<li>使用 SPSC 无锁队列矩阵（4x4）</li>
+<li>每个队列缓存行对齐（64 字节）</li>
+<li>生产者和消费者绑定到特定核心</li>
+<li>使用 memory_order_relaxed 进行原子操作</li>
+<li>批量处理减少同步开销</li>
+<li>考虑 NUMA 节点的内存分配</li>
+</ol>
+</details>
+<p><strong>练习 15.6</strong>：实时性能诊断
+某机器人系统偶尔出现控制延迟峰值（从平均 200μs 突增到 5ms）。设计一个诊断方案找出原因。</p>
+<p><em>提示</em>：考虑内核跟踪、中断统计、内存分配</p>
+<details>
+<summary>答案</summary>
+<p>诊断步骤：</p>
+<ol>
+<li>使用 ftrace 跟踪延迟峰值时的内核活动</li>
+<li>检查 /proc/interrupts 中的中断分布</li>
+<li>使用 perf 监控页面错误和缓存未命中</li>
+<li>检查是否有内存分配或垃圾回收</li>
+<li>分析 DDS 的重传和发现机制</li>
+<li>检查 CPU 频率调节和热节流</li>
+</ol>
+<p>可能原因：</p>
+<ul>
+<li>内核抢占被禁用的代码路径</li>
+<li>SMI（系统管理中断）</li>
+<li>内存页面错误</li>
+<li>DDS 发现风暴</li>
+<li>CPU 热节流</li>
+</ul>
+</details>
+<p><strong>练习 15.7</strong>：端到端优化
+优化一个视觉伺服系统，将"相机采集→处理→控制输出"的端到端延迟从 50ms 降低到 10ms。</p>
+<p><em>提示</em>：分析每个阶段的耗时，识别瓶颈</p>
+<details>
+<summary>答案</summary>
+<p>优化方案：</p>
+<ol>
+<li>
+<p><strong>相机采集</strong>（原 20ms → 3ms）：
+   - 使用硬件触发
+   - 零拷贝 DMA 传输
+   - 降低曝光时间</p>
+</li>
+<li>
+<p><strong>图像处理</strong>（原 25ms → 5ms）：
+   - GPU 加速（CUDA/OpenCL）
+   - 并行化算法
+   - 降低图像分辨率或 ROI 处理</p>
+</li>
+<li>
+<p><strong>控制计算</strong>（原 5ms → 2ms）：
+   - 预计算查找表
+   - SIMD 优化
+   - 避免动态内存分配</p>
+</li>
+<li>
+<p><strong>系统级优化</strong>：
+   - 流水线并行处理
+   - 预测性计算
+   - 硬件时间同步</p>
+</li>
+</ol>
+</details>
+<p><strong>练习 15.8</strong>：DDS 实现选型
+为以下应用场景选择最适合的 DDS 实现并说明理由：
+a) 低延迟交易机器人
+b) 大规模传感器网络
+c) 嵌入式实时控制</p>
+<details>
+<summary>答案</summary>
+<p>a) <strong>低延迟交易机器人</strong>：Connext DDS</p>
+<ul>
+<li>最低的平均延迟</li>
+<li>支持硬件加速</li>
+<li>丰富的 QoS 配置</li>
+</ul>
+<p>b) <strong>大规模传感器网络</strong>：Cyclone DDS</p>
+<ul>
+<li>轻量级实现</li>
+<li>优秀的可扩展性</li>
+<li>较低的内存占用</li>
+</ul>
+<p>c) <strong>嵌入式实时控制</strong>：Micro-ROS (embeddedRTPS)</p>
+<ul>
+<li>最小的内存占用</li>
+<li>支持 MCU 平台</li>
+<li>可裁剪的功能集</li>
+</ul>
+</details>
+<h2 id="159">15.9 常见陷阱与错误</h2>
+<h3 id="1">陷阱 1：优先级反转</h3>
+<p><strong>问题</strong>：低优先级任务持有高优先级任务需要的资源，导致高优先级任务被阻塞。</p>
+<p><strong>解决方案</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 使用优先级继承互斥锁</span>
+<span class="n">pthread_mutexattr_t</span><span class="w"> </span><span class="n">attr</span><span class="p">;</span>
+<span class="n">pthread_mutexattr_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+<span class="n">pthread_mutexattr_setprotocol</span><span class="p">(</span><span class="o">&amp;</span><span class="n">attr</span><span class="p">,</span><span class="w"> </span><span class="n">PTHREAD_PRIO_INHERIT</span><span class="p">);</span>
+<span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">attr</span><span class="p">);</span>
+</code></pre></div>
+
+<h3 id="2">陷阱 2：内存页面错误</h3>
+<p><strong>问题</strong>：首次访问未映射的内存页面导致延迟峰值。</p>
+<p><strong>解决方案</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1">// 预触摸所有内存页面</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">prefaultStack</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">dummy</span><span class="p">[</span><span class="mi">8192</span><span class="p">];</span>
+<span class="w">    </span><span class="n">memset</span><span class="p">(</span><span class="n">dummy</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">dummy</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="c1">// 锁定内存防止交换</span>
+<span class="n">mlockall</span><span class="p">(</span><span class="n">MCL_CURRENT</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">MCL_FUTURE</span><span class="p">);</span>
+</code></pre></div>
+
+<h3 id="3dds">陷阱 3：DDS 发现风暴</h3>
+<p><strong>问题</strong>：大量节点同时启动导致网络拥塞。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>使用 Discovery Server 替代多播发现</li>
+<li>配置发现协议的时间参数</li>
+<li>实施分阶段启动策略</li>
+</ul>
+<h3 id="4">陷阱 4：时钟不同步</h3>
+<p><strong>问题</strong>：分布式系统中时钟偏差导致时序错误。</p>
+<p><strong>解决方案</strong>：</p>
+<ul>
+<li>部署 PTP (Precision Time Protocol)</li>
+<li>使用硬件时间戳</li>
+<li>实现时钟同步监控</li>
+</ul>
+<h3 id="5cpu">陷阱 5：CPU 频率调节</h3>
+<p><strong>问题</strong>：CPU 动态调频导致性能不稳定。</p>
+<p><strong>解决方案</strong>：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 设置 CPU 为性能模式</span>
+cpupower<span class="w"> </span>frequency-set<span class="w"> </span>-g<span class="w"> </span>performance
+
+<span class="c1"># 禁用 Intel Turbo Boost</span>
+<span class="nb">echo</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>&gt;<span class="w"> </span>/sys/devices/system/cpu/intel_pstate/no_turbo
+</code></pre></div>
+
+<h2 id="1510">15.10 最佳实践检查清单</h2>
+<h3 id="_3">设计阶段</h3>
+<ul>
+<li>[ ] 明确定义实时性需求（硬实时/软实时）</li>
+<li>[ ] 识别关键路径和性能瓶颈</li>
+<li>[ ] 选择合适的硬件平台</li>
+<li>[ ] 设计确定性的算法</li>
+<li>[ ] 规划内存使用和分配策略</li>
+</ul>
+<h3 id="_4">实现阶段</h3>
+<ul>
+<li>[ ] 使用实时内核（PREEMPT-RT）</li>
+<li>[ ] 配置 CPU 隔离和亲和性</li>
+<li>[ ] 实现内存预分配</li>
+<li>[ ] 使用零拷贝通信</li>
+<li>[ ] 选择合适的 DDS 实现和 QoS 配置</li>
+<li>[ ] 避免动态内存分配</li>
+<li>[ ] 使用无锁数据结构</li>
+</ul>
+<h3 id="_5">测试阶段</h3>
+<ul>
+<li>[ ] 测量最坏情况执行时间（WCET）</li>
+<li>[ ] 进行长时间稳定性测试</li>
+<li>[ ] 测试各种负载条件</li>
+<li>[ ] 验证故障恢复机制</li>
+<li>[ ] 记录性能基准数据</li>
+</ul>
+<h3 id="_6">部署阶段</h3>
+<ul>
+<li>[ ] 配置系统参数（内核、网络）</li>
+<li>[ ] 实施监控和告警</li>
+<li>[ ] 准备性能调试工具</li>
+<li>[ ] 文档化配置和调优参数</li>
+<li>[ ] 建立性能回归测试</li>
+</ul>
+<h3 id="_7">维护阶段</h3>
+<ul>
+<li>[ ] 定期性能审查</li>
+<li>[ ] 监控系统指标</li>
+<li>[ ] 更新和优化配置</li>
+<li>[ ] 跟踪性能退化</li>
+<li>[ ] 保持文档更新</li>
+</ul>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter14.html" class="nav-link prev">← 第 14 章：MoveIt2 运动规划</a><a href="chapter16.html" class="nav-link next">第 16 章：安全性与诊断系统 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>

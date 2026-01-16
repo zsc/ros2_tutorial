@@ -1,0 +1,1871 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <base href="./">
+    <title>第 11 章：SLAM 与定位系统</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <link rel="stylesheet" href="assets/highlight.css">
+    <script src="assets/script.js" defer></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$']],
+                displayMath: [['$$', '$$']],
+                processEscapes: false,
+                packages: {'[+]': ['noerrors', 'ams']}
+            },
+            options: {
+                ignoreHtmlClass: 'tex2jax_ignore',
+                processHtmlClass: 'tex2jax_process'
+            },
+            loader: {
+                load: ['[tex]/noerrors', '[tex]/ams']
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <nav id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <h3>目录</h3>
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="sidebar-search">
+                <input type="text" id="sidebar-search-input" placeholder="搜索..." autocomplete="off">
+            </div>
+            <div id="tree-container">
+                <nav class="tree-nav" role="tree">
+                    <div class="tree-item " >
+                        <a href="index.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">ROS2 完全教程：从原理到实践</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter1.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 1 章：ROS1 核心概念回顾</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter2.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 2 章：ROS1 的局限性分析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter3.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 3 章：从 ROS1 到 ROS2 的迁移策略</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter4.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 4 章：ROS2 架构与设计理念</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter5.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 5 章：节点与执行器模型</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter6.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 6 章：通信机制深度解析</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter7.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 7 章：Launch 系统与配置管理</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter8.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 8 章：tf2 坐标变换框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter9.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 9 章：时间同步与回放系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter10.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 10 章：传感器数据处理管道</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item active" >
+                        <a href="chapter11.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 11 章：SLAM 与定位系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter12.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 12 章：导航栈 Nav2</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter13.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 13 章：ros2_control 框架</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter14.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 14 章：MoveIt2 运动规划</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter15.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 15 章：实时系统与性能优化</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter16.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 16 章：安全性与诊断系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter17.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 17 章：仿真集成（Gazebo/Ignition）</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter18.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 18 章：多机器人系统</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter19.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 19 章：计算机视觉与深度学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter20.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 20 章：机器人强化学习</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter21.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 21 章：大语言模型与具身智能</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="chapter22.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">第 22 章：神经网络运动控制</span>
+                        </a>
+                    </div>
+                
+                    <div class="tree-item " >
+                        <a href="CLAUDE.html" class="tree-link">
+                            <span class="tree-icon">📄</span>
+                            <span class="tree-title">Untitled</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </nav>
+        
+        <main class="content">
+            <article>
+                <h1 id="11-slam">第 11 章：SLAM 与定位系统</h1>
+<p>本章深入探讨 ROS2 中的同时定位与地图构建（SLAM）技术和定位系统。我们将从经典的自适应蒙特卡洛定位（AMCL）开始，逐步深入到现代图优化 SLAM 方法，最后讨论多传感器融合定位策略。通过学习本章，读者将掌握在复杂环境中实现机器人精确定位的核心技术，理解不同定位方法的适用场景，并能够根据实际需求选择和优化定位方案。</p>
+<h2 id="111-amcl">11.1 AMCL 定位原理</h2>
+<p>自适应蒙特卡洛定位（Adaptive Monte Carlo Localization, AMCL）是 ROS2 中最常用的概率定位算法，基于粒子滤波实现全局定位和位姿跟踪。</p>
+<h3 id="1111">11.1.1 粒子滤波基础</h3>
+<p>AMCL 使用粒子集合表示机器人位姿的概率分布：</p>
+<p>$$
+\text{Bel}(x_t) \approx \{x_t^{[i]}, w_t^{[i]}\}_{i=1}^N
+$$</p>
+<p>其中 $x_t^{[i]} = (x, y, \theta)$ 表示第 $i$ 个粒子的位姿，$w_t^{[i]}$ 是对应权重。</p>
+<p>粒子滤波的核心步骤：</p>
+<div class="codehilite"><pre><span></span><code><span class="mf">1.</span><span class="w"> </span><span class="n">预测步骤</span><span class="err">（</span><span class="n">运动更新</span><span class="err">）</span>
+<span class="w">   </span><span class="n">对每个粒子</span><span class="w"> </span><span class="nl">i</span><span class="p">:</span>
+<span class="w">   </span><span class="n">x_t</span><span class="o">^[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sample_motion_model</span><span class="p">(</span><span class="n">u_t</span><span class="p">,</span><span class="w"> </span><span class="n">x_</span><span class="err">{</span><span class="n">t</span><span class="o">-</span><span class="mi">1</span><span class="err">}</span><span class="o">^[</span><span class="n">i</span><span class="o">]</span><span class="p">)</span>
+
+<span class="mf">2.</span><span class="w"> </span><span class="n">更新步骤</span><span class="err">（</span><span class="n">观测更新</span><span class="err">）</span>
+<span class="w">   </span><span class="n">对每个粒子</span><span class="w"> </span><span class="nl">i</span><span class="p">:</span>
+<span class="w">   </span><span class="n">w_t</span><span class="o">^[</span><span class="n">i</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">measurement_model</span><span class="p">(</span><span class="n">z_t</span><span class="p">,</span><span class="w"> </span><span class="n">x_t</span><span class="o">^[</span><span class="n">i</span><span class="o">]</span><span class="p">,</span><span class="w"> </span><span class="n">m</span><span class="p">)</span>
+
+<span class="mf">3.</span><span class="w"> </span><span class="n">重采样</span>
+<span class="w">   </span><span class="n">如果有效粒子数</span><span class="w"> </span><span class="n">N_eff</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nl">阈值</span><span class="p">:</span>
+<span class="w">   </span><span class="n">执行重采样</span><span class="err">，</span><span class="n">生成新粒子集</span>
+</code></pre></div>
+
+<h3 id="1112">11.1.2 运动模型</h3>
+<p>AMCL 支持三种运动模型：</p>
+<ol>
+<li><strong>差分驱动模型（Differential Model）</strong></li>
+</ol>
+<p>适用于差分驱动机器人，考虑平移和旋转噪声：</p>
+<p>$$
+\begin{aligned}
+\delta_{rot1} &amp;= \text{atan2}(\Delta y, \Delta x) - \theta_{t-1} \\
+\delta_{trans} &amp;= \sqrt{\Delta x^2 + \Delta y^2} \\
+\delta_{rot2} &amp;= \theta_t - \theta_{t-1} - \delta_{rot1}
+\end{aligned}
+$$</p>
+<p>噪声参数：</p>
+<ul>
+<li><code>alpha1</code>: 旋转引起的旋转噪声</li>
+<li><code>alpha2</code>: 平移引起的旋转噪声  </li>
+<li><code>alpha3</code>: 平移引起的平移噪声</li>
+<li><code>alpha4</code>: 旋转引起的平移噪声</li>
+</ul>
+<ol start="2">
+<li><strong>全向模型（Omni Model）</strong></li>
+</ol>
+<p>适用于全向移动机器人，独立处理 x、y、θ 方向：</p>
+<p>$$
+\begin{aligned}
+x_t &amp;= x_{t-1} + \Delta x + \epsilon_x \\
+y_t &amp;= y_{t-1} + \Delta y + \epsilon_y \\
+\theta_t &amp;= \theta_{t-1} + \Delta \theta + \epsilon_\theta
+\end{aligned}
+$$</p>
+<ol start="3">
+<li><strong>静态模型（Stationary Model）</strong></li>
+</ol>
+<p>用于机器人静止时的定位维持，仅添加少量噪声防止粒子退化。</p>
+<h3 id="1113">11.1.3 观测模型</h3>
+<p>AMCL 的激光雷达观测模型混合四种概率分布：</p>
+<p>$$
+p(z_t|x_t, m) = z_{hit} \cdot p_{hit} + z_{short} \cdot p_{short} + z_{max} \cdot p_{max} + z_{rand} \cdot p_{rand}
+$$</p>
+<p>各分量含义：</p>
+<ul>
+<li><strong>$p_{hit}$</strong>: 高斯分布，建模测量噪声</li>
+<li><strong>$p_{short}$</strong>: 指数分布，建模动态障碍物</li>
+<li><strong>$p_{max}$</strong>: 点质量分布，建模最大测距</li>
+<li><strong>$p_{rand}$</strong>: 均匀分布，建模随机噪声</li>
+</ul>
+<p>似然场模型（Likelihood Field Model）优化：</p>
+<div class="codehilite"><pre><span></span><code>对于激光点 (x_k, y_k):
+
+1. 计算到最近障碍物的距离 d
+2. 似然值 = exp(-d²/(2σ²))
+3. 总似然 = ∏ 各点似然值
+</code></pre></div>
+
+<h3 id="1114">11.1.4 自适应粒子数</h3>
+<p>AMCL 通过 KLD 采样动态调整粒子数：</p>
+<p>$$
+N = \frac{k-1}{2\epsilon} \left\{1 - \frac{2}{9(k-1)} + \sqrt{\frac{2}{9(k-1)}}z_{1-\delta}\right\}^3
+$$</p>
+<p>其中：</p>
+<ul>
+<li>$k$: 占用的直方图单元数</li>
+<li>$\epsilon$: KLD 误差上界</li>
+<li>$\delta$: 置信度参数</li>
+</ul>
+<h3 id="1115">11.1.5 参数调优策略</h3>
+<p>关键参数及调优建议：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 粒子数配置</span>
+<span class="nt">min_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w">      </span><span class="c1"># 最少粒子数，增加提高精度</span>
+<span class="nt">max_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5000</span><span class="w">     </span><span class="c1"># 最大粒子数，限制计算量</span>
+
+<span class="c1"># 运动模型噪声（差分驱动）</span>
+<span class="nt">alpha1</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">   </span><span class="c1"># 减小使粒子更集中</span>
+<span class="nt">alpha2</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">   </span><span class="c1"># 增大应对打滑</span>
+<span class="nt">alpha3</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">   </span><span class="c1"># 根据里程计精度调整</span>
+<span class="nt">alpha4</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">   </span><span class="c1"># 通常较小</span>
+
+<span class="c1"># 激光模型参数</span>
+<span class="nt">laser_z_hit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span><span class="w">        </span><span class="c1"># 正确测量权重</span>
+<span class="nt">laser_z_short</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">     </span><span class="c1"># 动态障碍物权重</span>
+<span class="nt">laser_z_max</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">       </span><span class="c1"># 最大测距权重</span>
+<span class="nt">laser_z_rand</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.4</span><span class="w">       </span><span class="c1"># 随机测量权重</span>
+<span class="nt">laser_sigma_hit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">    </span><span class="c1"># 测量标准差</span>
+
+<span class="c1"># 更新频率</span>
+<span class="nt">update_min_d</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w">      </span><span class="c1"># 最小平移更新距离(m)</span>
+<span class="nt">update_min_a</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w">       </span><span class="c1"># 最小旋转更新角度(rad)</span>
+
+<span class="c1"># 重采样阈值</span>
+<span class="nt">resample_interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">    </span><span class="c1"># 重采样间隔</span>
+<span class="nt">recovery_alpha_slow</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.001</span><span class="w">  </span><span class="c1"># 慢速平均，用于检测定位失败</span>
+<span class="nt">recovery_alpha_fast</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w">    </span><span class="c1"># 快速平均</span>
+</code></pre></div>
+
+<p>调优流程：</p>
+<ol>
+<li>从默认参数开始</li>
+<li>根据里程计质量调整运动噪声</li>
+<li>根据激光雷达特性调整观测模型</li>
+<li>在计算资源允许下增加粒子数</li>
+<li>使用 rviz2 可视化粒子云评估收敛性</li>
+</ol>
+<h2 id="112-slam-slam_toolbox">11.2 SLAM 工具链（slam_toolbox）</h2>
+<p>slam_toolbox 是 ROS2 推荐的 2D SLAM 解决方案，基于图优化提供在线和离线建图能力。</p>
+<h3 id="1121-slam">11.2.1 图优化 SLAM 原理</h3>
+<p>slam_toolbox 使用位姿图（Pose Graph）表示 SLAM 问题：</p>
+<p>$$
+x^* = \arg\min_x \sum_{ij} e_{ij}^T \Omega_{ij} e_{ij}
+$$</p>
+<p>其中：</p>
+<ul>
+<li>$x = \{x_1, ..., x_n\}$: 机器人位姿序列</li>
+<li>$e_{ij} = z_{ij} - h(x_i, x_j)$: 测量残差</li>
+<li>$\Omega_{ij}$: 信息矩阵（协方差逆）</li>
+</ul>
+<p>核心组件：</p>
+<div class="codehilite"><pre><span></span><code>图结构：
+
+<span class="k">-</span> 节点(Vertex): 机器人位姿 x_i = (x, y, θ)
+<span class="k">-</span> 边(Edge): 位姿间约束
+  <span class="k">-</span> 里程计边: 连续位姿间
+  <span class="k">-</span> 回环边: 检测到回环时添加
+  <span class="k">-</span> 激光匹配边: scan-to-map 匹配
+
+优化器：
+
+<span class="k">-</span> 使用 Sparse Pose Adjustment (SPA)
+<span class="k">-</span> Levenberg-Marquardt 迭代求解
+<span class="k">-</span> 增量式优化减少计算量
+</code></pre></div>
+
+<h3 id="1122">11.2.2 扫描匹配算法</h3>
+<p>slam_toolbox 使用相关性扫描匹配（Correlative Scan Matching）：</p>
+<ol>
+<li><strong>粗匹配（Branch-and-Bound）</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">搜索空间离散化</span><span class="o">:</span>
+
+<span class="o">-</span><span class="w"> </span><span class="err">位置</span><span class="o">:</span><span class="w"> </span><span class="err">Δ</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="err">Δ</span><span class="n">y</span><span class="w"> </span><span class="err">∈</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="n">search_size</span><span class="p">,</span><span class="w"> </span><span class="n">search_size</span><span class="p">]</span>
+<span class="o">-</span><span class="w"> </span><span class="err">角度</span><span class="o">:</span><span class="w"> </span><span class="err">Δθ</span><span class="w"> </span><span class="err">∈</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="n">search_angle</span><span class="p">,</span><span class="w"> </span><span class="n">search_angle</span><span class="p">]</span>
+
+<span class="err">分支定界加速</span><span class="o">:</span>
+
+<span class="mf">1.</span><span class="w"> </span><span class="err">计算上界</span><span class="w"> </span><span class="n">upper_bound</span><span class="p">(</span><span class="n">region</span><span class="p">)</span>
+<span class="mf">2.</span><span class="w"> </span><span class="err">如果</span><span class="w"> </span><span class="n">upper_bound</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="nl">current_best:</span>
+<span class="w">   </span><span class="err">剪枝该分支</span>
+
+<span class="mf">3.</span><span class="w"> </span><span class="err">否则继续细分</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>精匹配（Hill Climbing）</strong></li>
+</ol>
+<p>$$
+\text{score} = \sum_{i} M(T(p_i))
+$$</p>
+<p>其中 $M$ 是占用栅格地图，$T$ 是变换，$p_i$ 是激光点。</p>
+<p>使用梯度上升优化：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="nv">not</span><span class="w"> </span><span class="nv">converged</span>:
+<span class="w">  </span>计算当前位姿得分
+<span class="w">  </span>尝试<span class="mi">6</span>个方向<span class="ss">(</span>±Δ<span class="nv">x</span>,<span class="w"> </span>±Δ<span class="nv">y</span>,<span class="w"> </span>±Δθ<span class="ss">)</span>
+<span class="w">  </span>选择得分最高的方向
+<span class="w">  </span>更新步长（自适应）
+</code></pre></div>
+
+<h3 id="1123">11.2.3 在线与离线建图</h3>
+<p><strong>在线建图（Online SLAM）</strong></p>
+<p>实时构建和优化地图：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 在线模式配置</span>
+<span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mapping</span>
+
+<span class="c1"># 扫描缓冲</span>
+<span class="nt">scan_buffer_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="nt">scan_buffer_maximum_scan_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span>
+
+<span class="c1"># 匹配参数</span>
+<span class="nt">distance_variance_penalty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="nt">angle_variance_penalty</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+<span class="nt">fine_search_angle_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.00349</span>
+
+<span class="c1"># 回环检测</span>
+<span class="nt">loop_search_space_dimension</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8.0</span>
+<span class="nt">loop_search_space_resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="nt">loop_search_space_smear_deviation</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.03</span>
+
+<span class="c1"># 优化触发</span>
+<span class="nt">minimum_travel_distance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+<span class="nt">minimum_travel_heading</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.5</span>
+</code></pre></div>
+
+<p><strong>离线建图（Offline SLAM）</strong></p>
+<p>批处理优化已录制数据：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 离线模式配置</span>
+<span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localization_and_mapping</span>
+
+<span class="c1"># 全局优化</span>
+<span class="nt">do_loop_closing</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="nt">loop_match_minimum_chain_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="nt">loop_match_maximum_variance_coarse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.0</span>
+<span class="nt">loop_match_minimum_response_coarse</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.35</span>
+
+<span class="c1"># 批处理优化</span>
+<span class="nt">optimization_frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20.0</span>
+<span class="nt">global_optimization_frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
+</code></pre></div>
+
+<p>离线处理流程：</p>
+<ol>
+<li>加载 rosbag 文件</li>
+<li>顺序处理激光扫描</li>
+<li>定期执行全局优化</li>
+<li>保存优化后的地图</li>
+</ol>
+<h3 id="1124">11.2.4 回环检测与闭合</h3>
+<p>回环检测策略：</p>
+<ol>
+<li><strong>候选检测</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">find_loop_candidates</span><span class="p">(</span><span class="n">current_pose</span><span class="p">,</span> <span class="n">pose_graph</span><span class="p">):</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">pose_graph</span><span class="p">:</span>
+        <span class="c1"># 空间接近但时间远离</span>
+        <span class="n">spatial_dist</span> <span class="o">=</span> <span class="n">euclidean_distance</span><span class="p">(</span><span class="n">current_pose</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">pose</span><span class="p">)</span>
+        <span class="n">temporal_dist</span> <span class="o">=</span> <span class="n">current_time</span> <span class="o">-</span> <span class="n">node</span><span class="o">.</span><span class="n">time</span>
+
+        <span class="k">if</span> <span class="n">spatial_dist</span> <span class="o">&lt;</span> <span class="n">loop_search_radius</span> <span class="ow">and</span> \
+           <span class="n">temporal_dist</span> <span class="o">&gt;</span> <span class="n">minimum_time_interval</span><span class="p">:</span>
+            <span class="n">candidates</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">candidates</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>验证与优化</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="err">对每个候选</span><span class="o">:</span>
+
+<span class="mi">1</span><span class="o">.</span><span class="w"> </span><span class="err">执行扫描匹配</span>
+<span class="mi">2</span><span class="o">.</span><span class="w"> </span><span class="err">计算匹配得分和协方差</span>
+<span class="mi">3</span><span class="o">.</span><span class="w"> </span><span class="err">如果得分</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="err">阈值</span><span class="o">:</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="err">添加回环约束边</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="err">触发图优化</span>
+<span class="w">   </span><span class="o">-</span><span class="w"> </span><span class="err">更新地图</span>
+</code></pre></div>
+
+<h3 id="1125">11.2.5 地图序列化与管理</h3>
+<p>slam_toolbox 的地图格式：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># .posegraph 文件格式</span>
+<span class="nt">header</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0.0</span>
+<span class="w">  </span><span class="nt">robot_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;robot_0&quot;</span>
+
+<span class="nt">nodes</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">pose</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">x</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">theta</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">scan</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">ranges</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">angles</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">time</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1234567890.123</span>
+
+<span class="nt">edges</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;odometry&quot;</span>
+<span class="w">    </span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
+<span class="w">    </span><span class="nt">to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">    </span><span class="nt">transform</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">dx</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">dy</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">dtheta</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="nt">information</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">3x3 matrix</span><span class="p p-Indicator">]]</span>
+
+<span class="nt">map_data</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="w">  </span><span class="nt">origin</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span>
+<span class="w">  </span><span class="nt">data</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">occupancy_grid</span><span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<p>地图操作 API：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 保存地图</span>
+<span class="n">slam_toolbox</span><span class="o">.</span><span class="n">save_map</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;warehouse_map&quot;</span><span class="p">)</span>
+
+<span class="c1"># 加载地图继续建图</span>
+<span class="n">slam_toolbox</span><span class="o">.</span><span class="n">deserialize_map</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s2">&quot;warehouse_map.posegraph&quot;</span><span class="p">)</span>
+
+<span class="c1"># 合并多个地图</span>
+<span class="n">slam_toolbox</span><span class="o">.</span><span class="n">merge_maps</span><span class="p">(</span>
+    <span class="n">maps</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;floor1.posegraph&quot;</span><span class="p">,</span> <span class="s2">&quot;floor2.posegraph&quot;</span><span class="p">],</span>
+    <span class="n">output</span><span class="o">=</span><span class="s2">&quot;building.posegraph&quot;</span>
+<span class="p">)</span>
+</code></pre></div>
+
+<h2 id="113">11.3 地图服务器架构</h2>
+<p>ROS2 的地图服务器负责地图的加载、发布和管理，支持多种地图格式和动态更新。</p>
+<h3 id="1131">11.3.1 地图格式与表示</h3>
+<p><strong>占用栅格地图（OccupancyGrid）</strong></p>
+<p>标准 2D 地图表示：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># map.yaml 配置文件</span>
+<span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">warehouse.pgm</span>
+<span class="nt">resolution</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">  </span><span class="c1"># 米/像素</span>
+<span class="nt">origin</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">-10.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">-10.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># [x, y, yaw]</span>
+<span class="nt">negate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">  </span><span class="c1"># 0=白色自由,1=黑色自由</span>
+<span class="nt">occupied_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.65</span><span class="w">  </span><span class="c1"># &gt;此值为占用</span>
+<span class="nt">free_thresh</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.196</span><span class="w">     </span><span class="c1"># &lt;此值为自由</span>
+
+<span class="c1"># 栅格值含义</span>
+<span class="c1"># -1: 未知区域</span>
+<span class="c1">#  0: 自由空间</span>
+<span class="c1">#  100: 占用（障碍物）</span>
+<span class="c1"># 1-99: 占用概率</span>
+</code></pre></div>
+
+<p>地图消息结构：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># nav_msgs/msg/OccupancyGrid</span>
+<span class="n">header</span><span class="p">:</span>
+  <span class="n">stamp</span><span class="p">:</span> <span class="p">{</span><span class="n">sec</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nanosec</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+  <span class="n">frame_id</span><span class="p">:</span> <span class="s2">&quot;map&quot;</span>
+
+<span class="n">info</span><span class="p">:</span>
+  <span class="n">map_load_time</span><span class="p">:</span> <span class="p">{</span><span class="n">sec</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nanosec</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+  <span class="n">resolution</span><span class="p">:</span> <span class="mf">0.05</span>
+  <span class="n">width</span><span class="p">:</span> <span class="mi">2048</span>
+  <span class="n">height</span><span class="p">:</span> <span class="mi">2048</span>
+  <span class="n">origin</span><span class="p">:</span>
+    <span class="n">position</span><span class="p">:</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="o">-</span><span class="mf">51.2</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="o">-</span><span class="mf">51.2</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">}</span>
+    <span class="n">orientation</span><span class="p">:</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">z</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}</span>
+
+<span class="n">data</span><span class="p">:</span> <span class="p">[</span><span class="n">int8</span> <span class="n">array</span><span class="p">]</span>  <span class="c1"># row-major order</span>
+</code></pre></div>
+
+<p><strong>成本地图（Costmap）</strong></p>
+<p>用于导航的膨胀地图：</p>
+<div class="codehilite"><pre><span></span><code><span class="err">成本值定义</span><span class="o">:</span>
+<span class="mi">0</span><span class="o">:</span><span class="w"> </span><span class="err">自由空间</span>
+<span class="mi">1</span><span class="o">-</span><span class="mi">252</span><span class="o">:</span><span class="w"> </span><span class="err">成本递增</span>
+<span class="mi">253</span><span class="o">:</span><span class="w"> </span><span class="err">膨胀半径内</span>
+<span class="mi">254</span><span class="o">:</span><span class="w"> </span><span class="err">致命障碍物膨胀区</span>
+<span class="mi">255</span><span class="o">:</span><span class="w"> </span><span class="err">致命障碍物</span>
+
+<span class="err">膨胀函数</span><span class="o">:</span>
+<span class="n">cost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">253</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">exp</span><span class="o">(-</span><span class="err">α</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">distance</span><span class="o">)</span>
+<span class="err">其中</span><span class="w"> </span><span class="err">α</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">-</span><span class="n">ln</span><span class="o">(</span><span class="mf">0.01</span><span class="o">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">inflation_radius</span>
+</code></pre></div>
+
+<h3 id="1132-map_server">11.3.2 map_server 设计</h3>
+<p>ROS2 map_server 节点架构：</p>
+<div class="codehilite"><pre><span></span><code><span class="n">map_server</span><span class="w"> </span><span class="err">组件</span><span class="p">:</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">MapServer</span><span class="w"> </span><span class="p">(</span><span class="err">加载和发布静态地图</span><span class="p">)</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">服务</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">map_server</span><span class="o">/</span><span class="n">load_map</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">话题</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">map</span><span class="w"> </span><span class="p">(</span><span class="n">OccupancyGrid</span><span class="p">)</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="err">参数</span><span class="p">:</span><span class="w"> </span><span class="n">yaml_filename</span>
+<span class="err">│</span>
+<span class="err">├──</span><span class="w"> </span><span class="n">MapSaver</span><span class="w"> </span><span class="p">(</span><span class="err">保存地图到文件</span><span class="p">)</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">服务</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">map_server</span><span class="o">/</span><span class="n">save_map</span>
+<span class="err">│</span><span class="w">   </span><span class="err">├──</span><span class="w"> </span><span class="err">订阅</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">map</span>
+<span class="err">│</span><span class="w">   </span><span class="err">└──</span><span class="w"> </span><span class="err">参数</span><span class="p">:</span><span class="w"> </span><span class="n">save_map_timeout</span>
+<span class="err">│</span>
+<span class="err">└──</span><span class="w"> </span><span class="n">CostmapServer</span><span class="w"> </span><span class="p">(</span><span class="err">成本地图管理</span><span class="p">)</span>
+<span class="w">    </span><span class="err">├──</span><span class="w"> </span><span class="err">话题</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">global_costmap</span><span class="o">/</span><span class="n">costmap</span>
+<span class="w">    </span><span class="err">├──</span><span class="w"> </span><span class="err">服务</span><span class="p">:</span><span class="w"> </span><span class="o">/</span><span class="n">global_costmap</span><span class="o">/</span><span class="n">clear_entirely</span>
+<span class="w">    </span><span class="err">└──</span><span class="w"> </span><span class="err">插件</span><span class="p">:</span><span class="w"> </span><span class="n">static_layer</span><span class="p">,</span><span class="w"> </span><span class="n">inflation_layer</span>
+</code></pre></div>
+
+<p>生命周期管理：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MapServer</span><span class="p">(</span><span class="n">Node</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;map_server&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 声明参数</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_parameter</span><span class="p">(</span><span class="s1">&#39;yaml_filename&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_parameter</span><span class="p">(</span><span class="s1">&#39;frame_id&#39;</span><span class="p">,</span> <span class="s1">&#39;map&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">declare_parameter</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">,</span> <span class="s1">&#39;map&#39;</span><span class="p">)</span>
+
+        <span class="c1"># 创建发布者</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_publisher</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span>
+            <span class="n">OccupancyGrid</span><span class="p">,</span> 
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_parameter</span><span class="p">(</span><span class="s1">&#39;topic_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+            <span class="n">QoSProfile</span><span class="p">(</span><span class="n">depth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">durability</span><span class="o">=</span><span class="n">DurabilityPolicy</span><span class="o">.</span><span class="n">TRANSIENT_LOCAL</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 创建服务</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_map_service</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_service</span><span class="p">(</span>
+            <span class="n">LoadMap</span><span class="p">,</span> 
+            <span class="s1">&#39;load_map&#39;</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_map_callback</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_file</span><span class="p">):</span>
+        <span class="c1"># 加载 YAML 配置</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">map_config</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+        <span class="c1"># 加载图像文件</span>
+        <span class="n">map_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">map_config</span><span class="p">[</span><span class="s1">&#39;image&#39;</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># 转换为 OccupancyGrid</span>
+        <span class="n">map_msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">image_to_occupancy_grid</span><span class="p">(</span>
+            <span class="n">map_image</span><span class="p">,</span> 
+            <span class="n">map_config</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 发布地图</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">map_publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">map_msg</span><span class="p">)</span>
+</code></pre></div>
+
+<h3 id="1133">11.3.3 多层地图管理</h3>
+<p>分层地图架构支持不同抽象级别：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># multi_layer_map.yaml</span>
+<span class="nt">layers</span><span class="p">:</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;static_map&quot;</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;occupancy_grid&quot;</span>
+<span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;building_structure.pgm&quot;</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_layer&quot;</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;semantic_map&quot;</span>
+<span class="w">    </span><span class="nt">regions</span><span class="p">:</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;office_101&quot;</span><span class="p p-Indicator">,</span><span class="nt"> polygon</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">x1</span><span class="p p-Indicator">,</span><span class="nv">y1</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">]}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;corridor_A&quot;</span><span class="p p-Indicator">,</span><span class="nt"> polygon</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[[</span><span class="nv">x2</span><span class="p p-Indicator">,</span><span class="nv">y2</span><span class="p p-Indicator">],</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">]}</span>
+
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;topology_layer&quot;</span>
+<span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;topology_map&quot;</span>
+<span class="w">    </span><span class="nt">nodes</span><span class="p">:</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;entrance&quot;</span><span class="p p-Indicator">,</span><span class="nt"> pose</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">x</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">theta</span><span class="p p-Indicator">]}</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elevator&quot;</span><span class="p p-Indicator">,</span><span class="nt"> pose</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">x</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">y</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">theta</span><span class="p p-Indicator">]}</span>
+<span class="w">    </span><span class="nt">edges</span><span class="p">:</span>
+
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt">from</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="p p-Indicator">,</span><span class="nt"> to</span><span class="p">:</span><span class="w"> </span><span class="nv">2</span><span class="p p-Indicator">,</span><span class="nt"> distance</span><span class="p">:</span><span class="w"> </span><span class="nv">15.0</span><span class="p p-Indicator">}</span>
+</code></pre></div>
+
+<p>层间同步机制：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MultiLayerMapServer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tf_buffer</span> <span class="o">=</span> <span class="n">Buffer</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tf_listener</span> <span class="o">=</span> <span class="n">TransformListener</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tf_buffer</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">layer_type</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;type&#39;</span><span class="p">:</span> <span class="n">layer_type</span><span class="p">,</span>
+            <span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">,</span>
+            <span class="s1">&#39;publisher&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_publisher</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+        <span class="p">}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">query_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;查询位置的多层信息&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="c1"># 占用信息</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;occupied&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;static_map&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">is_occupied</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># 语义信息</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;semantic&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;semantic_layer&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">get_region</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="c1"># 拓扑信息</span>
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;nearest_node&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="p">[</span><span class="s1">&#39;topology_layer&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">nearest</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">result</span>
+</code></pre></div>
+
+<h3 id="1134">11.3.4 动态地图更新</h3>
+<p>实现动态障碍物和地图修改：</p>
+<p><strong>临时障碍物层</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DynamicObstacleLayer</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">decay_rate</span> <span class="o">=</span> <span class="mf">0.1</span>  <span class="c1"># 障碍物消失速率</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_obstacle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">duration</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;添加临时障碍物&quot;&quot;&quot;</span>
+        <span class="n">obstacle</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;center&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span>
+            <span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="n">radius</span><span class="p">,</span>
+            <span class="s1">&#39;timestamp&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">(),</span>
+            <span class="s1">&#39;duration&#39;</span><span class="p">:</span> <span class="n">duration</span>
+        <span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">obstacle</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_costmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">costmap</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;更新成本地图&quot;&quot;&quot;</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">obs</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="p">[:]:</span>
+            <span class="n">age</span> <span class="o">=</span> <span class="p">(</span><span class="n">current_time</span> <span class="o">-</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">nanoseconds</span> <span class="o">/</span> <span class="mf">1e9</span>
+
+            <span class="k">if</span> <span class="n">age</span> <span class="o">&gt;</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">obstacles</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">obs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 渐变消失效果</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="p">(</span><span class="n">age</span> <span class="o">/</span> <span class="n">obs</span><span class="p">[</span><span class="s1">&#39;duration&#39;</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">apply_obstacle_to_costmap</span><span class="p">(</span>
+                    <span class="n">costmap</span><span class="p">,</span> <span class="n">obs</span><span class="p">,</span> <span class="n">alpha</span>
+                <span class="p">)</span>
+</code></pre></div>
+
+<p><strong>增量地图更新</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IncrementalMapUpdate</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_map</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updates</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">apply_laser_update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scan</span><span class="p">,</span> <span class="n">pose</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;使用激光扫描更新地图&quot;&quot;&quot;</span>
+        <span class="c1"># 射线追踪清除动态障碍物</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">range_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">ranges</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">range_val</span> <span class="o">&lt;</span> <span class="n">scan</span><span class="o">.</span><span class="n">range_max</span><span class="p">:</span>
+                <span class="c1"># 清除射线路径</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_ray</span><span class="p">(</span>
+                    <span class="n">pose</span><span class="p">,</span> 
+                    <span class="n">pose</span> <span class="o">+</span> <span class="n">range_val</span> <span class="o">*</span> <span class="n">angle_to_vector</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">angle_min</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">scan</span><span class="o">.</span><span class="n">angle_increment</span><span class="p">)</span>
+                <span class="p">)</span>
+                <span class="c1"># 标记终点为占用</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">mark_occupied</span><span class="p">(</span><span class="n">endpoint</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">merge_updates</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;合并更新到基础地图&quot;&quot;&quot;</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base_map</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">update</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">updates</span><span class="p">:</span>
+            <span class="c1"># 贝叶斯更新</span>
+            <span class="n">merged</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bayesian_update</span><span class="p">(</span><span class="n">merged</span><span class="p">,</span> <span class="n">update</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">merged</span>
+</code></pre></div>
+
+<h3 id="1135">11.3.5 地图服务接口</h3>
+<p>标准地图服务：</p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 加载地图服务</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LoadMapService</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># 加载指定地图</span>
+            <span class="n">map_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_map_from_file</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">map_url</span><span class="p">)</span>
+
+            <span class="c1"># 发布到话题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">publish_map</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+
+            <span class="c1"># 返回结果</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">LoadMap</span><span class="o">.</span><span class="n">Response</span><span class="o">.</span><span class="n">RESULT_SUCCESS</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">map</span> <span class="o">=</span> <span class="n">map_data</span>
+
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">response</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="n">LoadMap</span><span class="o">.</span><span class="n">Response</span><span class="o">.</span><span class="n">RESULT_INVALID_MAP</span>
+
+        <span class="k">return</span> <span class="n">response</span>
+
+<span class="c1"># 保存地图服务</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SaveMapService</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_save_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="c1"># 获取当前地图</span>
+        <span class="n">current_map</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_current_map</span><span class="p">()</span>
+
+        <span class="c1"># 保存到文件</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_to_file</span><span class="p">(</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span>
+            <span class="n">current_map</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">resolution</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">free_thresh</span><span class="p">,</span>
+            <span class="n">request</span><span class="o">.</span><span class="n">occupied_thresh</span>
+        <span class="p">)</span>
+
+        <span class="n">response</span><span class="o">.</span><span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">response</span>
+</code></pre></div>
+
+<h2 id="114">11.4 多传感器融合定位</h2>
+<p>现代机器人系统通常集成多种传感器实现鲁棒定位，包括 IMU、里程计、激光雷达、视觉和 GPS 等。</p>
+<h3 id="1141">11.4.1 传感器特性分析</h3>
+<p>不同传感器的互补特性：</p>
+<p>| 传感器 | 更新频率 | 精度特点 | 误差类型 | 适用场景 |</p>
+<table>
+<thead>
+<tr>
+<th>传感器</th>
+<th>更新频率</th>
+<th>精度特点</th>
+<th>误差类型</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>轮式里程计</td>
+<td>10-100 Hz</td>
+<td>短期精确</td>
+<td>累积漂移</td>
+<td>平滑地面</td>
+</tr>
+<tr>
+<td>IMU</td>
+<td>100-1000 Hz</td>
+<td>高频响应</td>
+<td>偏置/漂移</td>
+<td>动态运动</td>
+</tr>
+<tr>
+<td>激光雷达</td>
+<td>10-40 Hz</td>
+<td>高精度</td>
+<td>环境依赖</td>
+<td>结构化环境</td>
+</tr>
+<tr>
+<td>视觉</td>
+<td>10-60 Hz</td>
+<td>特征丰富</td>
+<td>光照敏感</td>
+<td>纹理环境</td>
+</tr>
+<tr>
+<td>GPS/RTK</td>
+<td>1-10 Hz</td>
+<td>全局定位</td>
+<td>多径/遮挡</td>
+<td>室外开阔</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1142-ekf">11.4.2 扩展卡尔曼滤波（EKF）</h3>
+<p>robot_localization 包的 EKF 实现：</p>
+<p><strong>状态向量定义</strong></p>
+<p>15 维状态向量：
+$$
+\mathbf{x} = [x, y, z, \phi, \theta, \psi, \dot{x}, \dot{y}, \dot{z}, \dot{\phi}, \dot{\theta}, \dot{\psi}, \ddot{x}, \ddot{y}, \ddot{z}]^T
+$$</p>
+<p><strong>预测步骤</strong></p>
+<p>运动模型：
+$$
+\mathbf{x}_k = f(\mathbf{x}_{k-1}, \mathbf{u}_k) + \mathbf{w}_k
+$$</p>
+<p>其中 $f$ 是非线性状态转移函数，$\mathbf{w}_k$ 是过程噪声。</p>
+<p>协方差预测：
+$$
+\mathbf{P}_k^- = \mathbf{F}_k \mathbf{P}_{k-1} \mathbf{F}_k^T + \mathbf{Q}_k
+$$</p>
+<p><strong>更新步骤</strong></p>
+<p>观测模型：
+$$
+\mathbf{z}_k = h(\mathbf{x}_k) + \mathbf{v}_k
+$$</p>
+<p>卡尔曼增益：
+$$
+\mathbf{K}_k = \mathbf{P}_k^- \mathbf{H}_k^T (\mathbf{H}_k \mathbf{P}_k^- \mathbf{H}_k^T + \mathbf{R}_k)^{-1}
+$$</p>
+<p>状态更新：
+$$
+\mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k(\mathbf{z}_k - h(\mathbf{x}_k^-))
+$$</p>
+<h3 id="1143-robot_localization">11.4.3 robot_localization 配置</h3>
+<p><strong>EKF 节点配置</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># ekf_localization.yaml</span>
+<span class="nt">ekf_filter_node</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">ros__parameters</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># 基础配置</span>
+<span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30.0</span>
+<span class="w">    </span><span class="nt">sensor_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="w">    </span><span class="nt">two_d_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">    </span><span class="c1"># 坐标系</span>
+<span class="w">    </span><span class="nt">map_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+<span class="w">    </span><span class="nt">odom_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="w">    </span><span class="nt">base_link_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">base_link</span>
+<span class="w">    </span><span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+
+<span class="w">    </span><span class="c1"># 里程计输入</span>
+<span class="w">    </span><span class="nt">odom0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/wheel_odometry</span>
+<span class="w">    </span><span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># x, y, z</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># roll, pitch, yaw</span>
+<span class="w">                   </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># vx, vy, vz</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="c1"># vroll, vpitch, vyaw</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># ax, ay, az</span>
+<span class="w">    </span><span class="nt">odom0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">odom0_relative</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">    </span><span class="c1"># IMU 输入</span>
+<span class="w">    </span><span class="nt">imu0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/imu/data</span>
+<span class="w">    </span><span class="nt">imu0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="c1"># x, y, z</span>
+<span class="w">                  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="c1"># roll, pitch, yaw</span>
+<span class="w">                  </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="c1"># vx, vy, vz</span>
+<span class="w">                  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">     </span><span class="c1"># vroll, vpitch, vyaw</span>
+<span class="w">                  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">]</span><span class="w">     </span><span class="c1"># ax, ay, az</span>
+<span class="w">    </span><span class="nt">imu0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">imu0_relative</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">    </span><span class="nt">imu0_remove_gravitational_acceleration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+
+<span class="w">    </span><span class="c1"># 激光定位输入</span>
+<span class="w">    </span><span class="nt">pose0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/amcl_pose</span>
+<span class="w">    </span><span class="nt">pose0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># x, y, z</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="c1"># roll, pitch, yaw</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># vx, vy, vz</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">   </span><span class="c1"># vroll, vpitch, vyaw</span>
+<span class="w">                   </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># ax, ay, az</span>
+<span class="w">    </span><span class="nt">pose0_differential</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<span class="w">    </span><span class="nt">pose0_relative</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+
+<span class="w">    </span><span class="c1"># 过程噪声协方差</span>
+<span class="w">    </span><span class="nt">process_noise_covariance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span>
+<span class="w">      </span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.05</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.03</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.06</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.025</span><span class="p p-Indicator">,</span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.04</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.02</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.01</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span>
+<span class="w">      </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="w">    </span><span class="nv">0.015</span>
+<span class="w">    </span><span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<h3 id="1144-ukf">11.4.4 无迹卡尔曼滤波（UKF）</h3>
+<p>UKF 通过确定性采样处理非线性：</p>
+<p><strong>Sigma 点生成</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">generate_sigma_points</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">kappa</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">lambda_</span> <span class="o">=</span> <span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">kappa</span><span class="p">)</span> <span class="o">-</span> <span class="n">n</span>
+
+    <span class="c1"># 权重计算</span>
+    <span class="n">Wm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Wc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">Wm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">lambda_</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span>
+    <span class="n">Wc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Wm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">beta</span><span class="p">)</span>
+    <span class="n">Wm</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="n">Wc</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">/</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span>
+
+    <span class="c1"># Sigma 点</span>
+    <span class="n">sigma_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+    <span class="n">sigma_points</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+
+    <span class="n">sqrt_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cholesky</span><span class="p">((</span><span class="n">n</span> <span class="o">+</span> <span class="n">lambda_</span><span class="p">)</span> <span class="o">*</span> <span class="n">P</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">sigma_points</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">sqrt_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">sigma_points</span><span class="p">[</span><span class="n">n</span><span class="o">+</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">sqrt_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">sigma_points</span><span class="p">,</span> <span class="n">Wm</span><span class="p">,</span> <span class="n">Wc</span>
+</code></pre></div>
+
+<p><strong>UKF 更新</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">UKF</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">):</span>
+        <span class="c1"># 生成 sigma 点</span>
+        <span class="n">sigma_points</span><span class="p">,</span> <span class="n">Wm</span><span class="p">,</span> <span class="n">Wc</span> <span class="o">=</span> <span class="n">generate_sigma_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 通过运动模型传播</span>
+        <span class="n">sigma_points_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">motion_model</span><span class="p">(</span><span class="n">sp</span><span class="p">,</span> <span class="n">dt</span><span class="p">)</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">sigma_points</span>
+        <span class="p">])</span>
+
+        <span class="c1"># 计算预测均值和协方差</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Wm</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">sigma_points_pred</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sigma_points</span><span class="p">)):</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">sigma_points_pred</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">+=</span> <span class="n">Wc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">diff</span><span class="p">,</span> <span class="n">diff</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">sensor_model</span><span class="p">):</span>
+        <span class="c1"># 生成 sigma 点</span>
+        <span class="n">sigma_points</span><span class="p">,</span> <span class="n">Wm</span><span class="p">,</span> <span class="n">Wc</span> <span class="o">=</span> <span class="n">generate_sigma_points</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span>
+        <span class="p">)</span>
+
+        <span class="c1"># 通过观测模型传播</span>
+        <span class="n">z_sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+            <span class="n">sensor_model</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">sigma_points</span>
+        <span class="p">])</span>
+
+        <span class="c1"># 计算观测预测</span>
+        <span class="n">z_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">Wm</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">z_sigma</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># 计算协方差</span>
+        <span class="n">Pzz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">Pxz</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">sigma_points</span><span class="p">)):</span>
+            <span class="n">dz</span> <span class="o">=</span> <span class="n">z_sigma</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">z_pred</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">sigma_points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span>
+            <span class="n">Pzz</span> <span class="o">+=</span> <span class="n">Wc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">dz</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+            <span class="n">Pxz</span> <span class="o">+=</span> <span class="n">Wc</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span> <span class="n">dz</span><span class="p">)</span>
+
+        <span class="c1"># 卡尔曼增益</span>
+        <span class="n">K</span> <span class="o">=</span> <span class="n">Pxz</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Pzz</span><span class="p">)</span>
+
+        <span class="c1"># 状态更新</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">+=</span> <span class="n">K</span> <span class="o">@</span> <span class="p">(</span><span class="n">z</span> <span class="o">-</span> <span class="n">z_pred</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">P</span> <span class="o">-=</span> <span class="n">K</span> <span class="o">@</span> <span class="n">Pzz</span> <span class="o">@</span> <span class="n">K</span><span class="o">.</span><span class="n">T</span>
+</code></pre></div>
+
+<h3 id="1145">11.4.5 传感器标定</h3>
+<p><strong>IMU-里程计标定</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">calibrate_imu_odometry</span><span class="p">(</span><span class="n">imu_data</span><span class="p">,</span> <span class="n">odom_data</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;标定 IMU 和里程计之间的外参&quot;&quot;&quot;</span>
+    <span class="c1"># 时间同步</span>
+    <span class="n">imu_sync</span><span class="p">,</span> <span class="n">odom_sync</span> <span class="o">=</span> <span class="n">time_synchronize</span><span class="p">(</span>
+        <span class="n">imu_data</span><span class="p">,</span> <span class="n">odom_data</span>
+    <span class="p">)</span>
+
+    <span class="c1"># 提取角速度</span>
+    <span class="n">imu_angular_vel</span> <span class="o">=</span> <span class="n">imu_sync</span><span class="p">[</span><span class="s1">&#39;angular_velocity&#39;</span><span class="p">]</span>
+    <span class="n">odom_angular_vel</span> <span class="o">=</span> <span class="n">compute_angular_velocity</span><span class="p">(</span><span class="n">odom_sync</span><span class="p">)</span>
+
+    <span class="c1"># 最小二乘标定</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">lstsq</span><span class="p">(</span>
+        <span class="n">imu_angular_vel</span><span class="p">,</span> <span class="n">odom_angular_vel</span><span class="p">,</span> <span class="n">rcond</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># 计算时间偏移</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">correlate</span><span class="p">(</span>
+        <span class="n">imu_angular_vel</span><span class="p">,</span> <span class="n">odom_angular_vel</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;full&#39;</span>
+    <span class="p">)</span>
+    <span class="n">time_offset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">imu_angular_vel</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">scale</span><span class="p">,</span> <span class="n">time_offset</span>
+</code></pre></div>
+
+<p><strong>激光-IMU 标定</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 外参标定结果</span>
+<span class="nt">lidar_imu_extrinsics</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">translation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.15</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.08</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># [x, y, z]</span>
+<span class="w">  </span><span class="nt">rotation</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">0.0</span><span class="p p-Indicator">]</span><span class="w">       </span><span class="c1"># [roll, pitch, yaw]</span>
+<span class="w">  </span><span class="nt">time_offset</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span><span class="w">                </span><span class="c1"># 秒</span>
+</code></pre></div>
+
+<h3 id="1146">11.4.6 故障检测与恢复</h3>
+<p>传感器故障检测：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SensorFaultDetector</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chi2_threshold</span> <span class="o">=</span> <span class="mf">9.21</span>  <span class="c1"># 95% 置信度，3自由度</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">innovation_window</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_innovation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">innovation</span><span class="p">,</span> <span class="n">S</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;马氏距离检验&quot;&quot;&quot;</span>
+        <span class="n">chi2</span> <span class="o">=</span> <span class="n">innovation</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="o">@</span> <span class="n">innovation</span>
+        <span class="k">return</span> <span class="n">chi2</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">chi2_threshold</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">check_sensor_health</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;传感器健康检查&quot;&quot;&quot;</span>
+        <span class="n">checks</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;data_rate&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_data_rate</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="s1">&#39;range_valid&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_range</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="s1">&#39;noise_level&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_noise</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
+            <span class="s1">&#39;consistency&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_consistency</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">checks</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_sensor_failure</span><span class="p">(</span><span class="n">sensor_name</span><span class="p">,</span> <span class="n">checks</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_sensor_failure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sensor_name</span><span class="p">,</span> <span class="n">failures</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;故障处理策略&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">sensor_name</span> <span class="o">==</span> <span class="s1">&#39;gps&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">failures</span><span class="p">[</span><span class="s1">&#39;data_rate&#39;</span><span class="p">]:</span>
+            <span class="c1"># GPS 信号丢失，切换到纯里程计/IMU</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_dead_reckoning</span><span class="p">()</span>
+
+        <span class="k">elif</span> <span class="n">sensor_name</span> <span class="o">==</span> <span class="s1">&#39;imu&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">failures</span><span class="p">[</span><span class="s1">&#39;noise_level&#39;</span><span class="p">]:</span>
+            <span class="c1"># IMU 噪声过大，降低权重</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">reduce_sensor_weight</span><span class="p">(</span><span class="s1">&#39;imu&#39;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="amazon">产业案例研究：Amazon 仓库机器人大规模定位</h2>
+<p>Amazon Robotics（前 Kiva Systems）在全球数百个配送中心部署了超过 50 万台自主移动机器人（AMR），实现了仓库物流的革命性变革。</p>
+<h3 id="_1">系统架构</h3>
+<p><strong>分层定位系统</strong></p>
+<div class="codehilite"><pre><span></span><code>全局层（Fleet Manager）
+├── 集中式地图管理
+├── 全局路径规划
+└── 任务分配
+
+区域层（Zone Controller）
+├── 局部地图更新
+├── 区域内协调
+└── 拥塞管理
+
+机器人层（Robot）
+├── 板载定位（AMCL+EKF）
+├── 局部避障
+└── 执行控制
+</code></pre></div>
+
+<h3 id="_2">技术方案</h3>
+<ol>
+<li><strong>二维码辅助定位</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">FiducialLocalization</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fiducial_map</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># ID -&gt; (x, y, theta)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_fiducial</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning_distance</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fiducial_detection</span><span class="p">,</span> <span class="n">odometry</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fiducial_detection</span><span class="p">:</span>
+            <span class="c1"># 绝对定位校正</span>
+            <span class="n">fid_pose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiducial_map</span><span class="p">[</span><span class="n">fiducial_detection</span><span class="o">.</span><span class="n">id</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">correct_pose</span><span class="p">(</span><span class="n">fid_pose</span><span class="p">,</span> <span class="n">fiducial_detection</span><span class="o">.</span><span class="n">relative_pose</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">last_fiducial</span> <span class="o">=</span> <span class="n">fiducial_detection</span><span class="o">.</span><span class="n">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning_distance</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># 里程计推算</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning_update</span><span class="p">(</span><span class="n">odometry</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning_distance</span> <span class="o">+=</span> <span class="n">odometry</span><span class="o">.</span><span class="n">distance</span>
+
+        <span class="c1"># 不确定性管理</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dead_reckoning_distance</span> <span class="o">&gt;</span> <span class="mf">5.0</span><span class="p">:</span>  <span class="c1"># 5米</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_fiducial_scan</span><span class="p">()</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>多机器人协作定位</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 协作配置</span>
+<span class="nt">cooperative_localization</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">max_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10.0</span><span class="w">  </span><span class="c1"># 米</span>
+<span class="w">  </span><span class="nt">min_observations</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+
+<span class="w">  </span><span class="c1"># 相对观测</span>
+<span class="w">  </span><span class="nt">robot_detection</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;uwb_ranging&quot;</span><span class="w">  </span><span class="c1"># 或 &quot;visual_markers&quot;</span>
+<span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+
+<span class="w">  </span><span class="c1"># 信息融合</span>
+<span class="w">  </span><span class="nt">fusion</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">method</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;distributed_ekf&quot;</span>
+<span class="w">    </span><span class="nt">communication</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;wifi_mesh&quot;</span>
+</code></pre></div>
+
+<h3 id="_3">性能指标</h3>
+<p>| 指标 | 目标值 | 实际达成 |</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>目标值</th>
+<th>实际达成</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>定位精度</td>
+<td>&lt; 5cm</td>
+<td>2-3cm</td>
+</tr>
+<tr>
+<td>更新频率</td>
+<td>&gt; 10Hz</td>
+<td>20Hz</td>
+</tr>
+<tr>
+<td>初始化时间</td>
+<td>&lt; 10s</td>
+<td>5-8s</td>
+</tr>
+<tr>
+<td>系统可用性</td>
+<td>&gt; 99.9%</td>
+<td>99.95%</td>
+</tr>
+<tr>
+<td>单仓库机器人数</td>
+<td>1000+</td>
+<td>3000+</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_4">关键优化</h3>
+<ol>
+<li><strong>地图压缩与分发</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">MapDistribution</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_map</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># 完整地图</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">zone_maps</span> <span class="o">=</span> <span class="p">{}</span>     <span class="c1"># 分区地图</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">generate_robot_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot_id</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;生成任务相关的精简地图&quot;&quot;&quot;</span>
+        <span class="c1"># 确定活动区域</span>
+        <span class="n">active_zones</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_task_zones</span><span class="p">(</span><span class="n">task</span><span class="p">)</span>
+
+        <span class="c1"># 提取相关地图</span>
+        <span class="n">robot_map</span> <span class="o">=</span> <span class="n">OccupancyGrid</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">zone</span> <span class="ow">in</span> <span class="n">active_zones</span><span class="p">:</span>
+            <span class="n">robot_map</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zone_maps</span><span class="p">[</span><span class="n">zone</span><span class="p">])</span>
+
+        <span class="c1"># 压缩传输</span>
+        <span class="n">compressed</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compress_map</span><span class="p">(</span><span class="n">robot_map</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">compressed</span>
+</code></pre></div>
+
+<ol start="2">
+<li><strong>定位失败恢复</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">LocalizationRecovery</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">recovery_behaviors</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rotate_in_place</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">move_to_open_space</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">request_assistance</span>
+        <span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">handle_lost</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;定位丢失处理流程&quot;&quot;&quot;</span>
+        <span class="c1"># 1. 停止移动</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stop_robot</span><span class="p">()</span>
+
+        <span class="c1"># 2. 尝试恢复</span>
+        <span class="k">for</span> <span class="n">behavior</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">recovery_behaviors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">behavior</span><span class="p">():</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="c1"># 3. 请求人工介入</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alert_operator</span><span class="p">()</span>
+        <span class="k">return</span> <span class="kc">False</span>
+</code></pre></div>
+
+<h3 id="_5">踩坑与解决</h3>
+<p><strong>问题 1：WiFi 干扰导致通信延迟</strong></p>
+<ul>
+<li>症状：高密度部署区域定位跳变</li>
+<li>解决：5GHz 频段 + 定向天线 + 时间槽分配</li>
+</ul>
+<p><strong>问题 2：地面标记磨损</strong></p>
+<ul>
+<li>症状：二维码识别率下降</li>
+<li>解决：冗余标记 + 预测性维护 + 激光 SLAM 备份</li>
+</ul>
+<p><strong>问题 3：动态障碍物（人员）</strong></p>
+<ul>
+<li>症状：频繁重定位</li>
+<li>解决：人员检测 + 预测轨迹 + 安全区域</li>
+</ul>
+<h2 id="graphslam">高级话题：GraphSLAM 与因子图优化</h2>
+<h3 id="graphslam_1">GraphSLAM 原理</h3>
+<p>GraphSLAM 将 SLAM 问题表示为因子图，通过最大后验估计（MAP）求解：</p>
+<p>$$
+X^*, L^* = \arg\max_{X,L} P(X, L | Z, U)
+$$</p>
+<p>因子图表示：</p>
+<ul>
+<li>变量节点：机器人位姿 $x_i$，地标位置 $l_j$</li>
+<li>因子节点：运动约束 $f_u$，观测约束 $f_z$</li>
+</ul>
+<h3 id="isam2">增量式平滑与建图（iSAM2）</h3>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">iSAM2</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bayes_tree</span> <span class="o">=</span> <span class="n">BayesTree</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">theta</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># 当前估计</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_factor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;增量添加因子&quot;&quot;&quot;</span>
+        <span class="c1"># 识别受影响的变量</span>
+        <span class="n">affected</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_affected_cliques</span><span class="p">(</span><span class="n">factor</span><span class="p">)</span>
+
+        <span class="c1"># 重新线性化</span>
+        <span class="k">for</span> <span class="n">clique</span> <span class="ow">in</span> <span class="n">affected</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">relinearize</span><span class="p">(</span><span class="n">clique</span><span class="p">)</span>
+
+        <span class="c1"># 部分消元</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">partial_elimination</span><span class="p">(</span><span class="n">affected</span><span class="p">)</span>
+
+        <span class="c1"># 反向替换更新</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">back_substitution</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="g2o">g2o 优化框架集成</h3>
+<div class="codehilite"><pre><span></span><code><span class="c1">// g2o 图优化示例</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;g2o/core/sparse_optimizer.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;g2o/core/block_solver.h&gt;</span>
+<span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;g2o/solvers/eigen/linear_solver_eigen.h&gt;</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">GraphSLAMOptimizer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">g2o</span><span class="o">::</span><span class="n">SparseOptimizer</span><span class="w"> </span><span class="n">optimizer</span><span class="p">;</span>
+
+<span class="k">public</span><span class="o">:</span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="n">optimize</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1">// 配置求解器</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">linearSolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span>
+<span class="w">            </span><span class="n">g2o</span><span class="o">::</span><span class="n">LinearSolverEigen</span><span class="o">&lt;</span><span class="n">g2o</span><span class="o">::</span><span class="n">BlockSolver_6_3</span><span class="o">::</span><span class="n">PoseMatrixType</span><span class="o">&gt;&gt;</span><span class="p">();</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">blockSolver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">std</span><span class="o">::</span><span class="n">make_unique</span><span class="o">&lt;</span>
+<span class="w">            </span><span class="n">g2o</span><span class="o">::</span><span class="n">BlockSolver_6_3</span><span class="o">&gt;</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">linearSolver</span><span class="p">));</span>
+<span class="w">        </span><span class="k">auto</span><span class="w"> </span><span class="n">solver</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">g2o</span><span class="o">::</span><span class="n">OptimizationAlgorithmLevenberg</span><span class="p">(</span>
+<span class="w">            </span><span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">blockSolver</span><span class="p">));</span>
+
+<span class="w">        </span><span class="n">optimizer</span><span class="p">.</span><span class="n">setAlgorithm</span><span class="p">(</span><span class="n">solver</span><span class="p">);</span>
+
+<span class="w">        </span><span class="c1">// 添加顶点（位姿）</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">pose</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">poses</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">vertex</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">g2o</span><span class="o">::</span><span class="n">VertexSE2</span><span class="p">();</span>
+<span class="w">            </span><span class="n">vertex</span><span class="o">-&gt;</span><span class="n">setId</span><span class="p">(</span><span class="n">pose</span><span class="p">.</span><span class="n">id</span><span class="p">);</span>
+<span class="w">            </span><span class="n">vertex</span><span class="o">-&gt;</span><span class="n">setEstimate</span><span class="p">(</span><span class="n">pose</span><span class="p">.</span><span class="n">to_se2</span><span class="p">());</span>
+<span class="w">            </span><span class="n">optimizer</span><span class="p">.</span><span class="n">addVertex</span><span class="p">(</span><span class="n">vertex</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 添加边（约束）</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="k">auto</span><span class="o">&amp;</span><span class="w"> </span><span class="n">constraint</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">constraints</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">auto</span><span class="w"> </span><span class="n">edge</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">g2o</span><span class="o">::</span><span class="n">EdgeSE2</span><span class="p">();</span>
+<span class="w">            </span><span class="n">edge</span><span class="o">-&gt;</span><span class="n">setVertex</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">.</span><span class="n">vertex</span><span class="p">(</span><span class="n">constraint</span><span class="p">.</span><span class="n">from</span><span class="p">));</span>
+<span class="w">            </span><span class="n">edge</span><span class="o">-&gt;</span><span class="n">setVertex</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">optimizer</span><span class="p">.</span><span class="n">vertex</span><span class="p">(</span><span class="n">constraint</span><span class="p">.</span><span class="n">to</span><span class="p">));</span>
+<span class="w">            </span><span class="n">edge</span><span class="o">-&gt;</span><span class="n">setMeasurement</span><span class="p">(</span><span class="n">constraint</span><span class="p">.</span><span class="n">transform</span><span class="p">);</span>
+<span class="w">            </span><span class="n">edge</span><span class="o">-&gt;</span><span class="n">setInformation</span><span class="p">(</span><span class="n">constraint</span><span class="p">.</span><span class="n">information</span><span class="p">);</span>
+<span class="w">            </span><span class="n">optimizer</span><span class="p">.</span><span class="n">addEdge</span><span class="p">(</span><span class="n">edge</span><span class="p">);</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="c1">// 执行优化</span>
+<span class="w">        </span><span class="n">optimizer</span><span class="p">.</span><span class="n">initializeOptimization</span><span class="p">();</span>
+<span class="w">        </span><span class="n">optimizer</span><span class="p">.</span><span class="n">optimize</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+<h3 id="slam">分布式 SLAM</h3>
+<p>多机器人协作 SLAM 算法：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">DistributedSLAM</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">robot_id</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">robot_id</span> <span class="o">=</span> <span class="n">robot_id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">local_graph</span> <span class="o">=</span> <span class="n">FactorGraph</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">shared_variables</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">consensus_optimization</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;ADMM 共识优化&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">iteration</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iterations</span><span class="p">):</span>
+            <span class="c1"># 本地优化</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">local_update</span><span class="p">()</span>
+
+            <span class="c1"># 交换共享变量</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">exchange_shared_variables</span><span class="p">()</span>
+
+            <span class="c1"># 拉格朗日乘子更新</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_dual_variables</span><span class="p">()</span>
+
+            <span class="c1"># 检查收敛</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_convergence</span><span class="p">():</span>
+                <span class="k">break</span>
+</code></pre></div>
+
+<h3 id="slam_1">语义 SLAM</h3>
+<p>结合语义信息的 SLAM：</p>
+<div class="codehilite"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">SemanticSLAM</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_map</span> <span class="o">=</span> <span class="n">OccupancyGrid</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">semantic_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_detector</span> <span class="o">=</span> <span class="n">YOLOv8</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">process_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">pose</span><span class="p">):</span>
+        <span class="c1"># 目标检测</span>
+        <span class="n">detections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_detector</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+        <span class="c1"># 3D 重建</span>
+        <span class="k">for</span> <span class="n">det</span> <span class="ow">in</span> <span class="n">detections</span><span class="p">:</span>
+            <span class="n">object_3d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backproject</span><span class="p">(</span><span class="n">det</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">pose</span><span class="p">)</span>
+
+            <span class="c1"># 数据关联</span>
+            <span class="n">matched</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_association</span><span class="p">(</span><span class="n">object_3d</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">matched</span><span class="p">:</span>
+                <span class="c1"># 更新已有对象</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_object</span><span class="p">(</span><span class="n">matched</span><span class="p">,</span> <span class="n">object_3d</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 添加新对象</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_object</span><span class="p">(</span><span class="n">object_3d</span><span class="p">)</span>
+
+        <span class="c1"># 语义约束优化</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">optimize_with_semantics</span><span class="p">()</span>
+</code></pre></div>
+
+<h3 id="_6">推荐论文</h3>
+<ol>
+<li>
+<p><strong>Grisetti et al., 2010</strong> - "A Tutorial on Graph-Based SLAM"
+   - GraphSLAM 理论基础</p>
+</li>
+<li>
+<p><strong>Kaess et al., 2012</strong> - "iSAM2: Incremental Smoothing and Mapping Using the Bayes Tree"
+   - 增量式优化方法</p>
+</li>
+<li>
+<p><strong>Rosinol et al., 2020</strong> - "Kimera: Real-Time Metric-Semantic SLAM"
+   - 语义 SLAM 最新进展</p>
+</li>
+</ol>
+<h3 id="_7">开源项目</h3>
+<ul>
+<li><strong>GTSAM</strong>: Georgia Tech Smoothing and Mapping library</li>
+<li><strong>g2o</strong>: General Graph Optimization</li>
+<li><strong>Cartographer</strong>: Google 的实时 2D/3D SLAM</li>
+<li><strong>ORB-SLAM3</strong>: 视觉/视觉-惯性 SLAM</li>
+</ul>
+<h2 id="_8">本章小结</h2>
+<p>本章系统介绍了 ROS2 中的 SLAM 与定位技术栈：</p>
+<p><strong>核心概念</strong></p>
+<ul>
+<li>AMCL 粒子滤波定位：运动模型、观测模型、自适应粒子数</li>
+<li>slam_toolbox 图优化：扫描匹配、回环检测、地图序列化</li>
+<li>地图服务器：多层地图、动态更新、服务接口</li>
+<li>多传感器融合：EKF/UKF、robot_localization、传感器标定</li>
+</ul>
+<p><strong>关键公式</strong></p>
+<ul>
+<li>粒子滤波后验：$\text{Bel}(x_t) \approx \{x_t^{[i]}, w_t^{[i]}\}_{i=1}^N$</li>
+<li>图优化目标：$x^* = \arg\min_x \sum_{ij} e_{ij}^T \Omega_{ij} e_{ij}$</li>
+<li>EKF 更新：$\mathbf{x}_k = \mathbf{x}_k^- + \mathbf{K}_k(\mathbf{z}_k - h(\mathbf{x}_k^-))$</li>
+</ul>
+<p><strong>实践要点</strong></p>
+<ul>
+<li>根据环境特征选择合适的定位方法</li>
+<li>多传感器融合提高鲁棒性</li>
+<li>合理配置参数平衡精度与计算量</li>
+<li>实施故障检测与恢复机制</li>
+</ul>
+<h2 id="_9">练习题</h2>
+<h3 id="_10">基础题</h3>
+<ol>
+<li><strong>AMCL 参数调优</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>场景：仓库环境，面积 5000m²，机器人最大速度 2m/s
+要求：配置 AMCL 参数实现 &lt;10cm 定位精度
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>考虑粒子数量、更新频率、运动噪声参数的平衡</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>关键参数配置：</p>
+<ul>
+<li>min_particles: 500（保证精度）</li>
+<li>max_particles: 2000（限制计算）</li>
+<li>update_min_d: 0.1（频繁更新）</li>
+<li>update_min_a: 0.1</li>
+<li>alpha1-4: 0.1, 0.1, 0.15, 0.1（根据里程计精度）</li>
+<li>laser_sigma_hit: 0.1（激光精度高）</li>
+<li>resample_interval: 1</li>
+</ul>
+</details>
+<ol start="2">
+<li><strong>回环检测实现</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>任务：设计回环检测算法的判断条件
+输入：当前位姿、历史轨迹、激光扫描
+输出：是否检测到回环
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>综合考虑空间距离、时间间隔、扫描匹配得分</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>回环判断条件：</p>
+<ol>
+<li>空间距离 &lt; 2m</li>
+<li>时间间隔 &gt; 30s</li>
+<li>扫描匹配得分 &gt; 0.8</li>
+<li>匹配协方差特征值 &lt; 阈值</li>
+<li>连续 N 帧确认</li>
+</ol>
+</details>
+<ol start="3">
+<li><strong>地图格式转换</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>需求：将 PGM 格式地图转换为 nav_msgs/OccupancyGrid
+输入：map.pgm (2048x2048), map.yaml
+输出：OccupancyGrid 消息
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>注意坐标系转换和占用值映射</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>转换步骤：</p>
+<ol>
+<li>读取 PGM 图像和 YAML 配置</li>
+<li>根据 negate 参数反转颜色</li>
+<li>映射像素值到占用概率：
+   - 白色(255) → 0 (free)
+   - 黑色(0) → 100 (occupied)
+   - 灰色 → -1 (unknown)</li>
+<li>设置 origin 和 resolution</li>
+<li>填充 OccupancyGrid 消息</li>
+</ol>
+</details>
+<ol start="4">
+<li><strong>EKF 传感器配置</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>传感器：IMU(100Hz)、轮式里程计(20Hz)、GPS(1Hz)
+目标：室外导航，精度要求 0.5m
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>考虑传感器更新频率和测量维度</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>配置策略：</p>
+<ul>
+<li>IMU: 使用角度、角速度、加速度</li>
+<li>里程计: 使用线速度、角速度</li>
+<li>GPS: 使用绝对位置 x, y</li>
+<li>EKF 频率: 30Hz</li>
+<li>two_d_mode: true（平面运动）</li>
+<li>过程噪声: 根据地形调整</li>
+</ul>
+</details>
+<h3 id="_11">挑战题</h3>
+<ol start="5">
+<li><strong>多机器人协作定位</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>场景：3 个机器人在同一环境中运行
+要求：设计相对观测和信息融合方案
+约束：通信带宽 &lt; 1MB/s
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>考虑分布式架构、数据压缩、时间同步</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>设计方案：</p>
+<ol>
+<li>
+<p>相对观测：
+   - UWB 测距（10Hz）
+   - 视觉标记识别
+   - 激光特征匹配</p>
+</li>
+<li>
+<p>信息融合：
+   - 分布式 EKF
+   - 共享地图特征点
+   - 协方差交集算法</p>
+</li>
+<li>
+<p>通信优化：
+   - 增量地图更新
+   - 特征点压缩
+   - 事件触发通信</p>
+</li>
+</ol>
+</details>
+<ol start="6">
+<li><strong>动态环境 SLAM</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>问题：人员密集环境中的建图
+挑战：50% 激光点击中动态物体
+设计：鲁棒的 SLAM 算法
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>动静态点分离、概率占用更新、长期地图维护</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>解决方案：</p>
+<ol>
+<li>
+<p>动态点过滤：
+   - 基于占用一致性
+   - 速度阈值判断
+   - 机器学习分类</p>
+</li>
+<li>
+<p>地图更新策略：
+   - 短期/长期地图分离
+   - 贝叶斯占用更新
+   - 衰减因子</p>
+</li>
+<li>
+<p>定位补偿：
+   - 增加静态特征权重
+   - 使用天花板特征
+   - IMU 辅助</p>
+</li>
+</ol>
+</details>
+<ol start="7">
+<li><strong>定位失败诊断</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>症状：机器人位置突变，粒子云发散
+任务：设计自动诊断和恢复系统
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>监控多个指标，分级恢复策略</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>诊断系统：</p>
+<ol>
+<li>
+<p>监控指标：
+   - 粒子云协方差
+   - 激光匹配得分
+   - 里程计-激光一致性
+   - 有效粒子数</p>
+</li>
+<li>
+<p>故障分类：
+   - 绑架问题
+   - 传感器故障
+   - 地图不匹配</p>
+</li>
+<li>
+<p>恢复策略：
+   - Level 1: 增加粒子数
+   - Level 2: 全局重定位
+   - Level 3: 切换备用传感器
+   - Level 4: 安全停止</p>
+</li>
+</ol>
+</details>
+<ol start="8">
+<li><strong>性能优化</strong></li>
+</ol>
+<div class="codehilite"><pre><span></span><code>当前：SLAM 占用 80% CPU，建图延迟 2s
+目标：降至 40% CPU，实时建图
+硬件：ARM Cortex-A72 四核
+</code></pre></div>
+
+<details>
+<summary>提示</summary>
+<p>算法优化、并行计算、参数调整</p>
+</details>
+<details>
+<summary>参考答案</summary>
+<p>优化方案：</p>
+<ol>
+<li>
+<p>算法层：
+   - 降采样激光点
+   - 减少搜索范围
+   - 自适应分辨率</p>
+</li>
+<li>
+<p>实现层：
+   - SIMD 指令优化
+   - 多线程扫描匹配
+   - GPU 加速（如可用）</p>
+</li>
+<li>
+<p>系统层：
+   - 降低地图更新频率
+   - 延迟非关键计算
+   - 内存池复用</p>
+</li>
+</ol>
+</details>
+<h2 id="_12">常见陷阱与错误</h2>
+<h3 id="1">1. 定位系统</h3>
+<p><strong>陷阱：初始位姿设置错误</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 错误：未设置初始位姿就启动导航</span>
+ros2<span class="w"> </span>run<span class="w"> </span>nav2_bringup<span class="w"> </span>navigation_launch.py
+
+<span class="c1"># 正确：先设置初始位姿</span>
+ros2<span class="w"> </span>topic<span class="w"> </span>pub<span class="w"> </span>/initialpose<span class="w"> </span>geometry_msgs/PoseWithCovarianceStamped<span class="w"> </span>...
+<span class="c1"># 或在 rviz2 中使用 2D Pose Estimate</span>
+</code></pre></div>
+
+<p><strong>陷阱：坐标系配置混乱</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 错误：world_frame 设置不当</span>
+<span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span><span class="w">  </span><span class="c1"># EKF 应该是 odom</span>
+
+<span class="c1"># 正确配置</span>
+<span class="nt">ekf_odom</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">odom</span>
+<span class="nt">ekf_map</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">world_frame</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">map</span>
+</code></pre></div>
+
+<h3 id="2-slam">2. SLAM 建图</h3>
+<p><strong>陷阱：回环误匹配</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 问题：阈值过低导致错误回环</span>
+<span class="n">loop_match_minimum_response_coarse</span><span class="p">:</span> <span class="mf">0.1</span>  <span class="c1"># 太低</span>
+
+<span class="c1"># 解决：提高阈值，增加验证</span>
+<span class="n">loop_match_minimum_response_coarse</span><span class="p">:</span> <span class="mf">0.35</span>
+<span class="n">loop_match_minimum_chain_size</span><span class="p">:</span> <span class="mi">10</span>
+</code></pre></div>
+
+<p><strong>陷阱：地图漂移累积</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 问题：纯里程计建图</span>
+<span class="nt">slam_toolbox</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">use_scan_matching</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">  </span><span class="c1"># 错误</span>
+
+<span class="c1"># 解决：启用扫描匹配</span>
+<span class="w">  </span><span class="nt">use_scan_matching</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">scan_matcher_variance</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5.0</span>
+</code></pre></div>
+
+<h3 id="3">3. 传感器融合</h3>
+<p><strong>陷阱：时间戳不同步</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 问题：直接使用原始时间戳</span>
+<span class="n">imu_msg</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">sensor_time</span>
+
+<span class="c1"># 解决：时间同步</span>
+<span class="n">imu_msg</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_clock</span><span class="p">()</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">to_msg</span><span class="p">()</span>
+<span class="c1"># 或使用 message_filters 同步</span>
+</code></pre></div>
+
+<p><strong>陷阱：协方差设置不当</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 问题：过度信任某传感器</span>
+<span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">...</span><span class="p p-Indicator">]</span><span class="w">  </span><span class="c1"># 使用所有维度</span>
+
+<span class="c1"># 解决：选择可靠维度</span>
+<span class="nt">odom0_config</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="c1"># 位置不可靠</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="c1"># 姿态不可靠  </span>
+<span class="w">               </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">true</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w">  </span><span class="c1"># 线速度可靠</span>
+<span class="w">               </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">false</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">true</span><span class="p p-Indicator">]</span><span class="w">   </span><span class="c1"># 角速度可靠</span>
+</code></pre></div>
+
+<h3 id="4">4. 性能问题</h3>
+<p><strong>陷阱：粒子数过多</strong></p>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 问题：盲目增加粒子数</span>
+<span class="nt">max_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10000</span><span class="w">  </span><span class="c1"># CPU 负载过高</span>
+
+<span class="c1"># 解决：自适应粒子数</span>
+<span class="nt">min_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="nt">max_particles</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2000</span>
+<span class="nt">kld_err</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.05</span>
+<span class="nt">kld_z</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.99</span>
+</code></pre></div>
+
+<h2 id="_13">最佳实践检查清单</h2>
+<h3 id="_14">系统设计审查</h3>
+<ul>
+<li>[ ] <strong>传感器选择</strong></li>
+<li>[ ] 传感器组合满足精度要求</li>
+<li>[ ] 考虑环境限制（室内/室外）</li>
+<li>
+<p>[ ] 冗余设计应对故障</p>
+</li>
+<li>
+<p>[ ] <strong>算法选择</strong></p>
+</li>
+<li>[ ] AMCL vs SLAM 场景适配</li>
+<li>[ ] EKF vs UKF 非线性程度</li>
+<li>
+<p>[ ] 2D vs 3D 需求匹配</p>
+</li>
+<li>
+<p>[ ] <strong>地图管理</strong></p>
+</li>
+<li>[ ] 地图格式标准化</li>
+<li>[ ] 更新策略明确</li>
+<li>[ ] 存储和传输优化</li>
+</ul>
+<h3 id="_15">参数调优</h3>
+<ul>
+<li>[ ] <strong>AMCL 调优</strong></li>
+<li>[ ] 粒子数量与CPU平衡</li>
+<li>[ ] 运动模型匹配机器人特性</li>
+<li>
+<p>[ ] 观测模型适应传感器特点</p>
+</li>
+<li>
+<p>[ ] <strong>SLAM 调优</strong></p>
+</li>
+<li>[ ] 扫描匹配参数验证</li>
+<li>[ ] 回环检测阈值测试</li>
+<li>
+<p>[ ] 优化频率设置合理</p>
+</li>
+<li>
+<p>[ ] <strong>融合调优</strong></p>
+</li>
+<li>[ ] 传感器权重合理分配</li>
+<li>[ ] 过程噪声反映实际情况</li>
+<li>[ ] 异常值检测启用</li>
+</ul>
+<h3 id="_16">测试验证</h3>
+<ul>
+<li>[ ] <strong>功能测试</strong></li>
+<li>[ ] 静态定位精度 &lt; 要求值</li>
+<li>[ ] 动态跟踪稳定</li>
+<li>
+<p>[ ] 建图完整性验证</p>
+</li>
+<li>
+<p>[ ] <strong>鲁棒性测试</strong></p>
+</li>
+<li>[ ] 传感器故障处理</li>
+<li>[ ] 绑架问题恢复</li>
+<li>
+<p>[ ] 动态环境适应</p>
+</li>
+<li>
+<p>[ ] <strong>性能测试</strong></p>
+</li>
+<li>[ ] CPU 使用率 &lt; 限制</li>
+<li>[ ] 内存占用稳定</li>
+<li>[ ] 更新频率达标</li>
+</ul>
+<h3 id="_17">部署检查</h3>
+<ul>
+<li>[ ] <strong>日志监控</strong></li>
+<li>[ ] 关键指标记录</li>
+<li>[ ] 异常事件告警</li>
+<li>
+<p>[ ] 性能统计分析</p>
+</li>
+<li>
+<p>[ ] <strong>维护方案</strong></p>
+</li>
+<li>[ ] 地图更新流程</li>
+<li>[ ] 参数调整机制</li>
+<li>
+<p>[ ] 故障恢复预案</p>
+</li>
+<li>
+<p>[ ] <strong>文档完备</strong></p>
+</li>
+<li>[ ] 参数说明文档</li>
+<li>[ ] 调试指南</li>
+<li>[ ] 常见问题FAQ</li>
+</ul>
+            </article>
+            
+            <nav class="page-nav"><a href="chapter10.html" class="nav-link prev">← 第 10 章：传感器数据处理管道</a><a href="chapter12.html" class="nav-link next">第 12 章：导航栈 Nav2 →</a></nav>
+        </main>
+    </div>
+</body>
+</html>
